@@ -12,10 +12,7 @@ dependencies:
   db:
     github: crystal-lang/crystal-db
   pg:
-    github: jgaskins/crystal-pg
-    branch: decode-uuids
-  dotenv:
-    github: gdotdesign/cr-dotenv
+    github: will/crystal-pg
 
 scripts:
   postinstall: shards build interro-migration
