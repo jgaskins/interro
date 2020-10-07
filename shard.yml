@@ -13,6 +13,8 @@ dependencies:
     github: crystal-lang/crystal-db
   pg:
     github: will/crystal-pg
+  dotenv:
+    github: gdotdesign/cr-dotenv
 
 scripts:
   postinstall: shards build interro-migration
