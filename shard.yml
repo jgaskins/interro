@@ -1,0 +1,30 @@
+name: interro
+version: 0.1.0
+
+authors:
+  - Jamie Gaskins <jgaskins@hey.com>
+
+targets:
+  interro-migration:
+    main: src/migrations.cr
+
+dependencies:
+  db:
+    github: crystal-lang/crystal-db
+  pg:
+    github: jgaskins/crystal-pg
+    branch: decode-uuids
+  dotenv:
+    github: gdotdesign/cr-dotenv
+
+scripts:
+  postinstall: shards build interro-migration
+
+executables:
+  - interro-migration
+
+development_dependencies: {}
+
+crystal: 0.35.1
+
+license: MIT
