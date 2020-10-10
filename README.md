@@ -265,7 +265,7 @@ Methods you can use within `Interro::Query` objects:
 
 #### Transactions
 
-Transactions are performed the same way as with `QueryBuilder`, by suffixing the query with the transaction in brackets:
+Transactions are performed the same way as with `QueryBuilder`, by passing the transaction to the queries with the transaction in brackets:
 
 ```crystal
 Interro.transaction do |txn|
