@@ -44,14 +44,16 @@ module Interro
       ResultSetIterator(T).new(connection(CONFIG.read_db), to_sql, @args)
     end
 
-    def each(&)
-      connection(CONFIG.read_db).query_each to_sql, args: @args do |rs|
-        yield T.new(rs)
+    def each(& : T ->)
+      connection(Interro::CONFIG.read_db).query_each to_sql, args: @args do |rs|
+        {% begin %}
+          {% if T < Tuple %}
+            yield({ {% for type, index in T.type_vars %} rs.read({{type}}) {% if index < T.type_vars.size - 1 %},{% end %} {% end %} })
+          {% else %}
+            yield rs.read(T)
+          {% end %}
+        {% end %}
       end
-    end
-
-    def to_a
-      connection(CONFIG.read_db).query_all to_sql, args: @args, as: T
     end
 
     def to_json(json : JSON::Builder) : Nil
