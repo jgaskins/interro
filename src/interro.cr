@@ -27,7 +27,7 @@ module Interro
       sql = String.build do |str|
         str << "INSERT INTO " << table_name << " ("
         params.each_with_index(1) do |key, value, index|
-          key.to_s str
+          key.to_s.inspect str
           str << ", " if index < params.size
         end
         str << ") VALUES ("
