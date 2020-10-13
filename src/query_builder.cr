@@ -68,6 +68,18 @@ module Interro
       end
     end
 
+    def |(other : self) : CompoundQuery
+      CompoundQuery.new(self, "UNION", other, connection(CONFIG.read_db))
+    end
+
+    def &(other : self) : CompoundQuery
+      CompoundQuery.new(self, "INTERSECTION", other, connection(CONFIG.read_db))
+    end
+
+    def -(other : self) : CompoundQuery
+      CompoundQuery.new(self, "EXCEPT", other, connection(CONFIG.read_db))
+    end
+
     protected def find(**params) : T?
       query = where(**params).limit(1)
 
@@ -292,11 +304,53 @@ module Interro
 
       def next
         if @result_set.move_next
-          T.new(@result_set)
+          {% if T < Tuple %}
+            {
+              {% for type in T.type_vars %}
+                @result_set.read({{type}}),
+              {% end %}
+            }
+          {% else %}
+            T.new(@result_set)
+          {% end %}
         else
           @result_set.close
           stop
         end
+      end
+    end
+
+    struct CompoundQuery(T)
+      include Enumerable(T)
+
+      def initialize(
+        @lhs : QueryBuilder(T),
+        @combinator : String,
+        @rhs : QueryBuilder(T),
+        @connection : ::DB::Database | ::DB::Connection
+      )
+      end
+
+      def each(& : T ->)
+        @connection.query_each to_sql, args: @lhs.@args + @rhs.@args do |rs|
+          yield T.new(rs)
+        end
+      end
+
+      def to_sql
+        lhs = @lhs.to_sql
+        lhs_arg_count = @lhs.@args.size
+        rhs = @rhs
+          .to_sql
+          .gsub(/\$(\d+)/) { |match| "$#{match[1].to_i + lhs_arg_count}" }
+
+        <<-SQL
+          #{lhs}
+
+          #{@combinator}
+
+          #{rhs}
+        SQL
       end
     end
   end

@@ -41,6 +41,10 @@ pg.exec "CREATE INDEX IF NOT EXISTS index_group_memberships_on_group_id ON group
 pg.exec "CREATE INDEX IF NOT EXISTS index_group_memberships_on_user_id ON group_memberships (user_id)"
 pg.exec "CREATE INDEX IF NOT EXISTS index_group_memberships_on_created_at ON group_memberships (created_at)"
 
+private def create_user(email = "user-#{UUID.random}@example.com", name = "Another User") : User
+  UserQuery.new.create(email: email, name: name)
+end
+
 Interro.config do |c|
   c.db = pg
   # equivalent to:
@@ -368,6 +372,20 @@ describe Interro do
       query.with_id(deleted.id).should be_empty
       query.with_id(not_deleted.id).should_not be_empty
       query.with_id(not_deleted.id).should contain not_deleted
+    end
+
+    it "can run UNION queries" do
+      lhs = Array.new(3) { create_user(name: "LHS") }
+      rhs = Array.new(3) { create_user(name: "RHS") }
+      excluded = create_user(name: "excluded")
+      lhs_users = query.with_name("LHS")
+      rhs_users = query.with_name("RHS")
+
+      users = (lhs_users | rhs_users).to_a
+
+      lhs.all? { |user| users.includes? user }.should eq true
+      rhs.all? { |user| users.includes? user }.should eq true
+      users.should_not contain excluded
     end
 
     describe "transactions" do
