@@ -11,8 +11,8 @@ module Interro
   end
 
   class Config
-    property read_db : DB::Database = DB.open("postgres:///")
-    property write_db : DB::Database = DB.open("postgres:///")
+    property! read_db : DB::Database
+    property! write_db : DB::Database
     property log = LOG
 
     def db=(db)
