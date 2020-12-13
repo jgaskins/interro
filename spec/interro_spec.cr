@@ -10,6 +10,7 @@ pg.exec <<-SQL
     id UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
     email TEXT UNIQUE NOT NULL,
     name TEXT NOT NULL,
+    deactivated_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
   )
@@ -45,6 +46,10 @@ private def create_user(email = "user-#{UUID.random}@example.com", name = "Anoth
   UserQuery.new.create(email: email, name: name)
 end
 
+private def create_group(name = "Group #{UUID.random}")
+  GroupQuery.new.create(name: name)
+end
+
 Interro.config do |c|
   c.db = pg
   # equivalent to:
@@ -60,6 +65,7 @@ struct User
   getter id : UUID
   getter email : String
   getter name : String
+  getter deactivated_at : Time?
   getter created_at : Time
   getter updated_at : Time
 
@@ -151,11 +157,41 @@ struct UserQuery < Interro::QueryBuilder(User)
   end
 
   def with_id_in_kwargs(ids : Array(UUID))
-    where id: ids.map(&.as(Interro::Primitive))
+    where id: ids.map(&.as(Interro::Value))
   end
 
   def with_id_in_block(ids : Array(UUID))
     where { |user| user.id.in? ids }
+  end
+
+  def with_id_and_name(id : UUID, name : String)
+    where id: id, name: name
+  end
+
+  def delete_with_id_and_name(id : UUID, name : String)
+    with_id_and_name(id, name).delete
+  end
+
+  def members_of_group(group : Group)
+    members_of_group_with_id group.id
+  end
+
+  def active
+    where deactivated_at: nil
+  end
+
+  def active_but_with_a_block
+    where { |user| user.deactivated_at == nil }
+  end
+
+  def members_of_group_with_id(id : UUID)
+    self
+      .inner_join("group_memberships", as: "gm", on: "gm.user_id = users.id")
+      .where("gm.group_id": id)
+  end
+
+  def deactivate!(user : User)
+    with_id(user.id).update deactivated_at: Time.utc
   end
 
   def count : Int64
@@ -224,6 +260,20 @@ describe Interro do
     found_user.id.should eq created_user.id
     found_user.created_at.should eq created_user.created_at
     found_user.updated_at.should eq created_user.updated_at
+  end
+
+  it "can handles comparisons with NULL" do
+    query = UserQuery.new
+    active = query.create name: "Active", email: "active-#{UUID.random}@example.com"
+    inactive = query.create name: "Inactive", email: "inactive-#{UUID.random}@example.com"
+    query.deactivate! inactive
+
+    active_users = query.active
+    active_via_block = query.active_but_with_a_block
+
+    active_users.should contain active
+    active_users.should_not contain inactive
+    active_via_block.to_a.should eq active_users.to_a
   end
 
   describe Interro::QueryBuilder do
@@ -344,6 +394,24 @@ describe Interro do
 
         users.should_not contain created_users[3]
       end
+
+      it "can find records using multiple keyword args" do
+        users = query
+          .with_id_and_name(id: created_users[0].id, name: created_users[0].name)
+
+        users.size.should eq 1
+        users.should contain created_users[0]
+      end
+
+      it "can delete records using multiple keyword args" do
+        user = created_users[0]
+
+        query.delete_with_id_and_name(id: user.id, name: user.name)
+
+        users = query.with_id_and_name(id: user.id, name: user.name)
+
+        users.size.should eq 0
+      end
     end
 
     it "can return scalar values" do
@@ -385,6 +453,20 @@ describe Interro do
 
       lhs.all? { |user| users.includes? user }.should eq true
       rhs.all? { |user| users.includes? user }.should eq true
+      users.should_not contain excluded
+    end
+
+    it "can run subqueries" do
+      included = create_user(email: "included")
+      excluded = create_user(email: "excluded")
+      group = create_group
+      another_group = create_group
+      GroupMembershipQuery.new.create(user: included, group: group)
+      GroupMembershipQuery.new.create(user: excluded, group: another_group)
+
+      users = query.members_of_group_with_id(group.id).to_a
+
+      users.should contain included
       users.should_not contain excluded
     end
 

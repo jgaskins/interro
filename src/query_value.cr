@@ -45,11 +45,11 @@ module Interro
       QueryExpression.new(value, "IS NOT", "NULL", [] of Value)
     end
 
-    def in?(array : Array(Value))
+    def in?(array : Enumerable(Value))
       # Recursive type aliases with data structures are a little funky to work with
-      values = [array.map(&.as(Primitive)).as(Value)]
+      values = [array.map(&.as(Value)).as(Value)]
 
-      QueryExpression.new(value, "= ANY(", "$#{index})", values)
+      QueryExpression.new(value, "=", "ANY($#{index})", values)
     end
   end
 end

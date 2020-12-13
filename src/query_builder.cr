@@ -22,22 +22,17 @@ module Interro
     protected property join_clause = [] of JoinClause
     protected property where_clause : QueryExpression?
     protected property order_by_clause : OrderBy?
-    protected property limit_clause = false
+    protected property limit_clause : Int32? = nil
     protected property transaction : DB::Transaction? = nil
-    protected property args : Array(Value)
+    protected property args : Array(Value) = Array(Value).new
 
-    def initialize(
-      where @where_clause = nil,
-      order_by @order_by_clause = nil,
-      limit @limit_clause = false,
-      @args = Array(Value).new
-    )
+    def first
+      first? || raise UnexpectedEmptyResultSet.new("#{self} returned no results")
     end
 
     def first?
-      limit(1)
-        .to_a
-        .first?
+      limit(1).each { |obj| return obj }
+      nil
     end
 
     def each
@@ -45,7 +40,12 @@ module Interro
     end
 
     def each(& : T ->)
-      connection(Interro::CONFIG.read_db).query_each to_sql, args: @args do |rs|
+      args = @args
+      if limit = limit_clause
+        args += [limit.as(Value)]
+      end
+
+      connection(Interro::CONFIG.read_db).query_each to_sql, args: args do |rs|
         {% begin %}
           {% if T < Tuple %}
             yield({ {% for type, index in T.type_vars %} rs.read({{type}}) {% if index < T.type_vars.size - 1 %},{% end %} {% end %} })
@@ -83,7 +83,7 @@ module Interro
     protected def find(**params) : T?
       query = where(**params).limit(1)
 
-      connection(CONFIG.read_db).query_one? query.to_sql, args: query.args, as: T
+      connection(CONFIG.read_db).query_one? query.to_sql, args: query.args + [1], as: T
     end
 
     protected def inner_join(other_table, on condition : String, as relation = nil)
@@ -92,17 +92,20 @@ module Interro
       new
     end
 
-    protected def where(**params : Value) : self
+    protected def where(**params) : self
       where_clause = nil
       args = Array(Value).new(initial_capacity: params.size)
-      params.each_with_index do |key, value|
+      # pp where_clause: where_clause, args: @args
+      params.each_with_index(@args.size + 1) do |key, value, index|
         case value
+        when Nil
+          new_clause = QueryExpression.new(key.to_s, "IS", "NULL", [] of Value)
         when Array
-          args << value.as(Value)
-          new_clause = QueryExpression.new(key.to_s, "=", "ANY($#{@args.size + args.size})", args)
+          args << value
+          new_clause = QueryExpression.new(key.to_s, "=", "ANY($#{index})", [value.as(Value)])
         else
           args << value
-          new_clause = QueryExpression.new(key.to_s, "=", "$#{@args.size + args.size}", args)
+          new_clause = QueryExpression.new(key.to_s, "=", "$#{index}", [value.as(Value)])
         end
 
         if where_clause
@@ -110,9 +113,11 @@ module Interro
         else
           where_clause = new_clause
         end
+        # pp key: key, value: value, where: where_clause
       end
 
       if where_clause && (current_where_clause = @where_clause)
+        # pp current_where_clause: current_where_clause, where_clause: where_clause, new: current_where_clause & where_clause
         where_clause = current_where_clause & where_clause
       end
 
@@ -158,8 +163,7 @@ module Interro
 
     protected def limit(count : Int) : self
       new = dup
-      new.limit_clause = true
-      new.args += [count.as(Value)].as(Array(Value))
+      new.limit_clause = count
       new
     end
 
@@ -192,6 +196,15 @@ module Interro
       # )
     end
 
+    def any? : Bool
+      !!connection(CONFIG.read_db).query_one? <<-SQL, args: @args, as: Int32
+        SELECT 1 AS one
+        FROM #{sql_table_name}
+        WHERE #{@where_clause.try(&.to_sql)}
+        LIMIT 1
+      SQL
+    end
+
     protected def insert(**params) : T
       CreateOperation(T).new(connection(CONFIG.write_db))
         .call(sql_table_name, params)
@@ -210,7 +223,7 @@ module Interro
           where: @where_clause
     end
 
-    # How to determine which methods get selected in these queries, the default
+    # How to determine which columns get selected in these queries, the default
     # is the instance variables for the model that are not ignored with a
     # `DB::Field` annotation with `ignore: true`. To change this, override this
     # method.
@@ -218,12 +231,12 @@ module Interro
     # ```
     # struct MyQuery < Interro::QueryBuilder(MyModel)
     #   # ...
-    #   private def select_columns(io)
+    #   protected def select_columns(io)
     #     io << "id, name, lower(email) AS email, foo, bar, baz"
     #   end
     # end
     # ```
-    private def select_columns(io) : Nil
+    protected def select_columns(io) : Nil
       {% begin %}
         # Don't try to select columns the model has explicitly asked not to be
         # populated.
@@ -282,7 +295,7 @@ module Interro
       end
 
       if limit = @limit_clause
-        str << "LIMIT $#{@args.size}" << ' '
+        str << "LIMIT $#{@args.size + 1}" << ' '
       end
     end
 
@@ -293,7 +306,7 @@ module Interro
       connection || db
     end
 
-    struct ResultSetIterator(T)
+    class ResultSetIterator(T)
       include Iterator(T)
 
       @result_set : DB::ResultSet
@@ -318,6 +331,10 @@ module Interro
           stop
         end
       end
+
+      def finalize
+        @result_set.close
+      end
     end
 
     struct CompoundQuery(T)
@@ -332,7 +349,8 @@ module Interro
       end
 
       def each(& : T ->)
-        @connection.query_each to_sql, args: @lhs.@args + @rhs.@args do |rs|
+        # pp lhs: @lhs.args, rhs: @rhs.args
+        @connection.query_each to_sql, args: @lhs.args + @rhs.args do |rs|
           yield T.new(rs)
         end
       end

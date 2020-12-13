@@ -11,6 +11,12 @@ require "./query_builder"
 module Interro
   VERSION = "0.1.0"
 
+  class Error < ::Exception
+  end
+
+  class UnexpectedEmptyResultSet < Error
+  end
+
   def self.transaction
     CONFIG.write_db.transaction do |txn|
       yield txn
@@ -47,13 +53,22 @@ module Interro
     end
 
     def call(table_name, set values : NamedTuple, where : QueryExpression? = nil)
+      args = values.values.to_a
+      if where
+        args = where.values + args
+      end
+
+      @queryable.query_all to_sql(table_name, where, values), args: args, as: T
+    end
+
+    def to_sql(table_name, where, values)
       sql = String.build do |str|
         str << "UPDATE " << table_name << ' '
         str << "SET "
         values.each_with_index((where.try(&.values.size) || 0) + 1) do |key, value, index|
           key.to_s str
           str << " = $" << index
-          if index < values.size
+          if index <= values.size
             str << ", "
           end
         end
@@ -63,15 +78,36 @@ module Interro
           where.to_sql str
         end
 
-        str << " RETURNING *"
+        str << " RETURNING "
+        select_columns str
       end
+    end
 
-      args = values.values.to_a
-      if where
-        args = where.values + args
-      end
+    private def select_columns(io) : Nil
+      {% begin %}
+        # Don't try to select columns the model has explicitly asked not to be
+        # populated.
+        {%
+          ivars = T.instance_vars.reject do |ivar|
+            ann = ivar.annotation(::DB::Field)
+            ann && ann[:ignore]
+          end
+        %}
 
-      @queryable.query_all sql, args: args, as: T
+        {% for ivar, index in ivars %}
+          {% ann = ivar.annotation(::DB::Field) %}
+
+            {% if ann && (key = ann[:key]) %}
+              io << "{{key.id}}"
+            {% else %}
+              io << "{{ivar.name}}"
+            {% end %}
+
+          {% if index < ivars.size - 1 %}
+            io << ", "
+          {% end %}
+        {% end %}
+      {% end %}
     end
   end
 
@@ -104,8 +140,7 @@ module Interro
   end
 end
 
-
-############# MONKEYPATCHES #######################
+# ############ MONKEYPATCHES #######################
 
 # :nodoc:
 module DB
