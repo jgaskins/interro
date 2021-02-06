@@ -23,6 +23,7 @@ module Interro
     protected property where_clause : QueryExpression?
     protected property order_by_clause : OrderBy?
     protected property limit_clause : Int32? = nil
+    protected property offset_clause : Int32? = nil
     protected property transaction : DB::Transaction? = nil
     protected property args : Array(Value) = Array(Value).new
 
@@ -41,6 +42,9 @@ module Interro
 
     def each(& : T ->)
       args = @args
+      if offset = offset_clause
+        args += [offset.as(Value)]
+      end
       if limit = limit_clause
         args += [limit.as(Value)]
       end
@@ -173,6 +177,12 @@ module Interro
       new
     end
 
+    protected def offset(count : Int) : self
+      new = dup
+      new.offset_clause = count
+      new
+    end
+
     protected def distinct(on expression = "") : self
       new = dup
       new.distinct = expression
@@ -300,8 +310,14 @@ module Interro
         str << ' '
       end
 
+      placeholder = @args.size
+
+      if offset = @offset_clause
+        str << "OFFSET $" << (placeholder += 1) << ' '
+      end
+
       if limit = @limit_clause
-        str << "LIMIT $#{@args.size + 1}" << ' '
+        str << "LIMIT $" << (placeholder += 1) << ' '
       end
     end
 
