@@ -171,6 +171,18 @@ module Interro
       new
     end
 
+    protected def order_by(expression, direction) : self
+      order_by_clause = OrderBy { expression => direction }
+
+      if current_order_clause = @order_by_clause
+        order_by_clause = current_order_clause.merge(order_by_clause)
+      end
+
+      new = dup
+      new.order_by_clause = order_by_clause
+      new
+    end
+
     protected def limit(count : Int) : self
       new = dup
       new.limit_clause = count
