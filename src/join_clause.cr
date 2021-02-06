@@ -1,18 +1,21 @@
 module Interro
   struct JoinClause
-    getter other_table : String, relation : String?, condition : String
+    getter other_table : String
+    getter relation : String?
+    getter condition : String
+    getter join_type : String
 
     # Represent a SQL JOIN with the given arguments.
     #
     # ```
     # JoinClause.new("my_table", as: "m", on: "m.foo_id = foo.id")
     # ```
-    def initialize(@other_table, as @relation, on @condition)
+    def initialize(@other_table, as @relation, on @condition, @join_type = "INNER")
     end
 
     # Output this JOIN clause to the given `IO` as SQL.
     def to_sql(io)
-      io << " INNER JOIN " << other_table
+      io << ' ' << @join_type << " JOIN " << other_table
       if relation
         io << " AS " << relation
       end

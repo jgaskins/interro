@@ -92,6 +92,12 @@ module Interro
       new
     end
 
+    protected def left_join(other_table, on condition : String, as relation = nil)
+      new = dup
+      new.join_clause << JoinClause.new(other_table, relation, condition, join_type: "LEFT")
+      new
+    end
+
     protected def where(**params) : self
       where_clause = nil
       args = Array(Value).new(initial_capacity: params.size)
