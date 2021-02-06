@@ -28,12 +28,12 @@ module Interro
     def initialize(@read_db = CONFIG.read_db, @write_db = CONFIG.write_db, @log = LOG)
     end
 
-    private def read_all(query, *args, as type : T) forall T
+    private def read_all(query, *_args, args : Array? = nil, as type : T) forall T
       {% begin %}
         begin
           result = Array({{T.instance}}).new
           completed = false
-          measurement = Benchmark.measure { result = @read_db.query_all(query, *args, as: type).not_nil! }
+          measurement = Benchmark.measure { result = @read_db.query_all(query, *_args, args: args, as: type).not_nil! }
           completed = true
           result
         ensure
