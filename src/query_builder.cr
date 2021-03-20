@@ -195,6 +195,10 @@ module Interro
       new
     end
 
+    def count : Int64
+      scalar "count(*)", as: Int64
+    end
+
     protected def distinct(on expression = "") : self
       new = dup
       new.distinct = expression
