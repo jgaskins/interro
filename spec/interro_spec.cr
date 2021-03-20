@@ -419,11 +419,11 @@ describe Interro do
     end
 
     it "can update records" do
-      users = query.change_name(created_users[0], name: "Jamie")
+      users = query.change_name(created_users[1], name: "Jamie")
       users.size.should eq 1
 
       user = users.first
-      users.first.id.should eq created_users[0].id
+      users.first.id.should eq created_users[1].id
       users.first.name.should eq "Jamie"
     end
 
