@@ -84,6 +84,10 @@ module Interro
       CompoundQuery.new(self, "EXCEPT", other, connection(CONFIG.read_db))
     end
 
+    def count : Int64
+      scalar "count(*)", as: Int64
+    end
+
     protected def find(**params) : T?
       query = where(**params).limit(1)
 
@@ -193,10 +197,6 @@ module Interro
       new = dup
       new.offset_clause = count
       new
-    end
-
-    def count : Int64
-      scalar "count(*)", as: Int64
     end
 
     protected def distinct(on expression = "") : self
