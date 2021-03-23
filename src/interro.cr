@@ -9,7 +9,7 @@ require "./query_builder"
 
 #
 module Interro
-  VERSION = "0.1.3"
+  VERSION = "0.1.4"
 
   class Error < ::Exception
   end
