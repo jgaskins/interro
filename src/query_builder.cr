@@ -8,10 +8,8 @@ module Interro
     include Iterable(T)
 
     macro table(name)
-      TABLE_NAME = {{name.id.stringify}}
-
       def sql_table_name
-        TABLE_NAME
+        {{name.id.stringify}}
       end
     end
 
