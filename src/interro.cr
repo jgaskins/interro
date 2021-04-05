@@ -115,14 +115,16 @@ module Interro
     def initialize(@queryable : DB::Database | DB::Connection)
     end
 
-    def call(table_name : String, where : QueryExpression) : Nil
+    def call(table_name : String, where : QueryExpression)
       sql = String.build do |str|
         str << "DELETE FROM " << table_name
         str << " WHERE "
         where.to_sql str
       end
 
-      @queryable.exec sql, args: where.values
+      @queryable
+        .exec(sql, args: where.values)
+        .rows_affected
     end
 
     def call(table_name : String, where : Nil)
