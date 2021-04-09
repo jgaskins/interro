@@ -1,5 +1,6 @@
 require "./join_clause"
 require "./query_record"
+require "./dynamic_query"
 
 module Interro
   abstract struct QueryBuilder(T)

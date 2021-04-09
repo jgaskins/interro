@@ -215,9 +215,28 @@ struct GroupQuery < Interro::QueryBuilder(Group)
     where id: id
   end
 
+  def with_name(name : String) : self
+    where "groups.name": name
+  end
+
   def with_member(user)
     join_to_users
       .where("users.id": user.id)
+  end
+
+  def with_members
+    columns = String.build do |str|
+      select_columns str
+      str << ", "
+      UserQuery.new.select_columns str
+    end
+
+    join_to_users
+      .fetch(columns, as: {Group, User})
+  end
+
+  def at_most(count : Int32)
+    limit count
   end
 
   def in_alphanumeric_order
@@ -225,7 +244,8 @@ struct GroupQuery < Interro::QueryBuilder(Group)
   end
 
   private def join_to_users
-    inner_join("group_memberships gm", on: "gm.group_id = groups.id")
+    self
+      .inner_join("group_memberships", as: "gm", on: "gm.group_id = groups.id")
       .inner_join("users", on: "gm.user_id = users.id")
   end
 end
@@ -520,6 +540,20 @@ describe Interro do
           gq.change_name(group, "The Same Group")
           gq.with_id(group.id).first.name.should eq "The Same Group"
         end
+      end
+    end
+
+    describe "returning different types" do
+      it "does a thing" do
+        group = create_group
+        user = create_user
+        GroupMembershipQuery.new.create(group: group, user: user)
+
+        group_with_members = GroupQuery.new
+          .with_members
+          .to_a
+
+        group_with_members.should contain({group, user})
       end
     end
   end
