@@ -63,7 +63,9 @@ module Interro
       @queryable.query_all to_sql(table_name, where, values), args: args, as: T
     end
 
-    def to_sql(table_name, where, values)
+    def to_sql(query, where, values)
+      table_name = query.sql_table_name
+
       sql = String.build do |str|
         str << "UPDATE " << table_name << ' '
         str << "SET "
@@ -81,35 +83,8 @@ module Interro
         end
 
         str << " RETURNING "
-        select_columns str
+        query.select_columns str
       end
-    end
-
-    private def select_columns(io) : Nil
-      {% begin %}
-        # Don't try to select columns the model has explicitly asked not to be
-        # populated.
-        {%
-          ivars = T.instance_vars.reject do |ivar|
-            ann = ivar.annotation(::DB::Field)
-            ann && ann[:ignore]
-          end
-        %}
-
-        {% for ivar, index in ivars %}
-          {% ann = ivar.annotation(::DB::Field) %}
-
-            {% if ann && (key = ann[:key]) %}
-              io << "{{key.id}}"
-            {% else %}
-              io << "{{ivar.name}}"
-            {% end %}
-
-          {% if index < ivars.size - 1 %}
-            io << ", "
-          {% end %}
-        {% end %}
-      {% end %}
     end
   end
 

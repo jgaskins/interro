@@ -243,7 +243,7 @@ module Interro
 
     protected def update(**params) : Array(T)
       UpdateOperation(T).new(connection(CONFIG.write_db))
-        .call sql_table_name,
+        .call self,
           set: params,
           where: @where_clause
     end
