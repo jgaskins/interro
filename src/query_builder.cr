@@ -238,7 +238,7 @@ module Interro
 
     protected def insert(**params) : T
       CreateOperation(T).new(connection(CONFIG.write_db))
-        .call(sql_table_name, params)
+        .call(self, params)
     end
 
     protected def update(**params) : Array(T)

@@ -29,7 +29,8 @@ module Interro
     def initialize(@queryable : DB::Database | DB::Connection)
     end
 
-    def call(table_name, params) : T
+    def call(query : QueryBuilder(T), params) : T
+      table_name = query.sql_table_name
       sql = String.build do |str|
         str << "INSERT INTO " << table_name << " ("
         params.each_with_index(1) do |key, value, index|
@@ -41,7 +42,8 @@ module Interro
           str << '$' << index
           str << ", " if index < params.size
         end
-        str << ") RETURNING *"
+        str << ") RETURNING "
+        query.select_columns str
       end
 
       @queryable.query_one sql, *params.values, as: T
