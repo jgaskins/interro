@@ -197,6 +197,10 @@ struct UserQuery < Interro::QueryBuilder(User)
   def count : Int64
     scalar("count(*)", as: Int64)
   end
+
+  def lock_rows
+    for_update
+  end
 end
 
 struct GroupQuery < Interro::QueryBuilder(Group)
@@ -554,6 +558,17 @@ describe Interro do
           .to_a
 
         group_with_members.should contain({group, user})
+      end
+    end
+
+    it "can lock records with FOR UPDATE" do
+      user = create_user
+      Interro.transaction do |txn|
+        fetched_user = UserQuery[txn]
+          .with_id(user.id)
+          .lock_rows
+          .to_sql
+          .should end_with "FOR UPDATE"
       end
     end
   end

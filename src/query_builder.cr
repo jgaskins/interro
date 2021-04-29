@@ -25,6 +25,7 @@ module Interro
     protected property offset_clause : Int32? = nil
     protected property transaction : DB::Transaction? = nil
     protected property args : Array(Value) = Array(Value).new
+    protected property? for_update = false
 
     def first
       first? || raise UnexpectedEmptyResultSet.new("#{self} returned no results")
@@ -227,6 +228,12 @@ module Interro
       # )
     end
 
+    protected def for_update
+      new = dup
+      new.for_update = true
+      new
+    end
+
     def any? : Bool
       !!connection(CONFIG.read_db).query_one? <<-SQL, args: @args, as: Int32
         SELECT 1 AS one
@@ -332,7 +339,11 @@ module Interro
       end
 
       if limit = @limit_clause
-        str << "LIMIT $" << (placeholder += 1) << ' '
+        str << "LIMIT $" << (placeholder += 1)
+      end
+
+      if for_update?
+        str << " FOR UPDATE"
       end
     end
 
