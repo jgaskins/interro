@@ -162,6 +162,33 @@ module Interro
       new
     end
 
+    protected def where(lhs : String, comparator : String, rhs : String, values : Array(Value)) : self
+      # Must upcast all values in the array to Interro::Value objects
+      values = values.map(&.as(Value))
+
+      # Translate $1, $2, ... $n to the numbers they should be.
+      arg_count = @args.size
+      rhs = rhs.gsub /\$(\d+)/ do |match|
+        index = match[1].to_i
+        "$#{arg_count + index}"
+      end
+
+      where_clause = Interro::QueryExpression.new(lhs, comparator, rhs, values)
+
+      if current_where_clause = @where_clause
+        where_clause = current_where_clause & where_clause
+      end
+
+      new = dup
+      new.where_clause = where_clause
+      if @args.any?
+        new.args = @args + values
+      else # If the current array is empty, we don't need to concatenate
+        new.args = values
+      end
+      new
+    end
+
     protected def order_by(**params) : self
       order_by_clause = OrderBy.new(initial_capacity: params.size)
       params.each { |key, value| order_by_clause[key.to_s] = value }

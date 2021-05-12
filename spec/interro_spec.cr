@@ -194,6 +194,10 @@ struct UserQuery < Interro::QueryBuilder(User)
     with_id(user.id).update deactivated_at: Time.utc
   end
 
+  def search(term : String)
+    where("name", "@@", "$1", [term])
+  end
+
   def count : Int64
     scalar("count(*)", as: Int64)
   end
@@ -492,6 +496,12 @@ describe Interro do
 
       users.should contain included
       users.should_not contain excluded
+    end
+
+    it "can use arbitrary operators" do
+      user = create_user(name: "Search User")
+
+      UserQuery.new.search("search").should contain user
     end
 
     describe "transactions" do
