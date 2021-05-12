@@ -17,9 +17,18 @@ module Interro
   class UnexpectedEmptyResultSet < Error
   end
 
-  def self.transaction
+  def self.transaction(& : DB::Transaction -> T) forall T
+    result = uninitialized T
+    completed = false
     CONFIG.write_db.transaction do |txn|
-      yield txn
+      result = yield txn
+      completed = true
+    end
+
+    if completed
+      result
+    else
+      raise "Transaction block is incomplete - unexpected rollback?"
     end
   end
 
