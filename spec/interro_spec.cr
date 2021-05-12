@@ -561,6 +561,7 @@ describe Interro do
       end
     end
 
+    # I'm not 100% sure if the implementation of this test is a great idea
     it "can lock records with FOR UPDATE" do
       user = create_user
       Interro.transaction do |txn|
