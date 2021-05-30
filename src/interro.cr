@@ -63,13 +63,21 @@ module Interro
     def initialize(@queryable : DB::Database | DB::Connection)
     end
 
-    def call(table_name, set values : NamedTuple, where : QueryExpression? = nil)
+    def call(query, set values : NamedTuple, where : QueryExpression? = nil)
       args = values.values.to_a
       if where
         args = where.values + args
       end
 
-      @queryable.query_all to_sql(table_name, where, values), args: args, as: T
+      @queryable.query_all to_sql(query, where, values), args: args, as: T
+    end
+
+    def call(query, set values : String, args : Array(Value) = [] of Value, where : QueryExpression? = nil)
+      if where
+        args += where.values
+      end
+
+      @queryable.query_all to_sql(query, where, values), args: args, as: T
     end
 
     def to_sql(query, where, values)
@@ -78,13 +86,7 @@ module Interro
       sql = String.build do |str|
         str << "UPDATE " << table_name << ' '
         str << "SET "
-        values.each_with_index((where.try(&.values.size) || 0) + 1) do |key, value, index|
-          key.to_s str
-          str << " = $" << index
-          if index <= values.size
-            str << ", "
-          end
-        end
+        sqlize values, where, to: str
 
         if where
           str << " WHERE "
@@ -94,6 +96,20 @@ module Interro
         str << " RETURNING "
         query.select_columns str
       end
+    end
+
+    private def sqlize(values : NamedTuple, where, to io) : Nil
+      values.each_with_index((where.try(&.values.size) || 0) + 1) do |key, value, index|
+        key.to_s io
+        io << " = $" << index
+        if index <= values.size
+          io << ", "
+        end
+      end
+    end
+
+    private def sqlize(values : String, where, to io) : Nil
+      io << values
     end
   end
 

@@ -282,6 +282,13 @@ module Interro
           where: @where_clause
     end
 
+    protected def update(*expressions) : Array(T)
+      UpdateOperation(T).new(connection(CONFIG.write_db))
+        .call self,
+          set: expressions.join(", "),
+          where: @where_clause
+    end
+
     protected def delete
       DeleteOperation.new(connection(CONFIG.write_db))
         .call sql_table_name,

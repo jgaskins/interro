@@ -24,6 +24,7 @@ pg.exec <<-SQL
     id UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
     name TEXT NOT NULL,
     active BOOLEAN NOT NULL DEFAULT true,
+    member_count INT8 NOT NULL DEFAULT 0,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
   )
@@ -79,6 +80,7 @@ struct Group
   getter id : UUID
   getter name : String
   getter? active : Bool
+  getter member_count : Int64
   getter created_at : Time
   getter updated_at : Time
 end
@@ -251,6 +253,10 @@ struct GroupQuery < Interro::QueryBuilder(Group)
     order_by name: "ASC"
   end
 
+  def increment_member_count(group : Group)
+    where(id: group.id).update "member_count = member_count + 1"
+  end
+
   private def join_to_users
     self
       .inner_join("group_memberships", as: "gm", on: "gm.group_id = groups.id")
@@ -262,7 +268,10 @@ struct GroupMembershipQuery < Interro::QueryBuilder(GroupMembership)
   table "group_memberships"
 
   def create(user : User, group : Group) : GroupMembership
-    insert user_id: user.id, group_id: group.id
+    Interro.transaction do |txn|
+      GroupQuery[txn].increment_member_count group
+      with_transaction(txn).insert user_id: user.id, group_id: group.id
+    end
   end
 end
 
@@ -389,9 +398,10 @@ describe Interro do
 
       groups = GroupQuery.new
         .with_member(user)
+        .to_a
 
       groups.size.should eq 1
-      groups.should contain group
+      groups.map(&.id).should contain group.id
     end
 
     describe "matching values in an array" do
@@ -453,6 +463,16 @@ describe Interro do
       user = users.first
       users.first.id.should eq created_users[1].id
       users.first.name.should eq "Jamie"
+    end
+
+    it "can update records with SQL expressions" do
+      group = create_group
+
+      results = GroupQuery.new.increment_member_count(group).to_a
+      results.size.should eq 1
+      group = results.first
+
+      group.member_count.should eq 1
     end
 
     it "can delete records" do
