@@ -335,7 +335,7 @@ module Interro
       {% end %}
     end
 
-    private def to_sql(str) : Nil
+    protected def to_sql(str) : Nil
       to_sql(str) { select_columns str }
     end
 
@@ -422,6 +422,8 @@ module Interro
     struct CompoundQuery(T)
       include Enumerable(T)
 
+      protected property limit : Int64? = nil
+
       def initialize(
         @lhs : QueryBuilder(T),
         @combinator : String,
@@ -432,9 +434,20 @@ module Interro
 
       def each(& : T ->)
         # pp lhs: @lhs.args, rhs: @rhs.args
-        @connection.query_each to_sql, args: @lhs.args + @rhs.args do |rs|
+        args = @lhs.args + @rhs.args
+        if limit
+          args << limit
+        end
+
+        @connection.query_each to_sql, args: args do |rs|
           yield T.new(rs)
         end
+      end
+
+      def first(count : Int)
+        new = dup
+        new.limit = count
+        new
       end
 
       def to_sql
@@ -444,13 +457,16 @@ module Interro
           .to_sql
           .gsub(/\$(\d+)/) { |match| "$#{match[1].to_i + lhs_arg_count}" }
 
-        <<-SQL
-          #{lhs}
+        arg_count = lhs_arg_count + @rhs.@args.size
 
-          #{@combinator}
-
-          #{rhs}
-        SQL
+        String.build do |str|
+          str << lhs
+          str << ' ' << @combinator << ' '
+          str << rhs
+          if @limit
+            str << "LIMIT $" << (arg_count += 1)
+          end
+        end
       end
     end
   end

@@ -578,16 +578,16 @@ describe Interro do
     end
 
     describe "returning different types" do
-      it "does a thing" do
+      it "returns a tuple with objects of the given types" do
         group = create_group
         user = create_user
         GroupMembershipQuery.new.create(group: group, user: user)
 
         group_with_members = GroupQuery.new
           .with_members
-          .to_a
+          .map { |(g, u)| {g.id, u.id} }
 
-        group_with_members.should contain({group, user})
+        group_with_members.to_a.should contain({group.id, user.id})
       end
     end
 
