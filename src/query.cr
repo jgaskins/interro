@@ -25,6 +25,17 @@ module Interro
       new(read_db: transaction.connection, write_db: transaction.connection)
     end
 
+    def self.new(query_builder : Interro::QueryBuilder)
+      if txn = query_builder.transaction
+        new(
+          read_db: txn.connection,
+          write_db: txn.connection,
+        )
+      else
+        new
+      end
+    end
+
     def initialize(@read_db = CONFIG.read_db, @write_db = CONFIG.write_db, @log = LOG)
     end
 

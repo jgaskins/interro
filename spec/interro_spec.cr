@@ -690,4 +690,12 @@ describe Interro::Query do
       raise "GROUPS WERE NOT SET"
     end
   end
+
+  it "can take a QueryBuilder do use its transaction" do
+    Interro.transaction do |txn|
+      CreateUser.new(UserQuery[txn]).@read_db.should eq txn.connection
+    end
+
+    CreateUser.new(UserQuery.new).@read_db.should eq Interro::CONFIG.read_db
+  end
 end
