@@ -31,6 +31,10 @@ module Interro
       first? || raise UnexpectedEmptyResultSet.new("#{self} returned no results")
     end
 
+    def first(count : Int)
+      limit count
+    end
+
     def first?
       limit(1).each { |obj| return obj }
       nil
