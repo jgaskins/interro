@@ -47,10 +47,10 @@ module Interro
     def each(& : T ->)
       args = @args
       if offset = offset_clause
-        args += [offset.as(Value)]
+        args += [offset] of Interro::Value
       end
       if limit = limit_clause
-        args += [limit.as(Value)]
+        args += [limit] of Interro::Value
       end
 
       connection(Interro::CONFIG.read_db).query_each to_sql, args: args do |rs|
