@@ -172,6 +172,10 @@ module Interro
 
       # Translate $1, $2, ... $n to the numbers they should be.
       arg_count = @args.size
+      lhs = lhs.gsub /\$(\d+)/ do |match|
+        index = match[1].to_i
+        "$#{arg_count + index}"
+      end
       rhs = rhs.gsub /\$(\d+)/ do |match|
         index = match[1].to_i
         "$#{arg_count + index}"
