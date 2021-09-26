@@ -272,12 +272,18 @@ module Interro
     end
 
     def any? : Bool
-      !!connection(CONFIG.read_db).query_one? <<-SQL, args: @args, as: Int32
-        SELECT 1 AS one
-        FROM #{sql_table_name}
-        WHERE #{@where_clause.try(&.to_sql)}
-        LIMIT 1
-      SQL
+      sql = String.build do |str|
+        str << "SELECT 1 AS one"
+        str << " FROM " << sql_table_name
+        if join = join_clause
+          join.each(&.to_sql(str))
+        end
+
+        str << " WHERE " << @where_clause.try(&.to_sql)
+        str << " LIMIT 1"
+      end
+
+      !!connection(CONFIG.read_db).query_one? sql, args: @args, as: Int32
     end
 
     protected def insert(**params) : T
