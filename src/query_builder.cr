@@ -100,12 +100,14 @@ module Interro
 
     protected def inner_join(other_table, on condition : String, as relation = nil)
       new = dup
+      new.join_clause = join_clause.dup
       new.join_clause << JoinClause.new(other_table, relation, condition)
       new
     end
 
     protected def left_join(other_table, on condition : String, as relation = nil)
       new = dup
+      new.join_clause = join_clause.dup
       new.join_clause << JoinClause.new(other_table, relation, condition, join_type: "LEFT")
       new
     end
