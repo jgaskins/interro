@@ -6,6 +6,7 @@ require "./types"
 require "./query"
 require "./config"
 require "./query_builder"
+require "./model"
 
 #
 module Interro

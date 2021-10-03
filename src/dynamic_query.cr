@@ -45,6 +45,8 @@ module Interro
     )
     end
 
+    delegate sql_table_alias, to: @delegate
+
     macro method_missing(call)
       @delegate.join_clause = @join_clause
       @delegate.where_clause = @where_clause

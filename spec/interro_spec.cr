@@ -103,6 +103,16 @@ struct GroupMembership
   end
 end
 
+struct FakeUser
+  include Interro::Model
+
+  @[Interro::Field(select: "uuid_generate_v4()", as: "id")]
+  getter id : UUID
+
+  @[Interro::Field(select: "md5(random()::text)")]
+  getter name : String
+end
+
 struct UserQuery < Interro::QueryBuilder(User)
   table "users"
 
@@ -273,6 +283,10 @@ struct GroupMembershipQuery < Interro::QueryBuilder(GroupMembership)
       with_transaction(txn).insert user_id: user.id, group_id: group.id
     end
   end
+end
+
+struct FakeUserQuery < Interro::QueryBuilder(FakeUser)
+  table "generate_series(1, 1000)", as: "fake_users"
 end
 
 describe Interro do
@@ -601,6 +615,13 @@ describe Interro do
           .to_sql
           .should end_with "FOR UPDATE"
       end
+    end
+
+    it "can select SQL expressions instead of just columns" do
+      fake_user = FakeUserQuery.new.first
+
+      fake_user.id.should be_a UUID
+      fake_user.name.bytesize.should eq 32 # MD5 hexdigests are 32 bytes
     end
   end
 end

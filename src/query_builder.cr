@@ -7,9 +7,13 @@ module Interro
     include Enumerable(T)
     include Iterable(T)
 
-    macro table(name)
+    macro table(name, as table_alias = nil)
       def sql_table_name
-        {{name.id.stringify}}
+        {{name}}
+      end
+
+      def sql_table_alias
+        {{table_alias || name}}
       end
     end
 
@@ -153,7 +157,7 @@ module Interro
       new
     end
 
-    protected def where(table = sql_table_name, &block : QueryRecord -> QueryExpression) : self
+    protected def where(table = sql_table_alias, &block : QueryRecord -> QueryExpression) : self
       index = @args.size
       where_clause = yield(QueryRecord.new(table) { index += 1 })
       values = where_clause.values
@@ -330,18 +334,20 @@ module Interro
         # populated.
         {%
           ivars = T.instance_vars.reject do |ivar|
-            ann = ivar.annotation(::DB::Field)
+            ann = ivar.annotation(::Interro::Field) || ivar.annotation(::DB::Field)
             ann && ann[:ignore]
           end
         %}
 
         {% for ivar, index in ivars %}
-          {% ann = ivar.annotation(::DB::Field) %}
+          {% ann = ivar.annotation(::Interro::Field) || ivar.annotation(::DB::Field) %}
 
             {% if ann && (key = ann[:key]) %}
-              io << sql_table_name << ".{{key.id}}"
+              io << sql_table_alias << ".{{key.id}}"
+            {% elsif ann && ann[:select] %}
+              io << {{ann[:select]}} << " AS {{(ann[:as] || ivar).id}}"
             {% else %}
-              io << sql_table_name << ".{{ivar.name}}"
+              io << sql_table_alias << ".{{ivar.name}}"
             {% end %}
 
           {% if index < ivars.size - 1 %}
@@ -359,37 +365,38 @@ module Interro
       str << "SELECT "
       str << "DISTINCT " if distinct?
       yield str
-      str << " FROM " << sql_table_name << ' '
+      str << " FROM " << sql_table_name
+      if sql_table_name != sql_table_alias
+        str << " AS " << sql_table_alias
+      end
 
       @join_clause.each do |join|
         join.to_sql str
       end
 
       if where = @where_clause
-        str << "WHERE "
+        str << " WHERE "
         where.to_sql str
-        str << ' '
       end
 
       if order = @order_by_clause
-        str << "ORDER BY "
+        str << " ORDER BY "
         order.each_with_index(1) do |(key, direction), index|
           str << key << ' ' << direction.upcase
           if index < order.size
             str << ", "
           end
         end
-        str << ' '
       end
 
       placeholder = @args.size
 
       if offset = @offset_clause
-        str << "OFFSET $" << (placeholder += 1) << ' '
+        str << " OFFSET $" << (placeholder += 1)
       end
 
       if limit = @limit_clause
-        str << "LIMIT $" << (placeholder += 1)
+        str << " LIMIT $" << (placeholder += 1)
       end
 
       if for_update?
