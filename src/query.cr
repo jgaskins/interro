@@ -85,16 +85,19 @@ module Interro
       @log.debug { "[read] #{self.class.name} - #{query.gsub(/\s+/, " ").strip} - #{args.inspect} - #{result_count} - #{measurement.real.humanize}s (#{measurement.total.humanize}s CPU)" }
     end
 
-    private def read_each(query, *args, as type : T, & : T ->) forall T
-      begin
-        completed = false
-        measurement = Benchmark.measure { result = @read_db.query_each(query, *args, as: type) { |r| yield r } }
-        completed = true
-        result
-      ensure
-        result_count = completed ? "#{result.not_nil!.size} results" : "did not finish"
-        measurement ||= Benchmark.measure {}
-        @log.debug { "[read] #{self.class.name} - #{query.gsub(/\s+/, " ").strip} - #{args.inspect} - #{result_count} - #{measurement.real.humanize}s (#{measurement.total.humanize}s CPU)" }
+    private def read_each(query, *args, as type : T) : Nil forall T
+      result_count = 0
+      @read_db.query_each(query, *args) do |rs|
+        result_count += 1
+        {% if T < Tuple %}
+          yield({
+            {% for type in T %}
+              rs.read({{type.instance}}),
+            {% end %}
+          })
+        {% else %}
+          yield T.new(rs)
+        {% end %}
       end
     end
 

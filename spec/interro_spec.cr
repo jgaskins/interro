@@ -666,6 +666,25 @@ struct AddUserToGroup < Interro::Query
   end
 end
 
+struct AnyGroupsWithName < Interro::Query
+  # Yes, this is a terribly contrived example, but we need something easy to
+  # understand that exercises read_each.
+  def call(name : String)
+    sql = <<-SQL
+      SELECT name
+      FROM groups
+    SQL
+
+    read_each sql, as: {String} do |(group_name)|
+      if group_name == name
+        return true
+      end
+    end
+
+    false
+  end
+end
+
 struct GetUserWithGroups < Interro::Query
   def call(id : UUID) : User
     user = UserQuery.new
@@ -718,5 +737,12 @@ describe Interro::Query do
     end
 
     CreateUser.new(UserQuery.new).@read_db.should eq Interro::CONFIG.read_db
+  end
+
+  it "can iterate over results as they're read from the DB" do
+    group = CreateGroup[UUID.random.to_s]
+
+    AnyGroupsWithName[group.name].should eq true
+    AnyGroupsWithName[UUID.random.to_s].should eq false
   end
 end
