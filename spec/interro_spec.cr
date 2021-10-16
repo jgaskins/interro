@@ -43,12 +43,35 @@ pg.exec "CREATE INDEX IF NOT EXISTS index_group_memberships_on_group_id ON group
 pg.exec "CREATE INDEX IF NOT EXISTS index_group_memberships_on_user_id ON group_memberships (user_id)"
 pg.exec "CREATE INDEX IF NOT EXISTS index_group_memberships_on_created_at ON group_memberships (created_at)"
 
+pg.exec "DROP TABLE IF EXISTS tasks"
+pg.exec <<-SQL
+  CREATE TABLE tasks (
+    id UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+    name TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  )
+SQL
+
+pg.exec "DROP TABLE IF EXISTS group_tasks"
+pg.exec <<-SQL
+  CREATE TABLE group_tasks (
+    id UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+    group_id UUID NOT NULL,
+    task_id UUID NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  )
+SQL
+
 private def create_user(email = "user-#{UUID.random}@example.com", name = "Another User") : User
   UserQuery.new.create(email: email, name: name)
 end
 
 private def create_group(name = "Group #{UUID.random}")
   GroupQuery.new.create(name: name)
+end
+
+private def create_task(name = "Task #{UUID.random}")
+  TaskQuery.new.create(name: name)
 end
 
 Interro.config do |c|
@@ -101,6 +124,23 @@ struct GroupMembership
   def group
     @group ||= GroupQuery.new.with_id(@group_id).first
   end
+end
+
+struct Task
+  include DB::Serializable
+
+  getter id : UUID
+  getter name : String
+  getter created_at : Time
+end
+
+struct GroupTask
+  include DB::Serializable
+
+  getter id : UUID
+  getter group_id : UUID
+  getter task_id : UUID
+  getter created_at : Time
 end
 
 struct FakeUser
@@ -285,6 +325,31 @@ struct GroupMembershipQuery < Interro::QueryBuilder(GroupMembership)
   end
 end
 
+struct TaskQuery < Interro::QueryBuilder(Task)
+  table "tasks"
+
+  def for(user : User)
+    self
+      .distinct(on: "tasks.id")
+      .inner_join("group_tasks", as: "gt", on: "gt.task_id = tasks.id")
+      .inner_join("groups", on: "gt.group_id = groups.id")
+      .inner_join("group_memberships", as: "gm", on: "gm.group_id = groups.id")
+      .inner_join("users", on: "gm.user_id = users.id")
+  end
+
+  def create(name : String)
+    insert name: name
+  end
+end
+
+struct GroupTaskQuery < Interro::QueryBuilder(GroupTask)
+  table "group_tasks"
+
+  def create(group : Group, task : Task)
+    insert group_id: group.id, task_id: task.id
+  end
+end
+
 struct FakeUserQuery < Interro::QueryBuilder(FakeUser)
   table "generate_series(1, 1000)", as: "fake_users"
 end
@@ -416,6 +481,34 @@ describe Interro do
 
       groups.size.should eq 1
       groups.map(&.id).should contain group.id
+    end
+
+    it "can get distinct records" do
+      user = create_user
+      groups = Array.new(2) { create_group }
+      groups.each do |group|
+        GroupMembershipQuery.new.create user, group
+      end
+      tasks = Array.new(2) { create_task }
+      groups.each do |group|
+        tasks.each do |task|
+          GroupTaskQuery.new.create group, task
+        end
+      end
+
+      # Getting the list of tasks for a given user with the groups would look
+      # like this:
+      #
+      # | User | Group | Task |
+      # |------|-------|------|
+      # | user | g1    | t1   |
+      # | user | g1    | t2   |
+      # | user | g2    | t1   |
+      # | user | g2    | t2   |
+      #
+      # What we want is to return t1 and t2 only once each, so the size of the
+      # result set should be 2.
+      TaskQuery.new.for(user).size.should eq 2
     end
 
     describe "matching values in an array" do

@@ -13,6 +13,7 @@ module Interro
           V
         ).new(
           select: columns,
+          distinct: @distinct,
           from: sql_table_name,
           join: @join_clause,
           where: @where_clause,
@@ -33,6 +34,7 @@ module Interro
 
     def initialize(
       select @select_columns,
+      @distinct,
       from @sql_table_name,
       join @join_clause,
       where @where_clause,
@@ -48,6 +50,7 @@ module Interro
     delegate sql_table_alias, to: @delegate
 
     macro method_missing(call)
+      @delegate.distinct = @distinct
       @delegate.join_clause = @join_clause
       @delegate.where_clause = @where_clause
       @delegate.order_by_clause = @order_by_clause
@@ -59,6 +62,7 @@ module Interro
       
       {{@type.id}}.new(
         @select_columns,
+        @distinct,
         from: sql_table_name,
         join: %new_query.join_clause,
         where: %new_query.where_clause,

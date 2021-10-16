@@ -21,7 +21,7 @@ module Interro
       new.with_transaction(transaction)
     end
 
-    protected property? distinct : String? = nil
+    protected property? distinct : Array(String)? = nil
     protected property join_clause = [] of JoinClause
     protected property where_clause : QueryExpression?
     protected property order_by_clause : OrderBy?
@@ -240,10 +240,14 @@ module Interro
       new
     end
 
-    protected def distinct(on expression = "") : self
+    protected def distinct(on expressions : Enumerable(String)) : self
       new = dup
-      new.distinct = expression
+      new.distinct = expressions.to_a
       new
+    end
+
+    protected def distinct(on expression : String = "*") : self
+      distinct({expression})
     end
 
     protected def with_transaction(transaction : DB::Transaction) : self
@@ -363,8 +367,29 @@ module Interro
 
     private def to_sql(str, &) : Nil
       str << "SELECT "
-      str << "DISTINCT " if distinct?
+      if distinct_subclause = self.distinct?
+        # If you provide DISTINCT and an ORDER BY, the ORDER BY clause must also
+        # appear in the DISTINCT subclause.
+        if order_by = @order_by_clause
+          distinct_subclause += order_by.keys
+        end
+
+        str << "DISTINCT "
+        unless distinct_subclause.empty?
+          str << "ON ("
+          distinct_subclause.each_with_index 1 do |expression, index|
+            str << expression
+            if index < distinct_subclause.size
+              str << ", "
+            end
+          end
+          str << ") "
+        end
+      end
+
+      # SELECT columns
       yield str
+
       str << " FROM " << sql_table_name
       if sql_table_name != sql_table_alias
         str << " AS " << sql_table_alias
