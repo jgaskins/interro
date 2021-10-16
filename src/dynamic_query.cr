@@ -47,7 +47,11 @@ module Interro
     )
     end
 
-    delegate sql_table_alias, to: @delegate
+    delegate(
+      sql_table_alias,
+      model_table_mappings,
+      to: @delegate
+    )
 
     macro method_missing(call)
       @delegate.distinct = @distinct

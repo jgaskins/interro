@@ -15,6 +15,45 @@ module Interro
       def sql_table_alias
         {{table_alias || name}}
       end
+
+      def model_table_mappings
+        { T => {{name}} }
+      end
+    end
+
+    macro from(name, *joins)
+      def sql_table_name
+        {{name}}
+      end
+
+      def sql_table_alias
+        sql_table_name
+      end
+
+      def model_table_mappings
+        {
+          {% for type_var, index in T.type_vars %}
+            {% if index == 0 %}
+              {{type_var}} => {{name}},
+            {% else %}
+              {% args = joins[index - 1].named_args %}
+
+              {{type_var}} => {{(args.find { |arg| arg.name == "as".id } || args.first).value}},
+            {% end %}
+          {% end %}
+        }
+      end
+
+      def self.new
+        super
+          {% for join in joins %}
+            # .inner_join("users", as: "author", on: "articles.author_id = author.id")
+            .{{join}}
+          {% end %}
+      end
+    end
+
+    struct InnerJoin
     end
 
     def self.[](transaction : ::DB::Transaction) : self
@@ -45,7 +84,11 @@ module Interro
     end
 
     def each
-      ResultSetIterator(T).new(connection(CONFIG.read_db), to_sql, @args)
+      ResultSetIterator(T).new(
+        db: connection(CONFIG.read_db),
+        query: to_sql,
+        args: @args,
+      )
     end
 
     def each(& : T ->)
@@ -217,7 +260,7 @@ module Interro
     end
 
     protected def order_by(expression, direction) : self
-      order_by_clause = OrderBy { expression => direction }
+      order_by_clause = OrderBy{expression => direction}
 
       if current_order_clause = @order_by_clause
         order_by_clause = current_order_clause.merge(order_by_clause)
@@ -319,6 +362,10 @@ module Interro
           where: @where_clause
     end
 
+    def select_columns
+      String.build { |str| select_columns str }
+    end
+
     # How to determine which columns get selected in these queries, the default
     # is the instance variables for the model that are not ignored with a
     # `DB::Field` annotation with `ignore: true`. To change this, override this
@@ -333,11 +380,26 @@ module Interro
     # end
     # ```
     protected def select_columns(io) : Nil
+      {% if T < Tuple %}
+        {% for type, index in T.type_vars %}
+          select_columns_for_model {{type}}, io
+          {% if index < T.type_vars.size - 1 %}
+            io << ", "
+          {% end %}
+        {% end %}
+      {% else %}
+        select_columns_for_model T, io
+      {% end %}
+    end
+
+    protected def select_columns_for_model(model : U.class, io) : Nil forall U
+      model_table_mappings = self.model_table_mappings
+
       {% begin %}
         # Don't try to select columns the model has explicitly asked not to be
         # populated.
         {%
-          ivars = T.instance_vars.reject do |ivar|
+          ivars = U.instance_vars.reject do |ivar|
             ann = ivar.annotation(::Interro::Field) || ivar.annotation(::DB::Field)
             ann && ann[:ignore]
           end
@@ -347,11 +409,11 @@ module Interro
           {% ann = ivar.annotation(::Interro::Field) || ivar.annotation(::DB::Field) %}
 
             {% if ann && (key = ann[:key]) %}
-              io << sql_table_alias << ".{{key.id}}"
+              io << model_table_mappings[model] << ".{{key.id}}"
             {% elsif ann && ann[:select] %}
               io << {{ann[:select]}} << " AS {{(ann[:as] || ivar).id}}"
             {% else %}
-              io << sql_table_alias << ".{{ivar.name}}"
+              io << model_table_mappings[model] << ".{{ivar.name}}"
             {% end %}
 
           {% if index < ivars.size - 1 %}
@@ -430,10 +492,7 @@ module Interro
     end
 
     private def connection(db)
-      if transaction = @transaction
-        connection = transaction.connection
-      end
-      connection || db
+      @transaction.try(&.connection) || db
     end
 
     class ResultSetIterator(T)
@@ -481,7 +540,6 @@ module Interro
       end
 
       def each(& : T ->)
-        # pp lhs: @lhs.args, rhs: @rhs.args
         args = @lhs.args + @rhs.args
         if limit
           args << limit
