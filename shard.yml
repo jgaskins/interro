@@ -1,5 +1,5 @@
 name: interro
-version: 0.1.8
+version: 0.2.0
 
 authors:
   - Jamie Gaskins <jgaskins@hey.com>
@@ -26,6 +26,6 @@ executables:
 
 development_dependencies: {}
 
-crystal: ">= 0.35.1, < 2.0.0"
+crystal: 1.0.0
 
 license: MIT
