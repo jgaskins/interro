@@ -209,14 +209,18 @@ module DB
             {% for name, value in properties %}
               when {{value[:key]}}
                 %found{name} = true
-                %var{name} =
-                  {% if value[:converter] %}
-                    {{value[:converter]}}.from_rs(rs)
-                  {% elsif value[:nilable] || value[:default] != nil %}
-                    rs.read(::Union({{value[:type]}} | Nil))
-                  {% else %}
-                    rs.read({{value[:type]}})
-                  {% end %}
+                begin
+                  %var{name} =
+                    {% if value[:converter] %}
+                      {{value[:converter]}}.from_rs(rs)
+                    {% elsif value[:nilable] || value[:default] != nil %}
+                      rs.read(::Union({{value[:type]}} | Nil))
+                    {% else %}
+                      rs.read({{value[:type]}})
+                    {% end %}
+                rescue exc
+                  ::raise ::DB::MappingException.new(exc.message, self.class.to_s, {{name.stringify}}, cause: exc)
+                end
 
                 {% for name_for_check, __value in properties %}
                   next unless %found{name_for_check}
@@ -231,8 +235,8 @@ module DB
 
         {% for key, value in properties %}
           {% unless value[:nilable] || value[:default] != nil %}
-            if %var{key}.is_a?(Nil) && !%found{key}
-              raise ::DB::MappingException.new("missing result set attribute: {{(value[:key] || key).id}}")
+            if %var{key}.nil? && !%found{key}
+              ::raise ::DB::MappingException.new("Missing column {{value[:key].id}}", self.class.to_s, {{key.stringify}})
             end
           {% end %}
         {% end %}
@@ -253,15 +257,6 @@ module DB
           {% end %}
         {% end %}
       {% end %}
-    end
-
-    protected def on_unknown_db_column(col_name)
-      raise ::DB::MappingException.new("unknown result set attribute: #{col_name}")
-    end
-
-    module NonStrict
-      protected def on_unknown_db_column(col_name)
-      end
     end
   end
 end
