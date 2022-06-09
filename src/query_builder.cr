@@ -366,6 +366,14 @@ module Interro
       String.build { |str| select_columns str }
     end
 
+    protected def write_db
+      connection(CONFIG.write_db)
+    end
+
+    protected def read_db
+      connection(CONFIG.read_db)
+    end
+
     # How to determine which columns get selected in these queries, the default
     # is the instance variables for the model that are not ignored with a
     # `DB::Field` annotation with `ignore: true`. To change this, override this
