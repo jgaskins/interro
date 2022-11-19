@@ -10,46 +10,47 @@ module Interro
     end
 
     def ==(other : Value)
-      QueryExpression.new(value, "!=", "$#{index}", [other.as(Value)])
+      QueryExpression.new(value, "!=", "$#{index}", [Any.new(other)])
     end
 
     def ==(other : Value)
-      QueryExpression.new(value, "=", "$#{index}", [other.as(Value)])
+      QueryExpression.new(value, "=", "$#{index}", [Any.new(other)])
     end
 
     def ==(other : Nil)
-      QueryExpression.new(value, "IS", "NULL", [] of Value)
+      QueryExpression.new(value, "IS", "NULL", [] of Any)
     end
 
     def <=(other : Value)
-      QueryExpression.new(value, "<=", "$#{index}", [other.as(Value)])
+      QueryExpression.new(value, "<=", "$#{index}", [Any.new(other)])
     end
 
     def >=(other : Value)
-      QueryExpression.new(value, ">=", "$#{index}", [other.as(Value)])
+      QueryExpression.new(value, ">=", "$#{index}", [Any.new(other)])
     end
 
     def <(other : Value)
-      QueryExpression.new(value, "<", "$#{index}", [other.as(Value)])
+      QueryExpression.new(value, "<", "$#{index}", [Any.new(other)])
     end
 
     def >(other : Value)
-      QueryExpression.new(value, ">", "$#{index}", [other.as(Value)])
+      QueryExpression.new(value, ">", "$#{index}", [Any.new(other)])
     end
 
     def !=(other : Value)
-      QueryExpression.new(value, "!=", "$#{index}", [other.as(Value)])
+      QueryExpression.new(value, "!=", "$#{index}", [Any.new(other)])
     end
 
     def !=(other : Nil)
-      QueryExpression.new(value, "IS NOT", "NULL", [] of Value)
+      QueryExpression.new(value, "IS NOT", "NULL", [] of Any)
     end
 
     def in?(array : Enumerable(Value))
-      # Recursive type aliases with data structures are a little funky to work with
-      values = [array.map(&.as(Value)).as(Value)]
+      in? array.map { |value| Any.new(value) }
+    end
 
-      QueryExpression.new(value, "=", "ANY($#{index})", values)
+    def in?(array : Enumerable(Any))
+      QueryExpression.new(value, "=", "ANY($#{index})", [Any.new(array)])
     end
   end
 end

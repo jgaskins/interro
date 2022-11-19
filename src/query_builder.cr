@@ -67,7 +67,7 @@ module Interro
     protected property limit_clause : Int32? = nil
     protected property offset_clause : Int32? = nil
     protected property transaction : DB::Transaction? = nil
-    protected property args : Array(Value) = Array(Value).new
+    protected property args : Array(Any) = Array(Any).new
     protected property? for_update = false
 
     def first
@@ -161,18 +161,17 @@ module Interro
 
     protected def where(**params) : self
       where_clause = nil
-      args = Array(Value).new(initial_capacity: params.size)
-      # pp where_clause: where_clause, args: @args
+      args = Array(Any).new(initial_capacity: params.size)
       params.each_with_index(@args.size + 1) do |key, value, index|
         case value
         when Nil
-          new_clause = QueryExpression.new(key.to_s, "IS", "NULL", [] of Value)
+          new_clause = QueryExpression.new(key.to_s, "IS", "NULL", [] of Any)
         when Array
-          args << value
-          new_clause = QueryExpression.new(key.to_s, "=", "ANY($#{index})", [value.as(Value)])
+          args << Any.new(value)
+          new_clause = QueryExpression.new(key.to_s, "=", "ANY($#{index})", [Any.new(value)])
         else
-          args << value
-          new_clause = QueryExpression.new(key.to_s, "=", "$#{index}", [value.as(Value)])
+          args << Any.new(value)
+          new_clause = QueryExpression.new(key.to_s, "=", "$#{index}", [Any.new(value)])
         end
 
         if where_clause
@@ -180,7 +179,6 @@ module Interro
         else
           where_clause = new_clause
         end
-        # pp key: key, value: value, where: where_clause
       end
 
       if where_clause && (current_where_clause = @where_clause)
@@ -217,7 +215,7 @@ module Interro
 
     protected def where(lhs : String, comparator : String, rhs : String, values : Array(Value)) : self
       # Must upcast all values in the array to Interro::Value objects
-      values = values.map(&.as(Value))
+      values = values.map { |value| Any.new(value) }
 
       # Translate $1, $2, ... $n to the numbers they should be.
       arg_count = @args.size
@@ -550,7 +548,7 @@ module Interro
       def each(& : T ->)
         args = @lhs.args + @rhs.args
         if limit
-          args << limit
+          args << Any.new(limit)
         end
 
         @connection.query_each to_sql, args: args do |rs|

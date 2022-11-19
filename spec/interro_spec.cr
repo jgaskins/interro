@@ -209,7 +209,7 @@ struct UserQuery < Interro::QueryBuilder(User)
   end
 
   def with_id_in_kwargs(ids : Array(UUID))
-    where id: ids.map(&.as(Interro::Value))
+    where id: ids.map { |id| Interro::Any.new(id) }
   end
 
   def with_id_in_block(ids : Array(UUID))

@@ -5,9 +5,9 @@ module Interro
     getter lhs : String
     getter comparator : String
     getter rhs : String
-    getter values : Array(Value)
+    getter values : Array(Any)
 
-    def initialize(@lhs, @comparator, @rhs, @values : Array(Value))
+    def initialize(@lhs, @comparator, @rhs, @values : Array(Any))
     end
 
     def &(other : self) : self
