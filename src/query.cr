@@ -86,5 +86,9 @@ module Interro
     private def write(query, *args)
       @write_db.exec(query, *args)
     end
+
+    private def write(query, *, args : Array)
+      @write_db.exec(query, args: args)
+    end
   end
 end
