@@ -244,7 +244,16 @@ module Interro
       new
     end
 
-    protected def order_by(**params) : self
+    protected def order_by(**params : OrderByDirection) : self
+      order_by(**params.transform_values(&.to_s))
+    end
+
+    enum OrderByDirection
+      ASC
+      DESC
+    end
+
+    protected def order_by(**params : String) : self
       order_by_clause = OrderBy.new(initial_capacity: params.size)
       params.each { |key, value| order_by_clause[key.to_s] = value }
 
