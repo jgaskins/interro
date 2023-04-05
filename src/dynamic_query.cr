@@ -2,6 +2,12 @@ require "./query_builder"
 
 module Interro
   abstract struct QueryBuilder(T)
+    protected def fetch(columns : NamedTuple, delegate = self)
+      fetch columns.keys.join(", "),
+        as: columns.values,
+        delegate: self
+    end
+
     protected def fetch(columns : String, as type : U, delegate : V = self) forall U, V
       {% begin %}
         DynamicQuery(

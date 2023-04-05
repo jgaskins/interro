@@ -583,3 +583,15 @@ module Interro
     end
   end
 end
+
+struct NamedTuple
+  def transform_values
+    {% begin %}
+      {
+        {% for key, value in T %}
+          {{key}}: yield(self[:{{key}}]),
+        {% end %}
+      }
+    {% end %}
+  end
+end
