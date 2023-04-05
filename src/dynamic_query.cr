@@ -59,6 +59,12 @@ module Interro
       to: @delegate
     )
 
+    protected def fetch(columns : String, as type : U, delegate : V = @delegate) forall U, V
+      delegate.fetch "#{@select_columns}, #{columns}",
+        as: {{(T < Tuple ? "T" : "{T}").id}} + {{(U < Tuple ? "U" : "{U}").id}},
+        delegate: self
+    end
+
     macro method_missing(call)
       @delegate.distinct = @distinct
       @delegate.join_clause = @join_clause
