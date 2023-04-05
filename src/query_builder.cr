@@ -307,6 +307,14 @@ module Interro
     end
 
     protected def scalar(select expression : String, as type : U.class) : U forall U
+      args = @args
+      if offset = offset_clause
+        args += [offset] of Interro::Value
+      end
+      if limit = limit_clause
+        args += [limit] of Interro::Value
+      end
+
       sql = String.build do |str|
         to_sql str do
           expression.to_s str
