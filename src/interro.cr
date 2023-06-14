@@ -243,14 +243,10 @@ module DB
 
         {% for key, value in properties %}
           {% if value[:nilable] %}
-            {% if value[:default] != nil %}
-              @{{key}} = %found{key} ? %var{key} : {{value[:default]}}
-            {% else %}
-              @{{key}} = %var{key}
-            {% end %}
+            @{{key}} = %var{key}
           {% elsif value[:default] != nil %}
-            if %var{key}.nil?
-              @{{key}} = {{value[:default]}}
+            if %found{key} && %var{key}
+              @{{key}} = %var{key}
             end
           {% else %}
             @{{key}} = %var{key}.as({{value[:type]}})
