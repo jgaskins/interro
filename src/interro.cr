@@ -110,7 +110,10 @@ module Interro
     end
 
     private def sqlize(values : String, where, to io) : Nil
-      io << values
+      start = where.try(&.values.size) || 0
+      io << values.gsub /\$\d+/ do |match|
+        "$#{match[1..].to_i + start}"
+      end
     end
   end
 
