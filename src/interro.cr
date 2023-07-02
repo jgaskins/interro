@@ -39,8 +39,9 @@ module Interro
     def initialize(@queryable : DB::Database | DB::Connection)
     end
 
-    def call(query : QueryBuilder(T), params) : T
+    def call(query : QueryBuilder(T), params, on_conflict : ConflictHandler? = nil) : T
       table_name = query.sql_table_name
+      args = params.values.to_a
       sql = String.build do |str|
         str << "INSERT INTO " << table_name << " ("
         params.each_with_index(1) do |key, value, index|
@@ -52,11 +53,66 @@ module Interro
           str << '$' << index
           str << ", " if index < params.size
         end
-        str << ") RETURNING "
+        str << ") "
+        if on_conflict
+          if (action = on_conflict.action) && (handler_params = action.params)
+            start = handler_params.size + 1
+            args.concat handler_params.values
+          end
+          on_conflict.to_sql str, start_at: start || 1
+        end
+        str << " RETURNING "
         query.select_columns str
       end
 
-      @queryable.query_one sql, *params.values, as: T
+      @queryable.query_one sql, args: args, as: T
+    end
+  end
+
+  struct ConflictHandler(UpdateHandler)
+    getter action : Update(UpdateHandler) | DoNothing
+
+    def initialize(@columns : String, do @action)
+    end
+
+    def to_sql(io, start_at initial_index : Int) : Nil
+      io << "ON CONFLICT (" << @columns << ") DO "
+      action.to_sql io, start_at: initial_index
+    end
+
+    module Action
+      abstract def to_sql(io, start_at initial_index) : Nil
+      abstract def params
+    end
+  end
+
+  struct Update(T)
+    include ConflictHandler::Action
+
+    getter params : T
+
+    def initialize(set @params)
+    end
+
+    def to_sql(io, start_at initial_index) : Nil
+      io << "UPDATE SET "
+      params.each_with_index 1 do |key, _, index|
+        io << key.to_s << " = $" << initial_index + index
+        if index < params.size
+          io << ", "
+        end
+      end
+    end
+  end
+
+  struct DoNothing
+    include ConflictHandler::Action
+
+    def params
+    end
+
+    def to_sql(io, start_at) : Nil
+      io << "NOTHING"
     end
   end
 

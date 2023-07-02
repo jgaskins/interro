@@ -352,9 +352,9 @@ module Interro
       !!connection(CONFIG.read_db).query_one? sql, args: @args, as: Int32
     end
 
-    protected def insert(**params) : T
+    protected def insert(values : NamedTuple, on_conflict : ConflictHandler)
       CreateOperation(T).new(connection(CONFIG.write_db))
-        .call(self, params)
+        .call(self, values, on_conflict: on_conflict)
     end
 
     protected def update(**params) : Array(T)
