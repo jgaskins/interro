@@ -9,6 +9,9 @@ module Interro
     setter up = ""
     setter down = ""
 
+    def initialize(@name : String, @added_at : Time)
+    end
+
     def initialize(@name : String, @added_at : Time, @up : String, @down : String)
     end
 
