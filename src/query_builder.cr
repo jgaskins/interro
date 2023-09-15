@@ -606,7 +606,7 @@ struct NamedTuple
     {% begin %}
       {
         {% for key, value in T %}
-          {{key}}: yield(self[:{{key}}]),
+          {{key.stringify}}: yield(self[:{{key.stringify}}]),
         {% end %}
       }
     {% end %}
