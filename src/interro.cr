@@ -57,7 +57,7 @@ module Interro
         if on_conflict
           if (action = on_conflict.action) && (handler_params = action.params)
             start = params.size
-            args.concat handler_params.values
+            args += handler_params.values.to_a
           end
           on_conflict.to_sql str, start_at: start || 1
         end
