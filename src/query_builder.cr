@@ -381,10 +381,6 @@ module Interro
           where: @where_clause
     end
 
-    def select_columns
-      String.build { |str| select_columns str }
-    end
-
     protected def write_db
       connection(CONFIG.write_db)
     end
@@ -406,7 +402,7 @@ module Interro
     #   end
     # end
     # ```
-    protected def select_columns(io) : Nil
+    protected def select_columns(io : IO) : Nil
       {% if T < Tuple %}
         {% for type, index in T.type_vars %}
           select_columns_for_model {{type}}, io
@@ -442,6 +438,57 @@ module Interro
             {% else %}
               io << model_table_mappings[model] << ".{{ivar.name}}"
             {% end %}
+
+          {% if index < ivars.size - 1 %}
+            io << ", "
+          {% end %}
+        {% end %}
+      {% end %}
+    end
+
+    protected def select_columns
+      String.build { |str| select_columns str }
+    end
+
+    protected def select_columns(relation_name : String? = nil)
+      relation_name ||= model_table_mappings[T]
+      String.build { |str| select_columns str, relation_name }
+    end
+
+    protected def select_columns(io : IO, relation_name = model_table_mappings[T]) : Nil
+      {% if T < Tuple %}
+        {% for type, index in T.type_vars %}
+          select_columns_for_model {{type}}, io, relation_name
+          {% if index < T.type_vars.size - 1 %}
+            io << ", "
+          {% end %}
+        {% end %}
+      {% else %}
+        select_columns_for_model T, io, relation_name
+      {% end %}
+    end
+
+    protected def select_columns_for_model(model : U.class, io : IO, relation_name = model_table_mappings[model]) : Nil forall U
+      {% begin %}
+        # Don't try to select columns the model has explicitly asked not to be
+        # populated.
+        {%
+          ivars = U.instance_vars.reject do |ivar|
+            ann = ivar.annotation(::Interro::Field) || ivar.annotation(::DB::Field)
+            ann && ann[:ignore]
+          end
+        %}
+
+        {% for ivar, index in ivars %}
+          {% ann = ivar.annotation(::Interro::Field) || ivar.annotation(::DB::Field) %}
+
+          {% if ann && (key = ann[:key]) %}
+            io << relation_name << ".{{key.id}}"
+          {% elsif ann && ann[:select] %}
+            io << {{ann[:select]}} << " AS {{(ann[:as] || ivar).id}}"
+          {% else %}
+            io << relation_name << ".{{ivar.name}}"
+          {% end %}
 
           {% if index < ivars.size - 1 %}
             io << ", "
