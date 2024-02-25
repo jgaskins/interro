@@ -41,7 +41,10 @@ module Interro
 
     def call(query : QueryBuilder(T), params, on_conflict : ConflictHandler? = nil) : T
       table_name = query.sql_table_name
-      args = params.values.to_a
+      args = params
+        .values
+        .map { |value| Interro::Any.new(value) }
+        .to_a
       sql = String.build do |str|
         str << "INSERT INTO " << table_name << " ("
         params.each_with_index(1) do |key, value, index|
@@ -57,7 +60,9 @@ module Interro
         if on_conflict
           if (action = on_conflict.action) && (handler_params = action.params)
             start = params.size
-            args += handler_params.values.to_a
+            handler_params.each_value do |value|
+              args << Interro::Any.new(value)
+            end
           end
           on_conflict.to_sql str, start_at: start || 1
         end
