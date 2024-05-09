@@ -138,6 +138,10 @@ struct UserQuery < Interro::QueryBuilder(User)
       .update(name: name)
   end
 
+  def change_name_and_email(user : User, name : String, email : String)
+    where(id: user.id, email: user.email).update(name: name, email: email)
+  end
+
   def with_id_in_kwargs(ids : Array(UUID))
     where id: ids.map { |id| Interro::Any.new(id) }
   end
@@ -498,8 +502,18 @@ describe Interro do
       users.size.should eq 1
 
       user = users.first
-      users.first.id.should eq created_users[1].id
-      users.first.name.should eq "Jamie"
+      user.id.should eq created_users[1].id
+      user.name.should eq "Jamie"
+    end
+
+    it "can update multiple fields" do
+      users = query.change_name_and_email(created_users[1], name: "Jamie", email: "jamie@example.com")
+      users.size.should eq 1
+
+      user = users.first
+      user.id.should eq created_users[1].id
+      user.name.should eq "Jamie"
+      user.email.should eq "jamie@example.com"
     end
 
     it "can update records with SQL expressions" do

@@ -161,10 +161,12 @@ module Interro
     end
 
     private def sqlize(values : NamedTuple, where, to io) : Nil
-      values.each_with_index((where.try(&.values.size) || 0) + 1) do |key, value, index|
+      where_size = (where.try(&.values.size) || 0)
+      last_index = values.size + where_size
+      values.each_with_index(where_size + 1) do |key, value, index|
         key.to_s io
         io << " = $" << index
-        if index <= values.size
+        if index < last_index
           io << ", "
         end
       end
