@@ -269,6 +269,7 @@ struct TaskQuery < Interro::QueryBuilder(Task)
       .inner_join("groups", on: "gt.group_id = groups.id")
       .inner_join("group_memberships", as: "gm", on: "gm.group_id = groups.id")
       .inner_join("users", on: "gm.user_id = users.id")
+      .where("users.id": user.id)
   end
 
   def create(name : String)
