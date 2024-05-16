@@ -398,6 +398,16 @@ module Interro
       connection(CONFIG.read_db)
     end
 
+    protected def transaction
+      Interro.transaction do |txn|
+        old_txn = @transaction
+        @transaction = txn
+        yield txn
+      ensure
+        @transaction = old_txn
+      end
+    end
+
     # How to determine which columns get selected in these queries, the default
     # is the instance variables for the model that are not ignored with a
     # `DB::Field` annotation with `ignore: true`. To change this, override this
