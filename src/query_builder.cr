@@ -1,11 +1,13 @@
 require "./join_clause"
 require "./query_record"
 require "./dynamic_query"
+require "./validations"
 
 module Interro
   abstract struct QueryBuilder(T)
     include Enumerable(T)
     include Iterable(T)
+    include Validations
 
     macro table(name, as table_alias = nil)
       def sql_table_name
