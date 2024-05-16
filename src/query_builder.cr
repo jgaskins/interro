@@ -71,6 +71,7 @@ module Interro
     protected property transaction : DB::Transaction? = nil
     protected property args : Array(Any) = Array(Any).new
     protected property? for_update = false
+    protected property? skip_locked = false
 
     def first
       first? || raise UnexpectedEmptyResultSet.new("#{self} returned no results")
@@ -339,6 +340,12 @@ module Interro
       new
     end
 
+    protected def skip_locked
+      new = dup
+      new.skip_locked = true
+      new
+    end
+
     def any? : Bool
       sql = String.build do |str|
         str << "SELECT 1 AS one"
@@ -564,6 +571,10 @@ module Interro
 
       if for_update?
         str << " FOR UPDATE"
+      end
+
+      if skip_locked?
+        str << " SKIP LOCKED"
       end
     end
 
