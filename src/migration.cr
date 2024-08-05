@@ -24,11 +24,11 @@ module Interro
     end
 
     def up(env = ENV)
-      execute up_sql(ENV)
+      execute up_sql(env)
     end
 
     def down(env = ENV)
-      execute down_sql(ENV)
+      execute down_sql(env)
     end
 
     def up_sql(env)
