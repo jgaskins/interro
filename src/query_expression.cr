@@ -2,12 +2,14 @@ require "./types" # for Interro::Value
 
 module Interro
   struct QueryExpression
-    getter lhs : String
-    getter comparator : String
-    getter rhs : String
+    getter expression : String
     getter values : Array(Any)
 
-    def initialize(@lhs, @comparator, @rhs, @values : Array(Any))
+    def self.new(lhs, comparator, rhs, values : Array(Any))
+      new("#{lhs} #{comparator} #{rhs}", values)
+    end
+
+    def initialize(@expression, @values)
     end
 
     def &(other : self) : self
@@ -21,11 +23,11 @@ module Interro
     end
 
     def to_sql(io)
-      io << @lhs << ' ' << @comparator << ' ' << @rhs
+      io << expression
     end
 
     def to_sql
-      String.build { |str| to_sql str }
+      expression
     end
   end
 end

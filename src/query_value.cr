@@ -10,10 +10,6 @@ module Interro
     end
 
     def ==(other : Value)
-      QueryExpression.new(value, "!=", "$#{index}", [Any.new(other)])
-    end
-
-    def ==(other : Value)
       QueryExpression.new(value, "=", "$#{index}", [Any.new(other)])
     end
 
@@ -60,5 +56,12 @@ module Interro
     def not_in?(array : Enumerable(Any))
       QueryExpression.new(value, "!=", "ALL($#{index})", [Any.new(array)])
     end
+
+    {% for operator in %w[& | ^] %}
+      # Bitwise operator
+      def {{operator.id}}(other : Value)
+        QueryExpression.new(value, {{operator}}, "$#{index}", [Any.new(other)])
+      end
+    {% end %}
   end
 end
