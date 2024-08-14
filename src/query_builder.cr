@@ -146,7 +146,6 @@ module Interro
       def self.new
         super
           {% for join in joins %}
-            # .inner_join("users", as: "author", on: "articles.author_id = author.id")
             .{{join}}
           {% end %}
       end
@@ -421,14 +420,6 @@ module Interro
         end
       end
       connection(CONFIG.read_db).scalar(sql, args: @args).as(U)
-      # SelectOperation(U).new.call(
-      #   select: expression,
-      #   from: sql_table_name,
-      #   where: where_clause,
-      #   order_by: order_by_clause,
-      #   limit: limit_clause,
-      #   args: args,
-      # )
     end
 
     protected def for_update
