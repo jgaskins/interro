@@ -1,9 +1,106 @@
+require "db"
 require "./join_clause"
 require "./query_record"
 require "./dynamic_query"
 require "./validations"
 
 module Interro
+  alias OrderBy = Hash(String, String)
+
+  # Defining `QueryBuilder` objects is a way to create composable queries. For
+  # example, if you have the following `Model` and `QueryBuilder`:
+  #
+  # ```
+  # struct User
+  #   include Interro::Model
+  #
+  #   getter id : UUID
+  #   getter name : String
+  #   getter email : String
+  #   getter team_id : UUID?
+  #   getter role : Role
+  #
+  #   enum Role
+  #     Member
+  #     TeamAdmin
+  #     SiteAdmin
+  #   end
+  # end
+  #
+  # struct UserQuery < Interro::QueryBuilder(User)
+  #   table "users"
+  #
+  #   def find(id : UUID)
+  #     where(id: id).first?
+  #   end
+  #
+  #   def on_team(team : Team)
+  #     where team_id: team.id
+  #   end
+  #
+  #   def with_role(role : User::Role)
+  #     # We pass `role.value` to the SQL query since it's stored in `INTEGER`
+  #     # column type.
+  #     where role: role.value
+  #   end
+  #
+  #   def sorted_by_name(direction : Interro::QueryBuilder::OrderByDirection = :asc)
+  #     order_by name: direction
+  #   end
+  # end
+  # ```
+  #
+  # Then you can find all team admins like this:
+  #
+  # ```
+  # users = UserQuery.new
+  #   .on_team(team)
+  #   .with_role(:team_admin)
+  #   .sorted_by_name
+  # ```
+  #
+  # You can insert records with the `insert` method:
+  #
+  # ```
+  # struct UserQuery < Interro::QueryBuilder(User)
+  #   # ...
+  #   def create(name : String, email : String, team : Team, role : User::Role)
+  #     # This generates the following SQL:
+  #     #   INSERT INTO users (name, email, team_id, role) VALUES ($1, $2, $3, $4)
+  #     # And it passes these args to the parameterized query:
+  #     #   [name, email, team.id, role.value]
+  #     insert(
+  #       name: name,
+  #       email: email,
+  #       team_id: team.id,
+  #       role: role.value,
+  #     )
+  #   end
+  # end
+  # ```
+  #
+  # You can also use `Interro::Validations::Result` objects to validate the
+  # inputs before saving them to the DB. Since `Interro::QueryBuilder` includes
+  # the `Interro::Validations` mixin, you can simply refer to it as `Result`.
+  #
+  # ```
+  # struct UserQuery < Interro::QueryBuilder(User)
+  #   # ...
+  #   def create(name : String, email : String, team : Team, role : User::Role)
+  #     Result(User).new
+  #       .validate_presence(name: name, email: email)
+  #       .validate_uniqueness("email") { where(email: email).any? }
+  #       .valid do
+  #         insert(
+  #           name: name,
+  #           email: email,
+  #           team_id: team.id,
+  #           role: role.value,
+  #         )
+  #       end
+  #   end
+  # end
+  # ```
   abstract struct QueryBuilder(T)
     include Enumerable(T)
     include Iterable(T)
