@@ -218,6 +218,23 @@ module Interro
       end
     end
 
+    def merge(other : QueryBuilder) : self
+      new = dup
+      new.join_clause += other.join_clause
+      if (my_where = new.where_clause) && (their_where = other.where_clause)
+        new.where_clause = my_where & their_where
+      else
+        new.where_clause ||= other.where_clause
+      end
+      new.args += other.args
+      if (my_order = new.order_by_clause) && (their_order = other.order_by_clause)
+        new.order_by_clause = my_order.merge(their_order)
+      else
+        new.order_by_clause ||= other.order_by_clause
+      end
+      new
+    end
+
     def to_json(json : JSON::Builder) : Nil
       json.array do
         each(&.to_json(json))
