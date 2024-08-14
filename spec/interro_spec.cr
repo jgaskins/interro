@@ -454,29 +454,39 @@ describe Interro do
       ids = created_users.map(&.id).first(3)
 
       it "can find a record with a value in an array" do
-        users = query
+        user_ids = query
           .with_id_in_block(ids)
+          .map(&.id)
+
+        created_users.first(3).each do |user|
+          user_ids.should contain user.id
+        end
+
+        user_ids.should_not contain created_users[3].id
+      end
+
+      it "can find a record without a value in an array" do
+        excluded_users = query
+          .without_id_in_block(ids)
           .to_a
 
-        users.should contain created_users[0]
-        users.should contain created_users[1]
-        users.should contain created_users[2]
-
-        users.should_not contain created_users[3]
+        excluded_users.should_not contain created_users[0]
+        excluded_users.should_not contain created_users[1]
+        excluded_users.should_not contain created_users[1]
+        excluded_users.should contain created_users[3]
       end
 
       it "can find records using keyword args" do
-        users = query
+        user_ids = query
           .with_id_in_kwargs(ids)
-
-        users = users
+          .map(&.id)
           .to_a
 
-        users.should contain created_users[0]
-        users.should contain created_users[1]
-        users.should contain created_users[2]
+        created_users.first(3).each do |user|
+          user_ids.should contain user.id
+        end
 
-        users.should_not contain created_users[3]
+        user_ids.should_not contain created_users[3].id
       end
 
       it "can find records using multiple keyword args" do
@@ -488,7 +498,7 @@ describe Interro do
       end
 
       it "can delete records using multiple keyword args" do
-        user = created_users[0]
+        user = created_users[-1]
 
         query.delete_with_id_and_name(id: user.id, name: user.name)
 
@@ -512,13 +522,16 @@ describe Interro do
     end
 
     it "can update multiple fields" do
-      users = query.change_name_and_email(created_users[1], name: "Jamie", email: "jamie@example.com")
+      new_name = "Jamie #{UUID.v7}"
+      new_email = "jamie#{UUID.v7}@example.com"
+
+      users = query.change_name_and_email(created_users[1], name: new_name, email: new_email)
       users.size.should eq 1
 
       user = users.first
       user.id.should eq created_users[1].id
-      user.name.should eq "Jamie"
-      user.email.should eq "jamie@example.com"
+      user.name.should eq new_name
+      user.email.should eq new_email
     end
 
     it "can update records with SQL expressions" do
@@ -561,8 +574,8 @@ describe Interro do
     end
 
     it "can run subqueries" do
-      included = create_user(email: "included")
-      excluded = create_user(email: "excluded")
+      included = create_user(email: "included-#{UUID.random}")
+      excluded = create_user(email: "excluded-#{UUID.random}")
       group = create_group
       another_group = create_group
       GroupMembershipQuery.new.create(user: included, group: group)
@@ -610,7 +623,6 @@ describe Interro do
       rescue ex
         raise ex if ex.message != "hell" # Make sure we're rescuing the right exception
       ensure
-
         if user && group
           UserQuery.new.with_id(user.id).first?.should eq nil
           GroupQuery.new.with_id(group.id).first?.should eq nil
