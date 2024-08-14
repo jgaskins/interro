@@ -15,9 +15,11 @@ module Interro
 
     # Output this JOIN clause to the given `IO` as SQL.
     def to_sql(io)
-      io << ' ' << @join_type << " JOIN " << other_table
+      io << ' ' << @join_type << " JOIN "
+      other_table.inspect io
       if relation
-        io << " AS " << relation
+        io << " AS "
+        relation.inspect io
       end
       io << " ON " << condition << ' '
     end

@@ -502,11 +502,14 @@ module Interro
           {% ann = ivar.annotation(::Interro::Field) || ivar.annotation(::DB::Field) %}
 
           {% if ann && (key = ann[:key]) %}
-            io << relation_name << ".{{key.id}}"
+            relation_name.inspect io
+            io << ".{{key.id}}"
           {% elsif ann && ann[:select] %}
-            io << {{ann[:select]}} << " AS {{(ann[:as] || ivar).id}}"
+            {{ann[:select]}}.to_s io
+            io << " AS {{(ann[:as] || ivar).id}}"
           {% else %}
-            io << relation_name << ".{{ivar.name}}"
+            relation_name.inspect io
+            io << %{."{{ivar.name}}"}
           {% end %}
 
           {% if index < ivars.size - 1 %}
