@@ -15,6 +15,10 @@ module Interro
     def to_s(io)
       value.to_s io
     end
+
+    def inspect(io)
+      value.inspect io
+    end
   end
 end
 
