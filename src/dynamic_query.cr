@@ -75,20 +75,24 @@ module Interro
       @delegate.args = @args
       @delegate.transaction = @transaction
       %new_query = @delegate.{{call}}
-      
-      {{@type.id}}.new(
-        @select_columns,
-        @distinct,
-        from: sql_table_name,
-        join: %new_query.join_clause,
-        where: %new_query.where_clause,
-        order_by: %new_query.order_by_clause,
-        offset: %new_query.offset_clause,
-        limit: %new_query.limit_clause,
-        args: %new_query.args,
-        transaction: %new_query.transaction,
-        delegate: @delegate,
-      )
+      case %new_query
+      when U
+        {{@type.id}}.new(
+          @select_columns,
+          @distinct,
+          from: sql_table_name,
+          join: %new_query.join_clause,
+          where: %new_query.where_clause,
+          order_by: %new_query.order_by_clause,
+          offset: %new_query.offset_clause,
+          limit: %new_query.limit_clause,
+          args: %new_query.args,
+          transaction: %new_query.transaction,
+          delegate: @delegate,
+        )
+      else
+        %new_query
+      end
     end
 
     protected def select_columns(io) : Nil
