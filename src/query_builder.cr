@@ -158,13 +158,21 @@ module Interro
       new.with_transaction(transaction)
     end
 
+    def self.new(transaction_owner : ::Interro::QueryBuilder)
+      if txn = transaction_owner.transaction
+        self[txn]
+      else
+        new
+      end
+    end
+
     protected property? distinct : Array(String)? = nil
     protected property join_clause = [] of JoinClause
     protected property where_clause : QueryExpression?
     protected property order_by_clause : OrderBy?
     protected property limit_clause : Int32? = nil
     protected property offset_clause : Int32? = nil
-    protected property transaction : DB::Transaction? = nil
+    protected property transaction : ::DB::Transaction? = nil
     protected property args : Array(Any) = Array(Any).new
     protected property? for_update = false
     protected property? skip_locked = false
