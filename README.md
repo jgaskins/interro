@@ -48,7 +48,7 @@ This creates a directory called `db/migrations/YYYY_MM_DD_HH_MM_SS_NANOSECONDS-C
 
 ```sql
 CREATE TABLE users(
-  id UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
   email TEXT UNIQUE NOT NULL,
   name TEXT NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),

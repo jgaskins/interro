@@ -165,7 +165,7 @@ module Interro
         Dir.mkdir_p dir
         File.write "#{dir}/up.sql", <<-SQL
         CREATE TABLE foo(
-          id UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+          id UUID PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
           -- other attributes can go here
           created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
           updated_at TIMESTAMPTZ NOT NULL DEFAULT now()

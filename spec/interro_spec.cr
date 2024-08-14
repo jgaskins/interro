@@ -76,7 +76,7 @@ end
 struct FakeUser
   include Interro::Model
 
-  @[Interro::Field(select: "uuid_generate_v4()", as: "id")]
+  @[Interro::Field(select: "gen_random_uuid()", as: "id")]
   getter id : UUID
 
   @[Interro::Field(select: "md5(random()::text)")]
