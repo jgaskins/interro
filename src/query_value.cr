@@ -52,5 +52,13 @@ module Interro
     def in?(array : Enumerable(Any))
       QueryExpression.new(value, "=", "ANY($#{index})", [Any.new(array)])
     end
+
+    def not_in?(array : Enumerable(Value))
+      not_in? array.map { |value| Any.new(value) }
+    end
+
+    def not_in?(array : Enumerable(Any))
+      QueryExpression.new(value, "!=", "ALL($#{index})", [Any.new(array)])
+    end
   end
 end

@@ -147,7 +147,11 @@ struct UserQuery < Interro::QueryBuilder(User)
   end
 
   def with_id_in_block(ids : Array(UUID))
-    where { |user| user.id.in? ids }
+    where &.id.in? ids
+  end
+
+  def without_id_in_block(ids : Array(UUID))
+    where &.id.not_in? ids
   end
 
   def with_id_and_name(id : UUID, name : String)
