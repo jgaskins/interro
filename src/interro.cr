@@ -33,8 +33,6 @@ module Interro
     end
   end
 
-  alias OrderBy = Hash(String, String)
-
   struct CreateOperation(T)
     def initialize(@queryable : DB::Database | DB::Connection)
     end
