@@ -134,7 +134,8 @@ struct UserQuery < Interro::QueryBuilder(User)
   end
 
   def change_name(user : User, name : String)
-    where(id: user.id)
+    self
+      .where(id: user.id)
       .update(name: name)
   end
 
