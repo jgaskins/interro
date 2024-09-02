@@ -241,7 +241,7 @@ module Interro
       end
     end
 
-    def to_sql
+    def to_sql : String
       String.build do |str|
         to_sql str
       end
