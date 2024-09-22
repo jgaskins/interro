@@ -2,8 +2,6 @@
 
 Postgres database querying with Crystal
 
-**Note:** This library is in early development as things get extracted from an existing app. Certain query interfaces may change over time until they are solidified.
-
 ## Installation
 
 1. Add the dependency to your `shard.yml`:
