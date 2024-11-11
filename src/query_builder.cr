@@ -401,6 +401,20 @@ module Interro
     enum OrderByDirection
       ASC
       DESC
+      ASC_NULLS_FIRST
+      ASC_NULLS_LAST
+      DESC_NULLS_FIRST
+      DESC_NULLS_LAST
+
+      def to_s
+        {% for member in @type.constants %}
+          if value == {{@type.constant(member)}}
+            return {{member.stringify.tr("_", " ")}}
+          end
+
+          value.to_s
+        {% end %}
+      end
     end
 
     protected def order_by(**params : String) : self

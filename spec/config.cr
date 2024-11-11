@@ -60,6 +60,21 @@ pg.exec <<-SQL
   )
 SQL
 
+pg.exec "DROP TABLE IF EXISTS notifications"
+pg.exec <<-SQL
+  CREATE TABLE notifications (
+    id UUID PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    body TEXT NOT NULL,
+    read_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  )
+SQL
+pg.exec "CREATE INDEX index_notifications_on_user_id ON notifications (user_id)"
+pg.exec "CREATE INDEX index_notifications_on_read_at ON notifications (read_at)"
+
 Interro.config do |c|
   c.db = pg
   # equivalent to:

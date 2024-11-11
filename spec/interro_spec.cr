@@ -83,6 +83,17 @@ struct FakeUser
   getter name : String
 end
 
+struct Notification
+  include Interro::Model
+
+  getter id : UUID
+  getter user_id : UUID
+  getter title : String
+  getter body : String
+  getter read_at : Time?
+  getter created_at : Time
+end
+
 struct UserQuery < Interro::QueryBuilder(User)
   table "users"
 
@@ -239,7 +250,7 @@ struct GroupQuery < Interro::QueryBuilder(Group)
   end
 
   def in_alphanumeric_order
-    order_by name: "ASC"
+    order_by name: :asc
   end
 
   def increment_member_count(group : Group)
@@ -292,6 +303,29 @@ end
 
 struct FakeUserQuery < Interro::QueryBuilder(FakeUser)
   table "generate_series(1, 1000)", as: "fake_users"
+end
+
+struct NotificationQuery < Interro::QueryBuilder(Notification)
+  table "notifications"
+
+  def find(id : UUID)
+    where(id: id).first?
+  end
+
+  def for(user : User)
+    where user_id: user.id
+  end
+
+  def in_reverse_chronological_order
+    order_by(
+      read_at: :desc_nulls_first,
+      created_at: :asc,
+    )
+  end
+
+  def create(user : User, title : String, body : String, read_at : Time? = nil)
+    insert user_id: user.id, title: title, body: body, read_at: read_at
+  end
 end
 
 describe Interro do
@@ -399,6 +433,32 @@ describe Interro do
 
       users.size.should eq 2
       users.should eq created_users[8..9].reverse
+    end
+
+    it "can return results with a complex ORDER BY clause" do
+      user = created_users[0]
+      notifications = NotificationQuery.new
+      read1 = notifications.create user,
+        title: "Read",
+        body: "This one's been read",
+        read_at: Time.utc
+      unread1 = notifications.create user,
+        title: "Unread",
+        body: "This one is unread"
+      unread2 = notifications.create user,
+        title: "Unread",
+        body: "This one is also unread"
+      read2 = notifications.create user,
+        title: "Read",
+        body: "This one is also read",
+        read_at: Time.utc
+
+      results = notifications
+        .for(user)
+        .in_reverse_chronological_order
+        .to_a
+
+      results.should eq [unread1, unread2, read2, read1]
     end
 
     it "can be used to return all values" do
