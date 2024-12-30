@@ -20,7 +20,7 @@ module Interro
       measurement = Benchmark.measure do
         CONFIG.write_db.using_connection(&.as(PG::Connection).exec_all sql, *args, **kwargs)
       end
-      QueryLog.info { "-- #{measurement.real.humanize}s (#{measurement.total.humanize}s CPU)" }
+      QueryLog.info { "-- #{measurement.real.humanize}s" }
     end
 
     def up(env = ENV)
