@@ -3,7 +3,7 @@ require "benchmark"
 
 module Interro
   class Migration
-    QueryLog = ::Log.for("sql", level: :info)
+    QueryLog = ::Log.for("sql")
 
     getter name, added_at
     setter up = ""
