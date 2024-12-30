@@ -4,6 +4,7 @@ require "benchmark"
 module Interro
   class Migration
     QueryLog = ::Log.for("sql")
+    ENV_MATCH = /\$(\w+)/
 
     getter name, added_at
     setter up = ""
@@ -32,11 +33,11 @@ module Interro
     end
 
     def up_sql(env)
-      @up.gsub(/\$(\w+)/) { env[$1] }
+      @up.gsub(ENV_MATCH) { |match| env.fetch($1, match) }
     end
 
     def down_sql(env)
-      @down.gsub(/\$(\w+)/) { env[$1] }
+      @down.gsub(ENV_MATCH) { |match| env.fetch($1, match) }
     end
   end
 end

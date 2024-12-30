@@ -75,21 +75,37 @@ module Interro
       end
     end
 
-    it "interpolates ENV vars" do
-      env = {
-        "UP_VAR"   => "69",
-        "DOWN_VAR" => "420",
-      }
+    describe "ENV interpolation" do
+      it "interpolates ENV vars" do
+        env = {
+          "UP_VAR"   => "69",
+          "DOWN_VAR" => "420",
+        }
 
-      migration = Migration.new(
-        name: "Yep",
-        added_at: Time.utc,
-        up: "SELECT $UP_VAR",
-        down: "SELECT $DOWN_VAR",
-      )
+        migration = Migration.new(
+          name: "Yep",
+          added_at: Time.utc,
+          up: "SELECT $UP_VAR",
+          down: "SELECT $DOWN_VAR",
+        )
 
-      migration.up_sql(env).should eq "SELECT 69"
-      migration.down_sql(env).should eq "SELECT 420"
+        migration.up_sql(env).should eq "SELECT 69"
+        migration.down_sql(env).should eq "SELECT 420"
+      end
+
+      it "does not try to interpolate missing ENV vars" do
+        env = {} of String => String
+
+        migration = Migration.new(
+          name: "Yep",
+          added_at: Time.utc,
+          up: "SELECT $UP_VAR",
+          down: "SELECT $DOWN_VAR",
+        )
+
+        migration.up_sql(env).should eq "SELECT $UP_VAR"
+        migration.down_sql(env).should eq "SELECT $DOWN_VAR"
+      end
     end
   end
 end
