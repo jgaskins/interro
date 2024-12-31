@@ -55,7 +55,7 @@ module Interro
 
       OptionParser.parse args.dup do |parser|
         selected_migration = nil
-        parser.on "-n NAME", "--name=NAME", "Specify a migration class name to perform the operation on (not the filename)" do |name|
+        parser.on "-n NAME", "--name=NAME", "Specify a migration name to perform the operation on (not the filename)" do |name|
           selected_migration = ALL_MIGRATIONS.find { |m| m.name == name }
         end
 
