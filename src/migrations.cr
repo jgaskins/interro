@@ -194,7 +194,7 @@ module Interro
 end
 
 require "dotenv"
-Dotenv.load rescue nil # Don't make the file mandatory if the env vars are already loaded
+Dotenv.load?
 
 Interro.config do |c|
   c.db = DB.open ENV["DATABASE_URL"]
