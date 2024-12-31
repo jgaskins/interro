@@ -6,7 +6,7 @@ module Interro
                 String |
                 Bytes |
                 Int8 | Int16 | Int32 | Int64 |
-                Float64 |
+                Float32 | Float64 |
                 Time |
                 UUID |
                 Array(Any)
