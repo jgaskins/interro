@@ -67,6 +67,27 @@ module ValidationsSpec
         result(&.validate_size("my_list", [1, 2, 3], 3..3, "numbers")).should eq true
       end
 
+      it "validates size with infinite top-end" do
+        result(&.validate_size("my_string", "123", 3.., "characters")).should eq true
+        result(&.validate_size("my_string", "123", 2.., "characters")).should eq true
+      end
+
+      it "validates size with infinite bottom end" do
+        string = "1234567890"
+        10.times do |size|
+          result(&.validate_size("my_string", string, size.., "characters")).should eq true
+        end
+      end
+
+      it "validates size with exclusive top end" do
+        result(&.validate_size("my_string", "1234567890", 1...11, "characters")).should eq true
+
+        result(&.validate_size("my_string", "1234567890", 1...10, "characters"))
+          .as(Failure)
+          .errors
+          .should eq ["my_string must be 1-9 characters"]
+      end
+
       it "returns failure when the size of the value is outside the range" do
         result = result(&.validate_size("my_string", "123", 1..2, "characters")).as(Failure)
 
