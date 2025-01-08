@@ -100,11 +100,9 @@ module Interro
       #   .validate_format("email", email, /\w@\w/, failure_message: "must be a valid email address")
       # ```
       def validate_format(name, value : String, format : Regex, *, failure_message : String = "is in the wrong format") : self
-        unless value =~ format
-          errors << Error.new(name.to_s, failure_message)
+        validate name.to_s, failure_message do
+          value =~ format
         end
-
-        self
       end
 
       # Validate that `value` is of the expected `size` range. Value can be any object that responds to `#size`.
@@ -114,11 +112,9 @@ module Interro
       #   .validate_size("username", username, 2..64, "characters")
       # ```
       def validate_size(name : String, value, size : Range, unit : String, *, failure_message = default_validate_size_failure_message(size, unit)) : self
-        unless size.includes? value.size
-          errors << Error.new(name.to_s, failure_message)
+        validate name, failure_message do
+          size.includes? value.size
         end
-
-        self
       end
 
       private def default_validate_size_failure_message(size : Range, unit : String)
@@ -159,11 +155,9 @@ module Interro
       #   .validate_uniqueness("email") { where(email: email).any? }
       # ```
       def validate_uniqueness(attribute) : self
-        if yield
-          errors << Error.new(attribute, "has already been taken")
+        validate attribute, "has already been taken" do
+          !yield
         end
-
-        self
       end
 
       # Validate that the given attribute is unique by executing a block that
@@ -174,11 +168,9 @@ module Interro
       #   .validate_uniqueness(message: "That email has already been taken") { where(email: email).any? }
       # ```
       def validate_uniqueness(*, message : String) : self
-        if yield
-          errors << Error.new("", message)
+        validate "", message do
+          !yield
         end
-
-        self
       end
 
       # Validate a block returns truthy, failing validation with the given `message` if it returns falsy.
