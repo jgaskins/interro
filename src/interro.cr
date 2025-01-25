@@ -123,10 +123,14 @@ module Interro
     def initialize(@queryable : DB::Database | DB::Connection)
     end
 
-    def call(query, set values : NamedTuple, where : QueryExpression? = nil)
-      args = values.values.to_a
-      if where
-        args = where.values + args
+    def call(query, set values : NamedTuple, where : QueryExpression? = nil) forall U
+      if values.is_a? NamedTuple()
+        args = [] of String
+      else
+        args = values.values.to_a
+        if where
+          args = where.values + args
+        end
       end
 
       @queryable.query_all to_sql(query, where, values), args: args, as: T
