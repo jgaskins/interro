@@ -16,7 +16,7 @@ SQL
 pg.exec "CREATE INDEX IF NOT EXISTS index_users_on_email ON users (email)"
 pg.exec "CREATE INDEX IF NOT EXISTS index_users_on_created_at ON users (created_at)"
 
-pg.exec "DROP TABLE IF EXISTS groups"
+pg.exec "DROP TABLE IF EXISTS groups CASCADE"
 pg.exec <<-SQL
   CREATE TABLE groups (
     id UUID PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
