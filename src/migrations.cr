@@ -2,6 +2,7 @@ require "option_parser"
 
 require "./interro"
 require "./migration"
+require "./schema_generator"
 
 module Interro
   module Migrations
@@ -79,6 +80,8 @@ module Interro
       end
 
       operation.call
+
+      SchemaGenerator.new.save_schema
     end
 
     def self.run(migration : Nil)
