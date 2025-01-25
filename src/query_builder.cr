@@ -519,22 +519,30 @@ module Interro
       insert values: values, on_conflict: nil
     end
 
+    protected def insert(values : NamedTuple) : T
+      insert values: values, on_conflict: nil
+    end
+
     protected def insert(values : NamedTuple, on_conflict : ConflictHandler?) : T
       CreateOperation(T).new(connection(CONFIG.write_db))
         .call(self, values, on_conflict: on_conflict)
     end
 
     protected def update(**params) : Array(T)
-      UpdateOperation(T).new(connection(CONFIG.write_db))
-        .call self,
-          set: params,
-          where: @where_clause
+      update params
     end
 
     protected def update(*expressions) : Array(T)
       UpdateOperation(T).new(connection(CONFIG.write_db))
         .call self,
           set: expressions.join(", "),
+          where: @where_clause
+    end
+
+    protected def update(params : NamedTuple) : Array(T)
+      UpdateOperation(T).new(connection(CONFIG.write_db))
+        .call self,
+          set: params,
           where: @where_clause
     end
 
