@@ -12,6 +12,14 @@ module Interro
                 Array(Any)
 
   record Any, value : Value do
+    def self.array(values : Array)
+      new values.map { |value| Any.new(value) }
+    end
+
+    def self.new(any : self)
+      any
+    end
+
     def to_s(io)
       value.to_s io
     end

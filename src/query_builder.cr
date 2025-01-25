@@ -283,7 +283,7 @@ module Interro
       new
     end
 
-    protected def where(**params) : self
+    protected def where(**params : Value | Any | Array) : self
       where_clause = nil
       args = Array(Any).new(initial_capacity: params.size)
       params.each_with_index(@args.size + 1) do |key, value, index|
@@ -291,8 +291,9 @@ module Interro
         when Nil
           new_clause = QueryExpression.new(key.to_s, "IS", "NULL", [] of Any)
         when Array
-          args << Any.new(value)
-          new_clause = QueryExpression.new(key.to_s, "=", "ANY($#{index})", [Any.new(value)])
+          any = Any.array(value)
+          args << any
+          new_clause = QueryExpression.new(key.to_s, "=", "ANY($#{index})", [any])
         else
           args << Any.new(value)
           new_clause = QueryExpression.new(key.to_s, "=", "$#{index}", [Any.new(value)])
