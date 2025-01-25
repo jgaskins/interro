@@ -154,7 +154,7 @@ module Interro
       # Result(User).new
       #   .validate_uniqueness("email") { where(email: email).any? }
       # ```
-      def validate_uniqueness(attribute) : self
+      def validate_uniqueness(attribute, &) : self
         validate attribute, "has already been taken" do
           !yield
         end
@@ -167,7 +167,7 @@ module Interro
       # Result(User).new
       #   .validate_uniqueness(message: "That email has already been taken") { where(email: email).any? }
       # ```
-      def validate_uniqueness(*, message : String) : self
+      def validate_uniqueness(*, message : String, &) : self
         validate "", message do
           !yield
         end
@@ -197,7 +197,7 @@ module Interro
       #   end
       # end
       # ```
-      def validate(message : String)
+      def validate(message : String, &)
         validate "", message do
           yield
         end
@@ -227,7 +227,7 @@ module Interro
       #   end
       # end
       # ```
-      def validate(attribute : String, message : String)
+      def validate(attribute : String, message : String, &)
         unless yield
           errors << Error.new(attribute, message)
         end
@@ -243,7 +243,7 @@ module Interro
 
       # Execute the block given if all validations have passed, otherwise return
       # a `Failure` containing all of the validation errors.
-      def valid : T | Failure
+      def valid(&) : T | Failure
         if errors.empty?
           yield
         else

@@ -51,7 +51,7 @@ module Interro
     end
 
     def self.call(args : Array(String))
-      operation = ->{}
+      operation = -> { }
 
       OptionParser.parse args.dup do |parser|
         selected_migration = nil
@@ -60,21 +60,21 @@ module Interro
         end
 
         parser.on "rollback", "Rollback the specified migration (default: latest)" do
-          operation = ->{ rollback selected_migration }
+          operation = -> { rollback selected_migration }
         end
 
         parser.on "redo", "Redo (rollback+run) the specified migration (default: latest)" do
-          operation = ->{ redo selected_migration }
+          operation = -> { redo selected_migration }
         end
 
         parser.on "run", "Run the specified migration (default: all incomplete)" do
-          operation = ->{ run selected_migration }
+          operation = -> { run selected_migration }
         end
 
         parser.on "g", "Generate a migration with the specified name" do
           name = ""
           parser.unknown_args { |args| name = args.first }
-          operation = ->{ SQLGenerator.call name }
+          operation = -> { SQLGenerator.call name }
         end
       end
 

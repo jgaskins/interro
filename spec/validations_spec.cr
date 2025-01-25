@@ -159,7 +159,7 @@ module ValidationsSpec
     end
   end
 
-  def result
+  def result(&)
     result = Interro::Validations::Result(Bool).new
     yield(result).valid { true }
   end

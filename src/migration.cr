@@ -3,7 +3,7 @@ require "benchmark"
 
 module Interro
   class Migration
-    QueryLog = ::Log.for("sql")
+    QueryLog  = ::Log.for("sql")
     ENV_MATCH = /\$(\w+)/
 
     getter name, added_at

@@ -49,7 +49,7 @@ module Interro
       limit @limit_clause,
       @args,
       @transaction,
-      @delegate : U
+      @delegate : U,
     )
     end
 

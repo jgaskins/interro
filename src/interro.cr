@@ -333,7 +333,7 @@ end
 class PG::ResultSet
   # We have to monkeypatch this to support the modification in DB::Serializable
   # above
-  def each_column_from_last
+  def each_column_from_last(&)
     (@column_index...column_count).each do |i|
       yield column_name(i)
     end

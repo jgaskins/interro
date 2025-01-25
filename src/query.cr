@@ -59,7 +59,7 @@ module Interro
       @read_db.scalar query, *args
     end
 
-    private def read_each(query, *args, as type : T) : Nil forall T
+    private def read_each(query, *args, as type : T, &) : Nil forall T
       result_count = 0
       @read_db.query_each(query, *args) do |rs|
         result_count += 1

@@ -560,7 +560,7 @@ module Interro
       connection(CONFIG.read_db)
     end
 
-    protected def transaction
+    protected def transaction(&)
       Interro.transaction do |txn|
         old_txn = @transaction
         @transaction = txn
@@ -797,7 +797,7 @@ module Interro
         @lhs : QueryBuilder(T),
         @combinator : String,
         @rhs : QueryBuilder(T),
-        @connection : ::DB::Database | ::DB::Connection
+        @connection : ::DB::Database | ::DB::Connection,
       )
       end
 
@@ -841,7 +841,7 @@ module Interro
 end
 
 struct NamedTuple
-  def transform_values
+  def transform_values(&)
     {% begin %}
       {
         {% for key, value in T %}

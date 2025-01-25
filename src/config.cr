@@ -5,7 +5,7 @@ module Interro
   CONFIG = Config.new
   LOG    = ::Log.for("interro")
 
-  def self.config
+  def self.config(&)
     yield CONFIG
     CONFIG
   end
