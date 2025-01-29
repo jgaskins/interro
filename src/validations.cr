@@ -48,7 +48,7 @@ module Interro
     # end
     # ```
     struct Result(T)
-      protected getter errors : Array(Error) { [] of Error }
+      protected property errors : Array(Error) { [] of Error }
 
       # Validate whether all of the `values` are present by calling `.presence`
       # on them.
@@ -239,6 +239,7 @@ module Interro
       def |(other : Result)
         result = self.class.new
         result.errors = errors | other.errors
+        result
       end
 
       # Execute the block given if all validations have passed, otherwise return

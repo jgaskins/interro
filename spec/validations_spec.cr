@@ -157,6 +157,18 @@ module ValidationsSpec
         result.errors.should eq ["D'oh!"]
       end
     end
+
+    describe "Result#|" do
+      it "merges the errors" do
+        missing_title = Result(String).new.validate_presence(title: "")
+        missing_body = Result(String).new.validate_presence(body: "")
+
+        (missing_title | missing_body).errors.should eq [
+          "title must not be blank",
+          "body must not be blank",
+        ]
+      end
+    end
   end
 
   def result(&)
