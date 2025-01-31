@@ -540,7 +540,6 @@ module Interro
     end
 
     protected def update(set clause : String, args : Array)
-      pp args: @args
       clause = clause.gsub(/\$(\d+)\b/) do |match|
         "$#{$1.to_i + @args.size - 1}"
       end
