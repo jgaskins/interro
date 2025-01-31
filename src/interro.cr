@@ -138,7 +138,7 @@ module Interro
 
     def call(query, set values : String, args : Array(Value) = [] of Value, where : QueryExpression? = nil)
       if where
-        args += where.values
+        args = where.values + args
       end
 
       @queryable.query_all to_sql(query, where, values), args: args, as: T

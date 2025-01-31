@@ -539,6 +539,19 @@ module Interro
           where: @where_clause
     end
 
+    protected def update(set clause : String, args : Array)
+      pp args: @args
+      clause = clause.gsub(/\$(\d+)\b/) do |match|
+        "$#{$1.to_i + @args.size - 1}"
+      end
+
+      UpdateOperation(T).new(connection(CONFIG.write_db))
+        .call self,
+          set: clause,
+          args: args,
+          where: @where_clause
+    end
+
     protected def update(params : NamedTuple) : Array(T)
       UpdateOperation(T).new(connection(CONFIG.write_db))
         .call self,
