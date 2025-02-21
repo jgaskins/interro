@@ -1,0 +1,9 @@
+#!/bin/sh
+
+echo 'First run of interro-migration, compiling...'
+(
+  cd lib/interro
+  crystal build src/migrations.cr -o ../../bin/interro-migration
+)
+
+bin/interro-migration $*

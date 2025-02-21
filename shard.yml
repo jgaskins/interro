@@ -18,9 +18,6 @@ dependencies:
     github: jgaskins/cr-dotenv
     version: "~> 0.7.1"
 
-scripts:
-  postinstall: shards build interro-migration
-
 executables:
   - interro-migration
 
