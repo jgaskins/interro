@@ -291,7 +291,7 @@ module Interro
         when Nil
           new_clause = QueryExpression.new(key.to_s, "IS", "NULL", [] of Any)
         when Array
-          any = Any.array(value)
+          any = Any.new(value)
           args << any
           new_clause = QueryExpression.new(key.to_s, "=", "ANY($#{index})", [any])
         else
