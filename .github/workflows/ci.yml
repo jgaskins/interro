@@ -1,0 +1,65 @@
+name: Crystal Specs with PostgreSQL
+
+on:
+  push: {}
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        crystal:
+        - 1.13.3
+        - 1.14.1
+        - latest
+        - nightly
+        postgres:
+        - "14"
+        - "15"
+        - "16"
+        - "17"
+
+    # Service containers to run with the job
+    services:
+      # PostgreSQL service
+      postgres:
+        image: postgres:${{ matrix.postgres }}
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: crystal_test
+        ports:
+        # Map port 5432 on service container to the host
+        - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    # Check out repository code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Install Crystal
+    - name: Setup Crystal
+      uses: crystal-lang/install-crystal@v1
+      with:
+        crystal: ${{ matrix.crystal }}
+
+
+    # Install Crystal dependencies
+    - name: Install dependencies
+      run: shards install
+
+    # Run Crystal specs
+    - name: Run tests
+      run: crystal spec
+      env:
+        # Environment variables to connect to PostgreSQL
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/crystal_test
