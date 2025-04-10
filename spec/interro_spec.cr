@@ -654,6 +654,17 @@ describe Interro do
       UserQuery.new.search("search").should contain user
     end
 
+    it "can check whether any records match" do
+      user = create_user
+      matching = UserQuery.new.with_id(user.id)
+      empty = UserQuery.new.with_id(UUID.v7)
+
+      matching.any?.should eq true
+      matching.none?.should eq false
+      empty.any?.should eq false
+      empty.none?.should eq true
+    end
+
     describe "transactions" do
       it "commits without error" do
         user = nil

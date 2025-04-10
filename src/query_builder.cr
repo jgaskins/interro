@@ -501,6 +501,10 @@ module Interro
     end
 
     def any? : Bool
+      !none?
+    end
+
+    def none? : Bool
       sql = String.build do |str|
         str << "SELECT 1 AS one"
         str << " FROM " << sql_table_name
@@ -512,7 +516,7 @@ module Interro
         str << " LIMIT 1"
       end
 
-      !!connection(CONFIG.read_db).query_one? sql, args: @args, as: Int32
+      !connection(CONFIG.read_db).query_one? sql, args: @args, as: Int32
     end
 
     protected def insert(**values) : T
