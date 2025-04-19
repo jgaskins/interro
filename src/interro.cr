@@ -10,7 +10,7 @@ require "./model"
 
 #
 module Interro
-  VERSION = "0.3.2"
+  VERSION = "0.3.3"
 
   class Error < ::Exception
   end
@@ -33,6 +33,7 @@ module Interro
     end
   end
 
+  # :nodoc:
   struct CreateOperation(T)
     def initialize(@queryable : DB::Database | DB::Connection)
     end
@@ -119,6 +120,7 @@ module Interro
     end
   end
 
+  # :nodoc:
   struct UpdateOperation(T)
     def initialize(@queryable : DB::Database | DB::Connection)
     end
@@ -182,6 +184,7 @@ module Interro
     end
   end
 
+  # :nodoc:
   struct DeleteOperation
     def initialize(@queryable : DB::Database | DB::Connection)
     end

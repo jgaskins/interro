@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Crystal Docs 1.10.1">
+<meta name="crystal_docs.project_version" content="0.3.3">
+<meta name="crystal_docs.project_name" content="interro">
+
+
+
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../js/doc.js"></script>
+
+  <meta name="repository-name" content="interro">
+  <title>Interro::Migrations - interro 0.3.3</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "../";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill="currentColor" fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<input type="checkbox" id="sidebar-btn">
+<label for="sidebar-btn" id="sidebar-btn-label">
+  <svg class="open" xmlns="http://www.w3.org/2000/svg" height="2em" width="2em" viewBox="0 0 512 512"><title>Open Sidebar</title><path fill="currentColor" d="M80 96v64h352V96H80zm0 112v64h352v-64H80zm0 112v64h352v-64H80z"></path></svg>
+  <svg class="close" xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 512 512"><title>Close Sidebar</title><path fill="currentColor" d="m118.6 73.4-45.2 45.2L210.7 256 73.4 393.4l45.2 45.2L256 301.3l137.4 137.3 45.2-45.2L301.3 256l137.3-137.4-45.2-45.2L256 210.7Z"></path></svg>
+</label>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="../index.html">
+          interro
+        </a>
+      </h1>
+
+      <span class="project-version">
+        0.3.3
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="interro/Interro" data-name="interro">
+      <a href="../Interro.html">Interro</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/Any" data-name="interro::any">
+      <a href="../Interro/Any.html">Any</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Config" data-name="interro::config">
+      <a href="../Interro/Config.html">Config</a>
+      
+    </li>
+  
+  <li class="parent " data-id="interro/Interro/ConflictHandler" data-name="interro::conflicthandler(updatehandler)">
+      <a href="../Interro/ConflictHandler.html">ConflictHandler</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/ConflictHandler/Action" data-name="interro::conflicthandler::action">
+      <a href="../Interro/ConflictHandler/Action.html">Action</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/DoNothing" data-name="interro::donothing">
+      <a href="../Interro/DoNothing.html">DoNothing</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/DynamicQuery" data-name="interro::dynamicquery(t, u)">
+      <a href="../Interro/DynamicQuery.html">DynamicQuery</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Error" data-name="interro::error">
+      <a href="../Interro/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Exception" data-name="interro::exception">
+      <a href="../Interro/Exception.html">Exception</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Field" data-name="interro::field">
+      <a href="../Interro/Field.html">Field</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/JoinClause" data-name="interro::joinclause">
+      <a href="../Interro/JoinClause.html">JoinClause</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Migration" data-name="interro::migration">
+      <a href="../Interro/Migration.html">Migration</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="interro/Interro/Migrations" data-name="interro::migrations">
+      <a href="../Interro/Migrations.html">Migrations</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/Migrations/SchemaMigration" data-name="interro::migrations::schemamigration">
+      <a href="../Interro/Migrations/SchemaMigration.html">SchemaMigration</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Migrations/SQLGenerator" data-name="interro::migrations::sqlgenerator">
+      <a href="../Interro/Migrations/SQLGenerator.html">SQLGenerator</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="interro/Interro/Model" data-name="interro::model">
+      <a href="../Interro/Model.html">Model</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/Model/NonStrict" data-name="interro::model::nonstrict">
+      <a href="../Interro/Model/NonStrict.html">NonStrict</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/NotFound" data-name="interro::notfound">
+      <a href="../Interro/NotFound.html">NotFound</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/OrderBy" data-name="interro::orderby">
+      <a href="../Interro/OrderBy.html">OrderBy</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Query" data-name="interro::query">
+      <a href="../Interro/Query.html">Query</a>
+      
+    </li>
+  
+  <li class="parent " data-id="interro/Interro/QueryBuilder" data-name="interro::querybuilder(t)">
+      <a href="../Interro/QueryBuilder.html">QueryBuilder</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/QueryBuilder/CompoundQuery" data-name="interro::querybuilder::compoundquery(t)">
+      <a href="../Interro/QueryBuilder/CompoundQuery.html">CompoundQuery</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryBuilder/InnerJoin" data-name="interro::querybuilder::innerjoin">
+      <a href="../Interro/QueryBuilder/InnerJoin.html">InnerJoin</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryBuilder/OrderByDirection" data-name="interro::querybuilder::orderbydirection">
+      <a href="../Interro/QueryBuilder/OrderByDirection.html">OrderByDirection</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryBuilder/ResultSetIterator" data-name="interro::querybuilder::resultsetiterator(t)">
+      <a href="../Interro/QueryBuilder/ResultSetIterator.html">ResultSetIterator</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryExpression" data-name="interro::queryexpression">
+      <a href="../Interro/QueryExpression.html">QueryExpression</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryRecord" data-name="interro::queryrecord">
+      <a href="../Interro/QueryRecord.html">QueryRecord</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryValue" data-name="interro::queryvalue">
+      <a href="../Interro/QueryValue.html">QueryValue</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/UnexpectedEmptyResultSet" data-name="interro::unexpectedemptyresultset">
+      <a href="../Interro/UnexpectedEmptyResultSet.html">UnexpectedEmptyResultSet</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Update" data-name="interro::update(t)">
+      <a href="../Interro/Update.html">Update</a>
+      
+    </li>
+  
+  <li class="parent " data-id="interro/Interro/Validations" data-name="interro::validations">
+      <a href="../Interro/Validations.html">Validations</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/Validations/Error" data-name="interro::validations::error">
+      <a href="../Interro/Validations/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Validations/Failure" data-name="interro::validations::failure">
+      <a href="../Interro/Validations/Failure.html">Failure</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Validations/Result" data-name="interro::validations::result(t)">
+      <a href="../Interro/Validations/Result.html">Result</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Value" data-name="interro::value">
+      <a href="../Interro/Value.html">Value</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/NamedTuple" data-name="namedtuple(**t)">
+      <a href="../NamedTuple.html">NamedTuple</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/PQ" data-name="pq">
+      <a href="../PQ.html">PQ</a>
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">
+    module
+  </span> Interro::<wbr>Migrations
+
+</h1>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/migrations.cr#L7" target="_blank">
+        migrations.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+  
+    <h2>
+      <a id="constant-summary" class="anchor" href="#constant-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+      Constant Summary
+    </h2>
+  
+  <dl>
+    
+      <dt class="entry-const" id="ALL_MIGRATIONS">
+        <strong>ALL_MIGRATIONS</strong> = <code><span class="t">Dir</span>[<span class="s">&quot;db/migrations/**/*.sql&quot;</span>].map <span class="k">do</span> <span class="o">|</span>path<span class="o">|</span>
+  filename <span class="o">=</span> <span class="t">File</span>.basename(<span class="t">File</span>.dirname(path))
+  timestamp, name <span class="o">=</span> filename.split(<span class="s">&quot;-&quot;</span>)
+  time <span class="o">=</span> <span class="t">Time</span>.parse_utc(timestamp, <span class="s">&quot;%Y_%m_%d_%H_%M_%S_%9N&quot;</span>)
+  migration <span class="o">=</span> (  __temp_193 <span class="o">=</span> name
+  __temp_194 <span class="o">=</span> <span class="t">NAME_MAP</span>
+  __temp_194[__temp_193]? <span class="o">||</span> (__temp_194[__temp_193] <span class="o">=</span> <span class="t">Migration</span>.new(name, time))
+)
+
+  <span class="k">if</span> path.ends_with?(<span class="s">&quot;up.sql&quot;</span>)
+    migration.up <span class="o">=</span> <span class="t">File</span>.read(path)
+  <span class="k">else</span>
+    <span class="k">if</span> path.ends_with?(<span class="s">&quot;down.sql&quot;</span>)
+      migration.down <span class="o">=</span> <span class="t">File</span>.read(path)
+    <span class="k">else</span>
+      raise(<span class="s">&quot;Migration files must be named up.sql or down.sql&quot;</span>)
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="t">SchemaMigration</span>.new(name, time)
+<span class="k">end</span>.uniq</code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="MigrationLog">
+        <strong>MigrationLog</strong> = <code><span class="t">::</span><span class="t">Log</span>.<span class="k">for</span>(<span class="s">&quot;migrations&quot;</span>, level: <span class="n">:info</span>)</code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="NAME_MAP">
+        <strong>NAME_MAP</strong> = <code>{} <span class="k">of</span> <span class="t">String</span> <span class="o">=&gt;</span> <span class="t">Migration</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="TIME_FORMAT">
+        <strong>TIME_FORMAT</strong> = <code><span class="t">Time</span><span class="t">::</span><span class="t">Format</span><span class="t">::</span><span class="t">ISO_8601_DATE_TIME</span></code>
+      </dt>
+      
+    
+  </dl>
+
+
+
+  
+
+  
+  <h2>
+    <a id="class-method-summary" class="anchor" href="#class-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#call%28args%3AArray%28String%29%29-class-method" class="signature"><strong>.call</strong>(args : Array(String))</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#completed_migrations-class-method" class="signature"><strong>.completed_migrations</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#ensure_migration_table_exists-class-method" class="signature"><strong>.ensure_migration_table_exists</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#redo%28migration%3ANil%29-class-method" class="signature"><strong>.redo</strong>(migration : Nil)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#redo%28migration%3ASchemaMigration%29-class-method" class="signature"><strong>.redo</strong>(migration : SchemaMigration)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#rollback%28migration%3ANil%29-class-method" class="signature"><strong>.rollback</strong>(migration : Nil)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#rollback%28migration%3ASchemaMigration%29-class-method" class="signature"><strong>.rollback</strong>(migration : SchemaMigration)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#run%28migration%3ANil%29-class-method" class="signature"><strong>.run</strong>(migration : Nil)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#run%28migration%3ASchemaMigration%29-class-method" class="signature"><strong>.run</strong>(migration : SchemaMigration)</a>
+        
+      </li>
+    
+  </ul>
+
+
+  
+
+  
+
+
+  <div class="methods-inherited">
+    
+  </div>
+
+  
+
+  
+  <h2>
+    <a id="class-method-detail" class="anchor" href="#class-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="call(args:Array(String))-class-method">
+      <div class="signature">
+        
+        def self.<strong>call</strong>(args : Array(String))
+
+        <a class="method-permalink" href="#call%28args%3AArray%28String%29%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/migrations.cr#L53" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="completed_migrations-class-method">
+      <div class="signature">
+        
+        def self.<strong>completed_migrations</strong>
+
+        <a class="method-permalink" href="#completed_migrations-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/migrations.cr#L140" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="ensure_migration_table_exists-class-method">
+      <div class="signature">
+        
+        def self.<strong>ensure_migration_table_exists</strong>
+
+        <a class="method-permalink" href="#ensure_migration_table_exists-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/migrations.cr#L148" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="redo(migration:Nil)-class-method">
+      <div class="signature">
+        
+        def self.<strong>redo</strong>(migration : Nil)
+
+        <a class="method-permalink" href="#redo%28migration%3ANil%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/migrations.cr#L129" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="redo(migration:SchemaMigration)-class-method">
+      <div class="signature">
+        
+        def self.<strong>redo</strong>(migration : <a href="../Interro/Migrations/SchemaMigration.html">SchemaMigration</a>)
+
+        <a class="method-permalink" href="#redo%28migration%3ASchemaMigration%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/migrations.cr#L135" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="rollback(migration:Nil)-class-method">
+      <div class="signature">
+        
+        def self.<strong>rollback</strong>(migration : Nil)
+
+        <a class="method-permalink" href="#rollback%28migration%3ANil%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/migrations.cr#L105" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="rollback(migration:SchemaMigration)-class-method">
+      <div class="signature">
+        
+        def self.<strong>rollback</strong>(migration : <a href="../Interro/Migrations/SchemaMigration.html">SchemaMigration</a>)
+
+        <a class="method-permalink" href="#rollback%28migration%3ASchemaMigration%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/migrations.cr#L114" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="run(migration:Nil)-class-method">
+      <div class="signature">
+        
+        def self.<strong>run</strong>(migration : Nil)
+
+        <a class="method-permalink" href="#run%28migration%3ANil%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/migrations.cr#L84" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="run(migration:SchemaMigration)-class-method">
+      <div class="signature">
+        
+        def self.<strong>run</strong>(migration : <a href="../Interro/Migrations/SchemaMigration.html">SchemaMigration</a>)
+
+        <a class="method-permalink" href="#run%28migration%3ASchemaMigration%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/migrations.cr#L93" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+  
+
+  
+
+
+</div>
+
+</body>
+</html>

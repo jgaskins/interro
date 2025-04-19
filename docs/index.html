@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Crystal Docs 1.10.1">
+<meta name="crystal_docs.project_version" content="0.3.3">
+<meta name="crystal_docs.project_name" content="interro">
+
+
+
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/doc.js"></script>
+
+  <meta name="repository-name" content="interro">
+  <title>interro 0.3.3</title>
+  <script type="text/javascript">
+  CrystalDocs.base_path = "";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill="currentColor" fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<input type="checkbox" id="sidebar-btn">
+<label for="sidebar-btn" id="sidebar-btn-label">
+  <svg class="open" xmlns="http://www.w3.org/2000/svg" height="2em" width="2em" viewBox="0 0 512 512"><title>Open Sidebar</title><path fill="currentColor" d="M80 96v64h352V96H80zm0 112v64h352v-64H80zm0 112v64h352v-64H80z"></path></svg>
+  <svg class="close" xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 512 512"><title>Close Sidebar</title><path fill="currentColor" d="m118.6 73.4-45.2 45.2L210.7 256 73.4 393.4l45.2 45.2L256 301.3l137.4 137.3 45.2-45.2L301.3 256l137.3-137.4-45.2-45.2L256 210.7Z"></path></svg>
+</label>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="index.html">
+          interro
+        </a>
+      </h1>
+
+      <span class="project-version">
+        0.3.3
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent " data-id="interro/Interro" data-name="interro">
+      <a href="Interro.html">Interro</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/Any" data-name="interro::any">
+      <a href="Interro/Any.html">Any</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Config" data-name="interro::config">
+      <a href="Interro/Config.html">Config</a>
+      
+    </li>
+  
+  <li class="parent " data-id="interro/Interro/ConflictHandler" data-name="interro::conflicthandler(updatehandler)">
+      <a href="Interro/ConflictHandler.html">ConflictHandler</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/ConflictHandler/Action" data-name="interro::conflicthandler::action">
+      <a href="Interro/ConflictHandler/Action.html">Action</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/DoNothing" data-name="interro::donothing">
+      <a href="Interro/DoNothing.html">DoNothing</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/DynamicQuery" data-name="interro::dynamicquery(t, u)">
+      <a href="Interro/DynamicQuery.html">DynamicQuery</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Error" data-name="interro::error">
+      <a href="Interro/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Exception" data-name="interro::exception">
+      <a href="Interro/Exception.html">Exception</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Field" data-name="interro::field">
+      <a href="Interro/Field.html">Field</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/JoinClause" data-name="interro::joinclause">
+      <a href="Interro/JoinClause.html">JoinClause</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Migration" data-name="interro::migration">
+      <a href="Interro/Migration.html">Migration</a>
+      
+    </li>
+  
+  <li class="parent " data-id="interro/Interro/Migrations" data-name="interro::migrations">
+      <a href="Interro/Migrations.html">Migrations</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/Migrations/SchemaMigration" data-name="interro::migrations::schemamigration">
+      <a href="Interro/Migrations/SchemaMigration.html">SchemaMigration</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Migrations/SQLGenerator" data-name="interro::migrations::sqlgenerator">
+      <a href="Interro/Migrations/SQLGenerator.html">SQLGenerator</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="interro/Interro/Model" data-name="interro::model">
+      <a href="Interro/Model.html">Model</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/Model/NonStrict" data-name="interro::model::nonstrict">
+      <a href="Interro/Model/NonStrict.html">NonStrict</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/NotFound" data-name="interro::notfound">
+      <a href="Interro/NotFound.html">NotFound</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/OrderBy" data-name="interro::orderby">
+      <a href="Interro/OrderBy.html">OrderBy</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Query" data-name="interro::query">
+      <a href="Interro/Query.html">Query</a>
+      
+    </li>
+  
+  <li class="parent " data-id="interro/Interro/QueryBuilder" data-name="interro::querybuilder(t)">
+      <a href="Interro/QueryBuilder.html">QueryBuilder</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/QueryBuilder/CompoundQuery" data-name="interro::querybuilder::compoundquery(t)">
+      <a href="Interro/QueryBuilder/CompoundQuery.html">CompoundQuery</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryBuilder/InnerJoin" data-name="interro::querybuilder::innerjoin">
+      <a href="Interro/QueryBuilder/InnerJoin.html">InnerJoin</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryBuilder/OrderByDirection" data-name="interro::querybuilder::orderbydirection">
+      <a href="Interro/QueryBuilder/OrderByDirection.html">OrderByDirection</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryBuilder/ResultSetIterator" data-name="interro::querybuilder::resultsetiterator(t)">
+      <a href="Interro/QueryBuilder/ResultSetIterator.html">ResultSetIterator</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryExpression" data-name="interro::queryexpression">
+      <a href="Interro/QueryExpression.html">QueryExpression</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryRecord" data-name="interro::queryrecord">
+      <a href="Interro/QueryRecord.html">QueryRecord</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryValue" data-name="interro::queryvalue">
+      <a href="Interro/QueryValue.html">QueryValue</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/UnexpectedEmptyResultSet" data-name="interro::unexpectedemptyresultset">
+      <a href="Interro/UnexpectedEmptyResultSet.html">UnexpectedEmptyResultSet</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Update" data-name="interro::update(t)">
+      <a href="Interro/Update.html">Update</a>
+      
+    </li>
+  
+  <li class="parent " data-id="interro/Interro/Validations" data-name="interro::validations">
+      <a href="Interro/Validations.html">Validations</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/Validations/Error" data-name="interro::validations::error">
+      <a href="Interro/Validations/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Validations/Failure" data-name="interro::validations::failure">
+      <a href="Interro/Validations/Failure.html">Failure</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Validations/Result" data-name="interro::validations::result(t)">
+      <a href="Interro/Validations/Result.html">Result</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Value" data-name="interro::value">
+      <a href="Interro/Value.html">Value</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/NamedTuple" data-name="namedtuple(**t)">
+      <a href="NamedTuple.html">NamedTuple</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/PQ" data-name="pq">
+      <a href="PQ.html">PQ</a>
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1><a id="interro" class="anchor" href="#interro">  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Interro</h1>
+<p>Postgres database querying with Crystal</p>
+<h2><a id="installation" class="anchor" href="#installation">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Installation</h2>
+<ol>
+<li>
+<p>Add the dependency to your <code>shard.yml</code>:</p>
+<pre><code class="language-yaml">dependencies:
+  interro:
+    github: jgaskins/interro</code></pre>
+</li>
+<li>
+<p>Run <code>shards install</code></p>
+</li>
+</ol>
+<h2><a id="configuration" class="anchor" href="#configuration">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Configuration</h2>
+<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;interro&quot;</span>
+<span class="k">require</span> <span class="s">&quot;db&quot;</span>
+
+<span class="t">Interro</span>.config <span class="k">do</span> <span class="o">|</span>c<span class="o">|</span>
+  c.db <span class="o">=</span> <span class="t">DB</span>.open(<span class="t">ENV</span>[<span class="s">&quot;DATABASE_URL&quot;</span>])
+
+  <span class="c"># or if you&#39;re using using replication, you can specify separate DBs to read</span>
+  <span class="c"># from and write to:</span>
+  c.read_db <span class="o">=</span> <span class="t">DB</span>.open(<span class="t">ENV</span>[<span class="s">&quot;DB_READ_URL&quot;</span>])
+  c.write_db <span class="o">=</span> <span class="t">DB</span>.open(<span class="t">ENV</span>[<span class="s">&quot;DB_WRITE_URL&quot;</span>])
+<span class="k">end</span></code></pre>
+<h2><a id="migrations" class="anchor" href="#migrations">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Migrations</h2>
+<p>Migrations are, by convention, in the <code>./db/migrations</code> directory.</p>
+<h3><a id="generating-a-migration" class="anchor" href="#generating-a-migration">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Generating a migration</h3>
+<p>When you installed Interro into your application, it created a <code>bin/interro-migration</code> executable, so we can use that to generate our migration. Let's say we want to generate a migration to create our <code>users</code> table:</p>
+<pre><code class="language-crystal">bin<span class="o">/</span>interro<span class="o">-</span>migration g <span class="t">CreateUsers</span></code></pre>
+<p>This creates a directory called <code>db/migrations/YYYY_MM_DD_HH_MM_SS_NANOSECONDS-CreateUsers</code>. Inside this directory are two files called <code>up.sql</code> and <code>down.sql</code>. Respectively, these files represent the SQL queries needed to execute and roll-back the migration. Opening our <code>up.sql</code> file, we can edit it to say:</p>
+<pre><code class="language-sql">CREATE TABLE users(
+  id UUID PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
+  email TEXT UNIQUE NOT NULL,
+  name TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+)</code></pre>
+<p>and in our <code>down.sql</code> file:</p>
+<pre><code class="language-sql">DROP TABLE users</code></pre>
+<p><strong>Note:</strong> You can only execute one statement per SQL file. Additional statements must be done inside a separate migration.</p>
+<h3><a id="executing-the-migration" class="anchor" href="#executing-the-migration">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Executing the migration</h3>
+<p>Your <code>CreateUsers</code> migration can be executed with the following command:</p>
+<pre><code class="language-crystal">bin<span class="o">/</span>interro<span class="o">-</span>migration run <span class="t">CreateUsers</span></code></pre>
+<p>If you want to execute <em>all</em> migrations that have not yet been run (say, if you just pulled someone else's changes that contained a migration), you can simply omit the migration name. The default is to run all migrations.</p>
+<h3><a id="rolling-back-a-migration" class="anchor" href="#rolling-back-a-migration">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Rolling back a migration</h3>
+<p>You can roll back a specific migration by executing the following command:</p>
+<pre><code class="language-crystal">bin<span class="o">/</span>interro<span class="o">-</span>migration rollback <span class="t">CreateUsers</span></code></pre>
+<h2><a id="models" class="anchor" href="#models">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Models</h2>
+<p>Once our table is created, we can create a model to represent that data inside the application. To do that, we create a <code>class</code> or <code>struct</code> with the desired name (for example, we might choose <code>User</code> to represent a row in the <code>users</code> table):</p>
+<pre><code class="language-crystal"><span class="k">struct</span> <span class="t">User</span>
+  <span class="k">include</span> <span class="t">DB</span><span class="t">::</span><span class="t">Serializable</span>
+
+  getter id : <span class="t">UUID</span>
+  getter name : <span class="t">String</span>
+  getter email : <span class="t">String</span>
+  getter created_at : <span class="t">Time</span>
+  getter updated_at : <span class="t">Time</span>
+<span class="k">end</span></code></pre>
+<p>There are 3 things to note here:</p>
+<ol>
+<li>We <code>include DB::Serializable</code>. This mixin is provided by the <code>crystal-lang/crystal-db</code> shard to deserialize rows into objects. Interro does not require anything else of your models than that.</li>
+<li>Since we specified <code>NOT NULL</code> on all of the columns in our migration, we can avoid making any of the properties <code>nil</code>-able. If any of your columns do not have <code>NOT NULL</code> constraints, you should allow them to be <code>nil</code> here or you will not be able to deserialize those rows.</li>
+<li>Our model only specifies properties using <code>getter</code> and not <code>property</code>. This makes the models immutable.</li>
+</ol>
+<h2><a id="queries" class="anchor" href="#queries">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Queries</h2>
+<p>Interro supports 2 different concepts for queries:</p>
+<ol>
+<li><code><a href="Interro/QueryBuilder.html">Interro::QueryBuilder</a>(T)</code> for generating SQL queries</li>
+<li><code><a href="Interro/Query.html">Interro::Query</a></code> to allow you to write your own SQL queries</li>
+</ol>
+<h3><a id="query-buildert" class="anchor" href="#query-buildert">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a><code>QueryBuilder(T)</code></h3>
+<p>The simplest way to get started is to write a <code>struct</code> that inherits from <code><a href="Interro/QueryBuilder.html">Interro::QueryBuilder</a></code> for your model:</p>
+<pre><code class="language-crystal"><span class="k">struct</span> <span class="t">UserQuery</span> <span class="o">&lt;</span> <span class="t">Interro</span><span class="t">::</span><span class="t">QueryBuilder</span>(<span class="t">User</span>)
+  table <span class="s">&quot;users&quot;</span> <span class="c"># Send queries to the &quot;users&quot; table</span>
+<span class="k">end</span></code></pre>
+<p>If you're familiar with ActiveRecord in Ruby, you might be tempted to then run something like <code>UserQuery.where(foo: &quot;bar&quot;)</code>, but Interro's query builder works a little differently. First, it must be instantiated.</p>
+<pre><code class="language-crystal">users <span class="o">=</span> <span class="t">UserQuery</span>.new</code></pre>
+<p>Then, instead of using methods like <code>where</code> all over your application, you need to add methods to give names to those concepts. For example, if you want to find all the users in a given group:</p>
+<pre><code class="language-crystal"><span class="k">struct</span> <span class="t">UserQuery</span> <span class="o">&lt;</span> <span class="t">Interro</span><span class="t">::</span><span class="t">QueryBuilder</span>(<span class="t">User</span>)
+  table <span class="s">&quot;users&quot;</span>
+
+  <span class="k">def</span> <span class="m">members_of</span>(group : <span class="t">Group</span>)
+    where(group_id: group.id)
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+<p>If you're familiar with ActiveRecord, these are very similar to scopes. Interro requires you to put your queries behind these &quot;scope&quot; methods in order to insulate your application from your database structure. Methods like <code>where</code> are unavailable outside the class. This way, when your database structure changes, it isolates the code changes to the methods inside these classes.</p>
+<p>Here are a few methods provided by <code><a href="Interro/QueryBuilder.html">Interro::QueryBuilder</a></code>:</p>
+<ul>
+<li><code>where(name: &quot;Jamie&quot;)</code></li>
+<li><code>where { |user| user.created_at &lt; timestamp }</code></li>
+<li><code>inner_join(&quot;groups&quot;, as: &quot;g&quot;, on: &quot;users.group_id = g.id&quot;)</code></li>
+<li><code>order_by(created_at: &quot;DESC&quot;)</code></li>
+<li><code>limit(25)</code></li>
+<li><code>scalar(&quot;count(*)&quot;, as: Int64)</code></li>
+<li><code>insert(name: &quot;Jamie&quot;, email: &quot;jamie@example.com&quot;) : T</code>: returns the created record</li>
+<li><code>update(role: &quot;admin&quot;) : T</code>: returns the updated models (allowing for immutable models)</li>
+<li><code>delete</code></li>
+</ul>
+<p>Each one of these methods returns a new instance of the query builder. This lets you compose them in your query builder's methods and even makes your own methods composable. For example:</p>
+<pre><code class="language-crystal"><span class="k">struct</span> <span class="t">UserQuery</span> <span class="o">&lt;</span> <span class="t">Interro</span><span class="t">::</span><span class="t">QueryBuilder</span>(<span class="t">User</span>)
+  table <span class="s">&quot;users&quot;</span>
+
+  <span class="k">def</span> <span class="m">with_id</span>(id : <span class="t">UUID</span>)
+    where(id: id).first
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">registered_before</span>(timestamp : <span class="t">Time</span>)
+    where { <span class="o">|</span>user<span class="o">|</span> user.created_at <span class="o">&lt;</span> timestamp }
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">oldest_first</span>
+    order_by created_at: <span class="s">&quot;DESC&quot;</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">in_group</span>(group : <span class="t">Group</span>)
+    where(group_id: group.id)
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">in_group_with_name</span>(group_name : <span class="t">String</span>)
+    <span class="k">self</span> <span class="c"># I don&#39;t like explicit `self` but it lines up the method chain nicely</span>
+      .inner_join(<span class="s">&quot;groups&quot;</span>, <span class="k">as</span>: <span class="s">&quot;g&quot;</span>, on: <span class="s">&quot;users.group_id = g.id&quot;</span>)
+      .where(<span class="s">&quot;g.name&quot;</span>: group_name)
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">deactivate!</span>(user : <span class="t">User</span>) : <span class="t">User</span>
+    update active: <span class="n">false</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">at_most</span>(count : <span class="t">Int32</span>)
+    limit count
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">count</span>
+    scalar(<span class="s">&quot;count(*)&quot;</span>, <span class="k">as</span>: <span class="t">Int64</span>)
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="t">UserQuery</span>.new
+  .in_group(group)
+  .oldest_first
+  .at_most(<span class="n">25</span>)</code></pre>
+<p>This query will get you the 25 oldest users (by registration date) in the specified group. The benefit here is that if we change the relationship between users and groups such that users can be a member of multiple groups, for example, this call doesn't need to change. You only need to change the internals of the query classes that know about that and you can keep the interfaces the exact same.</p>
+<h4><a id="transactions" class="anchor" href="#transactions">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Transactions</h4>
+<p>You can operate a transaction using the <code>Interro.transaction(&amp;)</code> method and passing that transaction to your query objects. For example, to deactivate a group and all its users within the same transaction:</p>
+<pre><code class="language-crystal"><span class="t">Interro</span>.transaction <span class="k">do</span> <span class="o">|</span>txn<span class="o">|</span>
+  group <span class="o">=</span> <span class="t">GroupQuery</span>[txn].deactivate! id: group_id
+  <span class="t">UserQuery</span>[txn]
+    .in_group(group)
+    .deactivate_all!
+<span class="k">end</span></code></pre>
+<p>If an exception occurs within the transaction block, it will be rolled back, so it may be important not to overwrite any variables from outside the block until the block completes:</p>
+<pre><code class="language-crystal">group <span class="o">=</span> <span class="t">GroupQuery</span>.new.with_id(group_id)
+
+<span class="t">Interro</span>.transaction <span class="k">do</span> <span class="o">|</span>txn<span class="o">|</span>
+  group <span class="o">=</span> <span class="t">GroupQuery</span>[txn].deactivate!(id: group_id)
+  <span class="t">UserQuery</span>[txn]
+    .in_group(group)
+    .deactivate_all!
+
+  <span class="c"># oops, connection to the database goes out!</span>
+<span class="k">end</span>
+
+group <span class="c"># This will be the deactivated one even if the transaction fails</span></code></pre>
+<h3><a id="interroquery" class="anchor" href="#interroquery">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a><code><a href="Interro/Query.html">Interro::Query</a></code></h3>
+<p>The other way to create queries with Interro is to create entire query objects. These are structs that represent a single SQL query:</p>
+<pre><code class="language-crystal"><span class="k">struct</span> <span class="t">GetUserByID</span> <span class="o">&lt;</span> <span class="t">Interro</span><span class="t">::</span><span class="t">Query</span>
+  <span class="k">def</span> <span class="m">call</span>(id : <span class="t">UUID</span>) : <span class="t">User</span>?
+    read_one? <span class="s">&lt;&lt;-SQL</span>, id, <span class="k">as</span>: <span class="t">User</span>
+<span class="s">      SELECT *
+      FROM users
+      WHERE id = $1
+      LIMIT 1
+    SQL</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">if</span> user <span class="o">=</span> <span class="t">GetUserByID</span>[user_id]
+  <span class="c"># ...</span>
+<span class="k">end</span></code></pre>
+<p>The use case for these query objects are when a query is more complex than <code><a href="Interro/QueryBuilder.html">Interro::QueryBuilder</a></code> can generate. For example, complex reporting queries, queries that return multiple entities per row, or any arbitrary SQL statement needed.</p>
+<p>Methods you can use within <code><a href="Interro/Query.html">Interro::Query</a></code> objects:</p>
+<ul>
+<li>Run against the read DB:
+<ul>
+<li><code>read_one(query, *args, as: MyClass)</code>: asserts that one and only one row matches your query. If there are 0 or &gt;1, an exception is raised.</li>
+<li><code>read_one?(query, *args, as: MyClass)</code>: returns either the first matching row or <code>nil</code> if no rows match.</li>
+<li><code>read_all(query, *args, as: MyClass) : Array(MyClass)</code>: returns all matching rows as an array</li>
+</ul>
+</li>
+<li>Run against the write DB:
+<ul>
+<li><code>write_one(query, *args, as: MyClass)</code>: asserts a single match, assumes a <code>RETURNING</code> clause</li>
+<li><code>write(query, *args)</code>: runs the specified query and ignores any returned data</li>
+</ul>
+</li>
+</ul>
+<h4><a id="transactions-1" class="anchor" href="#transactions-1">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Transactions</h4>
+<p>Transactions are performed the same way as with <code>QueryBuilder</code>, by passing the transaction to the queries with the transaction in brackets:</p>
+<pre><code class="language-crystal"><span class="t">Interro</span>.transaction <span class="k">do</span> <span class="o">|</span>txn<span class="o">|</span>
+  user <span class="o">=</span> <span class="t">GetUserByID</span>[txn][user_id]
+  <span class="t">ChangeUserPassword</span>[txn][new_password]
+<span class="k">end</span></code></pre>
+<h2><a id="development" class="anchor" href="#development">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Development</h2>
+<ul>
+<li>Install Postgres
+<ul>
+<li>macOS
+<ul>
+<li>https://postgresapp.com/</li>
+<li><code>brew install postgresql</code></li>
+</ul>
+</li>
+<li>Linux
+<ul>
+<li><code>apt-get install postgresql</code></li>
+<li>Snap?</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Make sure there is a default user and database (usually either <code>$USER</code> or <code>postgres</code> for both)</li>
+<li>Run specs with <code>crystal spec</code></li>
+</ul>
+<h2><a id="contributing" class="anchor" href="#contributing">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Contributing</h2>
+<ol>
+<li>Fork it (<a href="https://github.com/jgaskins/interro/fork">https://github.com/jgaskins/interro/fork</a>)</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create a new Pull Request</li>
+</ol>
+<h2><a id="contributors" class="anchor" href="#contributors">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Contributors</h2>
+<ul>
+<li><a href="https://github.com/jgaskins">Jamie Gaskins</a> - creator and maintainer</li>
+</ul>
+</div>
+</body>
+</html>

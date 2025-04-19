@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Crystal Docs 1.10.1">
+<meta name="crystal_docs.project_version" content="0.3.3">
+<meta name="crystal_docs.project_name" content="interro">
+
+
+
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../js/doc.js"></script>
+
+  <meta name="repository-name" content="interro">
+  <title>Interro::QueryBuilder(T) - interro 0.3.3</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "../";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill="currentColor" fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<input type="checkbox" id="sidebar-btn">
+<label for="sidebar-btn" id="sidebar-btn-label">
+  <svg class="open" xmlns="http://www.w3.org/2000/svg" height="2em" width="2em" viewBox="0 0 512 512"><title>Open Sidebar</title><path fill="currentColor" d="M80 96v64h352V96H80zm0 112v64h352v-64H80zm0 112v64h352v-64H80z"></path></svg>
+  <svg class="close" xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 512 512"><title>Close Sidebar</title><path fill="currentColor" d="m118.6 73.4-45.2 45.2L210.7 256 73.4 393.4l45.2 45.2L256 301.3l137.4 137.3 45.2-45.2L301.3 256l137.3-137.4-45.2-45.2L256 210.7Z"></path></svg>
+</label>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="../index.html">
+          interro
+        </a>
+      </h1>
+
+      <span class="project-version">
+        0.3.3
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="interro/Interro" data-name="interro">
+      <a href="../Interro.html">Interro</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/Any" data-name="interro::any">
+      <a href="../Interro/Any.html">Any</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Config" data-name="interro::config">
+      <a href="../Interro/Config.html">Config</a>
+      
+    </li>
+  
+  <li class="parent " data-id="interro/Interro/ConflictHandler" data-name="interro::conflicthandler(updatehandler)">
+      <a href="../Interro/ConflictHandler.html">ConflictHandler</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/ConflictHandler/Action" data-name="interro::conflicthandler::action">
+      <a href="../Interro/ConflictHandler/Action.html">Action</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/DoNothing" data-name="interro::donothing">
+      <a href="../Interro/DoNothing.html">DoNothing</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/DynamicQuery" data-name="interro::dynamicquery(t, u)">
+      <a href="../Interro/DynamicQuery.html">DynamicQuery</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Error" data-name="interro::error">
+      <a href="../Interro/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Exception" data-name="interro::exception">
+      <a href="../Interro/Exception.html">Exception</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Field" data-name="interro::field">
+      <a href="../Interro/Field.html">Field</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/JoinClause" data-name="interro::joinclause">
+      <a href="../Interro/JoinClause.html">JoinClause</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Migration" data-name="interro::migration">
+      <a href="../Interro/Migration.html">Migration</a>
+      
+    </li>
+  
+  <li class="parent " data-id="interro/Interro/Migrations" data-name="interro::migrations">
+      <a href="../Interro/Migrations.html">Migrations</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/Migrations/SchemaMigration" data-name="interro::migrations::schemamigration">
+      <a href="../Interro/Migrations/SchemaMigration.html">SchemaMigration</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Migrations/SQLGenerator" data-name="interro::migrations::sqlgenerator">
+      <a href="../Interro/Migrations/SQLGenerator.html">SQLGenerator</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="interro/Interro/Model" data-name="interro::model">
+      <a href="../Interro/Model.html">Model</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/Model/NonStrict" data-name="interro::model::nonstrict">
+      <a href="../Interro/Model/NonStrict.html">NonStrict</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/NotFound" data-name="interro::notfound">
+      <a href="../Interro/NotFound.html">NotFound</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/OrderBy" data-name="interro::orderby">
+      <a href="../Interro/OrderBy.html">OrderBy</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Query" data-name="interro::query">
+      <a href="../Interro/Query.html">Query</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="interro/Interro/QueryBuilder" data-name="interro::querybuilder(t)">
+      <a href="../Interro/QueryBuilder.html">QueryBuilder</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/QueryBuilder/CompoundQuery" data-name="interro::querybuilder::compoundquery(t)">
+      <a href="../Interro/QueryBuilder/CompoundQuery.html">CompoundQuery</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryBuilder/InnerJoin" data-name="interro::querybuilder::innerjoin">
+      <a href="../Interro/QueryBuilder/InnerJoin.html">InnerJoin</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryBuilder/OrderByDirection" data-name="interro::querybuilder::orderbydirection">
+      <a href="../Interro/QueryBuilder/OrderByDirection.html">OrderByDirection</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryBuilder/ResultSetIterator" data-name="interro::querybuilder::resultsetiterator(t)">
+      <a href="../Interro/QueryBuilder/ResultSetIterator.html">ResultSetIterator</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryExpression" data-name="interro::queryexpression">
+      <a href="../Interro/QueryExpression.html">QueryExpression</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryRecord" data-name="interro::queryrecord">
+      <a href="../Interro/QueryRecord.html">QueryRecord</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryValue" data-name="interro::queryvalue">
+      <a href="../Interro/QueryValue.html">QueryValue</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/UnexpectedEmptyResultSet" data-name="interro::unexpectedemptyresultset">
+      <a href="../Interro/UnexpectedEmptyResultSet.html">UnexpectedEmptyResultSet</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Update" data-name="interro::update(t)">
+      <a href="../Interro/Update.html">Update</a>
+      
+    </li>
+  
+  <li class="parent " data-id="interro/Interro/Validations" data-name="interro::validations">
+      <a href="../Interro/Validations.html">Validations</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/Validations/Error" data-name="interro::validations::error">
+      <a href="../Interro/Validations/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Validations/Failure" data-name="interro::validations::failure">
+      <a href="../Interro/Validations/Failure.html">Failure</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Validations/Result" data-name="interro::validations::result(t)">
+      <a href="../Interro/Validations/Result.html">Result</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Value" data-name="interro::value">
+      <a href="../Interro/Value.html">Value</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/NamedTuple" data-name="namedtuple(**t)">
+      <a href="../NamedTuple.html">NamedTuple</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/PQ" data-name="pq">
+      <a href="../PQ.html">PQ</a>
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">
+    abstract struct
+  </span> Interro::<wbr>QueryBuilder(T)
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../Interro/QueryBuilder.html">Interro::QueryBuilder(T)</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
+
+
+
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>Defining <code><a href="../Interro/QueryBuilder.html">QueryBuilder</a></code> objects is a way to create composable queries. For
+example, if you have the following <code><a href="../Interro/Model.html">Model</a></code> and <code><a href="../Interro/QueryBuilder.html">QueryBuilder</a></code>:</p>
+<pre><code class="language-crystal"><span class="k">struct</span> <span class="t">User</span>
+  <span class="k">include</span> <span class="t">Interro</span><span class="t">::</span><span class="t">Model</span>
+
+  getter id : <span class="t">UUID</span>
+  getter name : <span class="t">String</span>
+  getter email : <span class="t">String</span>
+  getter team_id : <span class="t">UUID</span>?
+  getter role : <span class="t">Role</span>
+
+  <span class="k">enum</span> <span class="t">Role</span>
+    <span class="t">Member</span>
+    <span class="t">TeamAdmin</span>
+    <span class="t">SiteAdmin</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">struct</span> <span class="t">UserQuery</span> <span class="o">&lt;</span> <span class="t">Interro</span><span class="t">::</span><span class="t">QueryBuilder</span>(<span class="t">User</span>)
+  table <span class="s">&quot;users&quot;</span>
+
+  <span class="k">def</span> <span class="m">find</span>(id : <span class="t">UUID</span>)
+    where(id: id).first?
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">on_team</span>(team : <span class="t">Team</span>)
+    where team_id: team.id
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">with_role</span>(role : <span class="t">User</span><span class="t">::</span><span class="t">Role</span>)
+    <span class="c"># We pass `role.value` to the SQL query since it&#39;s stored in `INTEGER`</span>
+    <span class="c"># column type.</span>
+    where role: role.value
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="m">sorted_by_name</span>(direction : <span class="t">Interro</span><span class="t">::</span><span class="t">QueryBuilder</span><span class="t">::</span><span class="t">OrderByDirection</span> <span class="o">=</span> <span class="n">:asc</span>)
+    order_by name: direction
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+<p>Then you can find all team admins like this:</p>
+<pre><code class="language-crystal">users <span class="o">=</span> <span class="t">UserQuery</span>.new
+  .on_team(team)
+  .with_role(<span class="n">:team_admin</span>)
+  .sorted_by_name</code></pre>
+<p>You can insert records with the <code>insert</code> method:</p>
+<pre><code class="language-crystal"><span class="k">struct</span> <span class="t">UserQuery</span> <span class="o">&lt;</span> <span class="t">Interro</span><span class="t">::</span><span class="t">QueryBuilder</span>(<span class="t">User</span>)
+  <span class="c"># ...</span>
+  <span class="k">def</span> <span class="m">create</span>(name : <span class="t">String</span>, email : <span class="t">String</span>, team : <span class="t">Team</span>, role : <span class="t">User</span><span class="t">::</span><span class="t">Role</span>)
+    <span class="c"># This generates the following SQL:</span>
+    <span class="c">#   INSERT INTO users (name, email, team_id, role) VALUES ($1, $2, $3, $4)</span>
+    <span class="c"># And it passes these args to the parameterized query:</span>
+    <span class="c">#   [name, email, team.id, role.value]</span>
+    insert(
+      name: name,
+      email: email,
+      team_id: team.id,
+      role: role.value,
+    )
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+<p>You can also use <code><a href="../Interro/Validations/Result.html">Interro::Validations::Result</a></code> objects to validate the
+inputs before saving them to the DB. Since <code><a href="../Interro/QueryBuilder.html">Interro::QueryBuilder</a></code> includes
+the <code><a href="../Interro/Validations.html">Interro::Validations</a></code> mixin, you can simply refer to it as <code><a href="../Interro/Validations/Result.html">Result</a></code>.</p>
+<pre><code class="language-crystal"><span class="k">struct</span> <span class="t">UserQuery</span> <span class="o">&lt;</span> <span class="t">Interro</span><span class="t">::</span><span class="t">QueryBuilder</span>(<span class="t">User</span>)
+  <span class="c"># ...</span>
+  <span class="k">def</span> <span class="m">create</span>(name : <span class="t">String</span>, email : <span class="t">String</span>, team : <span class="t">Team</span>, role : <span class="t">User</span><span class="t">::</span><span class="t">Role</span>)
+    <span class="t">Result</span>(<span class="t">User</span>).new
+      .validate_presence(name: name, email: email)
+      .validate_uniqueness(<span class="s">&quot;email&quot;</span>) { where(email: email).any? }
+      .valid <span class="k">do</span>
+        insert(
+          name: name,
+          email: email,
+          team_id: team.id,
+          role: role.value,
+        )
+      <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+
+
+
+
+
+
+
+  <h2>
+    <a id="included-modules" class="anchor" href="#included-modules">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Included Modules
+  </h2>
+  <ul class="other-types-list">
+    
+      <li class="other-type">Enumerable(T)</li>
+    
+      <li class="other-type"><a href="../Interro/Validations.html">Interro::Validations</a></li>
+    
+      <li class="other-type">Iterable(T)</li>
+    
+  </ul>
+
+
+
+
+
+  <h2>
+    <a id="direct-known-subclasses" class="anchor" href="#direct-known-subclasses">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Direct Known Subclasses
+  </h2>
+  <ul class="other-types-list">
+    
+      <li class="other-type"><a href="../Interro/DynamicQuery.html">Interro::DynamicQuery(T, U)</a></li>
+    
+  </ul>
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/dynamic_query.cr#L4" target="_blank">
+        dynamic_query.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/query_builder.cr#L104" target="_blank">
+        query_builder.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+  
+  <h2>
+    <a id="constructors" class="anchor" href="#constructors">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructors
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#%5B%5D%28transaction%3ADB%3A%3ATransaction%29%3Aself-class-method" class="signature"><strong>.[]</strong>(transaction : DB::Transaction) : <span class="k">self</span></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new%28transaction_owner%3AInterro%3A%3AQueryBuilder%29-class-method" class="signature"><strong>.new</strong>(transaction_owner : Interro::QueryBuilder)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new-class-method" class="signature"><strong>.new</strong></a>
+        
+      </li>
+    
+  </ul>
+
+
+  
+
+  
+  <h2>
+    <a id="macro-summary" class="anchor" href="#macro-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Macro Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#from%28name%2C%2Ajoins%29-macro" class="signature"><strong>from</strong>(name, *joins)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#table%28name%2Castable_alias%3Dnil%29-macro" class="signature"><strong>table</strong>(name, as table_alias = <span class="n">nil</span>)</a>
+        
+      </li>
+    
+  </ul>
+
+
+  
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#%26%28other%3Aself%29%3ACompoundQuery-instance-method" class="signature"><strong>#&</strong>(other : <span class="k">self</span>) : CompoundQuery</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#-%28other%3Aself%29%3ACompoundQuery-instance-method" class="signature"><strong>#-</strong>(other : <span class="k">self</span>) : CompoundQuery</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#%7C%28other%3Aself%29%3ACompoundQuery-instance-method" class="signature"><strong>#|</strong>(other : <span class="k">self</span>) : CompoundQuery</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#any%3F%3ABool-instance-method" class="signature"><strong>#any?</strong> : Bool</a>
+        
+          <div class="summary"><p>Returns <code>true</code> if at least one of the collection's members is truthy.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#count%3AInt64-instance-method" class="signature"><strong>#count</strong> : Int64</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#each-instance-method" class="signature"><strong>#each</strong></a>
+        
+          <div class="summary"><p>Must return an <code>Iterator</code> over the elements in this collection.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#each%28%26%3AT-%3E%29-instance-method" class="signature"><strong>#each</strong>(& : T -> )</a>
+        
+          <div class="summary"><p>Must yield this collection's elements to the block.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#first%28count%3AInt%29-instance-method" class="signature"><strong>#first</strong>(count : Int)</a>
+        
+          <div class="summary"><p>Returns an <code>Array</code> with the first <em>count</em> elements in the collection.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#first-instance-method" class="signature"><strong>#first</strong></a>
+        
+          <div class="summary"><p>Returns the first element in the collection.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#first%3F-instance-method" class="signature"><strong>#first?</strong></a>
+        
+          <div class="summary"><p>Returns the first element in the collection.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#initialize-instance-method" class="signature"><strong>#initialize</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#merge%28other%3AQueryBuilder%29%3Aself-instance-method" class="signature"><strong>#merge</strong>(other : QueryBuilder) : <span class="k">self</span></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#none%3F%3ABool-instance-method" class="signature"><strong>#none?</strong> : Bool</a>
+        
+          <div class="summary"><p>Returns <code>true</code> if all of the elements of the collection are falsey.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_json%28json%3AJSON%3A%3ABuilder%29%3ANil-instance-method" class="signature"><strong>#to_json</strong>(json : JSON::Builder) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_sql%3AString-instance-method" class="signature"><strong>#to_sql</strong> : String</a>
+        
+      </li>
+    
+  </ul>
+
+
+
+  <div class="methods-inherited">
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+  </div>
+
+  
+  <h2>
+    <a id="constructor-detail" class="anchor" href="#constructor-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructor Detail
+  </h2>
+  
+    <div class="entry-detail" id="[](transaction:DB::Transaction):self-class-method">
+      <div class="signature">
+        
+        def self.<strong>[]</strong>(transaction : DB::Transaction) : <span class="k">self</span>
+
+        <a class="method-permalink" href="#%5B%5D%28transaction%3ADB%3A%3ATransaction%29%3Aself-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/query_builder.cr#L157" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(transaction_owner:Interro::QueryBuilder)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(transaction_owner : <a href="../Interro/QueryBuilder.html">Interro::QueryBuilder</a>)
+
+        <a class="method-permalink" href="#new%28transaction_owner%3AInterro%3A%3AQueryBuilder%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/query_builder.cr#L161" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>
+
+        <a class="method-permalink" href="#new-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/query_builder.cr#L104" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+  
+
+  
+  <h2>
+    <a id="macro-detail" class="anchor" href="#macro-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Macro Detail
+  </h2>
+  
+    <div class="entry-detail" id="from(name,*joins)-macro">
+      <div class="signature">
+        
+        macro <strong>from</strong>(name, *joins)
+
+        <a class="method-permalink" href="#from%28name%2C%2Ajoins%29-macro">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/query_builder.cr#L123" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="table(name,astable_alias=nil)-macro">
+      <div class="signature">
+        
+        macro <strong>table</strong>(name, as table_alias = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#table%28name%2Castable_alias%3Dnil%29-macro">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/query_builder.cr#L109" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+  
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="&amp;(other:self):CompoundQuery-instance-method">
+      <div class="signature">
+        
+        def <strong>&</strong>(other : <span class="k">self</span>) : <a href="../Interro/QueryBuilder/CompoundQuery.html">CompoundQuery</a>
+
+        <a class="method-permalink" href="#%26%28other%3Aself%29%3ACompoundQuery-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/query_builder.cr#L254" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="-(other:self):CompoundQuery-instance-method">
+      <div class="signature">
+        
+        def <strong>-</strong>(other : <span class="k">self</span>) : <a href="../Interro/QueryBuilder/CompoundQuery.html">CompoundQuery</a>
+
+        <a class="method-permalink" href="#-%28other%3Aself%29%3ACompoundQuery-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/query_builder.cr#L258" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="|(other:self):CompoundQuery-instance-method">
+      <div class="signature">
+        
+        def <strong>|</strong>(other : <span class="k">self</span>) : <a href="../Interro/QueryBuilder/CompoundQuery.html">CompoundQuery</a>
+
+        <a class="method-permalink" href="#%7C%28other%3Aself%29%3ACompoundQuery-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/query_builder.cr#L250" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="any?:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>any?</strong> : Bool
+
+        <a class="method-permalink" href="#any%3F%3ABool-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+            <div class="doc-inherited">
+              Description copied from module Enumerable(T)
+            </div>
+          
+          <p>Returns <code>true</code> if at least one of the collection's members is truthy.</p>
+<pre><code class="language-crystal">[<span class="n">nil</span>, <span class="n">true</span>, <span class="n">99</span>].any? <span class="c"># =&gt; true</span>
+[<span class="n">nil</span>, <span class="n">false</span>].any?    <span class="c"># =&gt; false</span>
+(<span class="o">[]</span> <span class="k">of</span> <span class="t">Int32</span>).any?   <span class="c"># =&gt; false</span></code></pre>
+<ul>
+<li><code>#present?</code> does not consider truthiness of elements.</li>
+<li><code>#any?(&amp;)</code> and <code>#any(pattern)</code> allow custom conditions.</li>
+</ul>
+<p><span class="flag purple">NOTE</span>  <code><a href="../Interro/QueryBuilder.html#any%3F%3ABool-instance-method">#any?</a></code> usually has the same semantics as <code>#present?</code>. They only
+differ if the element type can be falsey (i.e. <code>T &lt;= Nil || T &lt;= Pointer || T &lt;= Bool</code>).
+It's typically advised to prefer <code>#present?</code> unless these specific truthiness
+semantics are required.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/query_builder.cr#L503" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="count:Int64-instance-method">
+      <div class="signature">
+        
+        def <strong>count</strong> : Int64
+
+        <a class="method-permalink" href="#count%3AInt64-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/query_builder.cr#L262" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="each-instance-method">
+      <div class="signature">
+        
+        def <strong>each</strong>
+
+        <a class="method-permalink" href="#each-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+            <div class="doc-inherited">
+              Description copied from module Iterable(T)
+            </div>
+          
+          <p>Must return an <code>Iterator</code> over the elements in this collection.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/query_builder.cr#L193" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="each(&amp;:T-&gt;)-instance-method">
+      <div class="signature">
+        
+        def <strong>each</strong>(& : T -> )
+
+        <a class="method-permalink" href="#each%28%26%3AT-%3E%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+            <div class="doc-inherited">
+              Description copied from module Enumerable(T)
+            </div>
+          
+          <p>Must yield this collection's elements to the block.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/query_builder.cr#L201" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="first(count:Int)-instance-method">
+      <div class="signature">
+        
+        def <strong>first</strong>(count : Int)
+
+        <a class="method-permalink" href="#first%28count%3AInt%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+            <div class="doc-inherited">
+              Description copied from module Enumerable(T)
+            </div>
+          
+          <p>Returns an <code>Array</code> with the first <em>count</em> elements in the collection.</p>
+<p>If <em>count</em> is bigger than the number of elements in the collection,
+returns as many as possible. This include the case of calling it over
+an empty collection, in which case it returns an empty array.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/query_builder.cr#L184" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="first-instance-method">
+      <div class="signature">
+        
+        def <strong>first</strong>
+
+        <a class="method-permalink" href="#first-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+            <div class="doc-inherited">
+              Description copied from module Enumerable(T)
+            </div>
+          
+          <p>Returns the first element in the collection. Raises <code>Enumerable::EmptyError</code>
+if the collection is empty.</p>
+<pre><code class="language-crystal">([<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>]).first   <span class="c"># =&gt; 1</span>
+(<span class="o">[]</span> <span class="k">of</span> <span class="t">Int32</span>).first <span class="c"># raises Enumerable::EmptyError</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/query_builder.cr#L180" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="first?-instance-method">
+      <div class="signature">
+        
+        def <strong>first?</strong>
+
+        <a class="method-permalink" href="#first%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+            <div class="doc-inherited">
+              Description copied from module Enumerable(T)
+            </div>
+          
+          <p>Returns the first element in the collection.
+When the collection is empty, returns <code>nil</code>.</p>
+<pre><code class="language-crystal">([<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>]).first?   <span class="c"># =&gt; 1</span>
+(<span class="o">[]</span> <span class="k">of</span> <span class="t">Int32</span>).first? <span class="c"># =&gt; nil</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/query_builder.cr#L188" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="initialize-instance-method">
+      <div class="signature">
+        
+        def <strong>initialize</strong>
+
+        <a class="method-permalink" href="#initialize-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/query_builder.cr#L104" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="merge(other:QueryBuilder):self-instance-method">
+      <div class="signature">
+        
+        def <strong>merge</strong>(other : <a href="../Interro/QueryBuilder.html">QueryBuilder</a>) : <span class="k">self</span>
+
+        <a class="method-permalink" href="#merge%28other%3AQueryBuilder%29%3Aself-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/query_builder.cr#L221" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="none?:Bool-instance-method">
+      <div class="signature">
+        
+        def <strong>none?</strong> : Bool
+
+        <a class="method-permalink" href="#none%3F%3ABool-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+            <div class="doc-inherited">
+              Description copied from module Enumerable(T)
+            </div>
+          
+          <p>Returns <code>true</code> if all of the elements of the collection are falsey.</p>
+<pre><code class="language-crystal">[<span class="n">nil</span>, <span class="n">false</span>].none?       <span class="c"># =&gt; true</span>
+[<span class="n">nil</span>, <span class="n">false</span>, <span class="n">true</span>].none? <span class="c"># =&gt; false</span></code></pre>
+<p>It's the opposite of <code>all?</code>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/query_builder.cr#L507" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_json(json:JSON::Builder):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>to_json</strong>(json : JSON::Builder) : Nil
+
+        <a class="method-permalink" href="#to_json%28json%3AJSON%3A%3ABuilder%29%3ANil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/query_builder.cr#L238" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_sql:String-instance-method">
+      <div class="signature">
+        
+        def <strong>to_sql</strong> : String
+
+        <a class="method-permalink" href="#to_sql%3AString-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/query_builder.cr#L244" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+</div>
+
+</body>
+</html>

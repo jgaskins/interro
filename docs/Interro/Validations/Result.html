@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Crystal Docs 1.10.1">
+<meta name="crystal_docs.project_version" content="0.3.3">
+<meta name="crystal_docs.project_name" content="interro">
+
+
+
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../js/doc.js"></script>
+
+  <meta name="repository-name" content="interro">
+  <title>Interro::Validations::Result(T) - interro 0.3.3</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "../../";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill="currentColor" fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<input type="checkbox" id="sidebar-btn">
+<label for="sidebar-btn" id="sidebar-btn-label">
+  <svg class="open" xmlns="http://www.w3.org/2000/svg" height="2em" width="2em" viewBox="0 0 512 512"><title>Open Sidebar</title><path fill="currentColor" d="M80 96v64h352V96H80zm0 112v64h352v-64H80zm0 112v64h352v-64H80z"></path></svg>
+  <svg class="close" xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 512 512"><title>Close Sidebar</title><path fill="currentColor" d="m118.6 73.4-45.2 45.2L210.7 256 73.4 393.4l45.2 45.2L256 301.3l137.4 137.3 45.2-45.2L301.3 256l137.3-137.4-45.2-45.2L256 210.7Z"></path></svg>
+</label>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="../../index.html">
+          interro
+        </a>
+      </h1>
+
+      <span class="project-version">
+        0.3.3
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="interro/Interro" data-name="interro">
+      <a href="../../Interro.html">Interro</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/Any" data-name="interro::any">
+      <a href="../../Interro/Any.html">Any</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Config" data-name="interro::config">
+      <a href="../../Interro/Config.html">Config</a>
+      
+    </li>
+  
+  <li class="parent " data-id="interro/Interro/ConflictHandler" data-name="interro::conflicthandler(updatehandler)">
+      <a href="../../Interro/ConflictHandler.html">ConflictHandler</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/ConflictHandler/Action" data-name="interro::conflicthandler::action">
+      <a href="../../Interro/ConflictHandler/Action.html">Action</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/DoNothing" data-name="interro::donothing">
+      <a href="../../Interro/DoNothing.html">DoNothing</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/DynamicQuery" data-name="interro::dynamicquery(t, u)">
+      <a href="../../Interro/DynamicQuery.html">DynamicQuery</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Error" data-name="interro::error">
+      <a href="../../Interro/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Exception" data-name="interro::exception">
+      <a href="../../Interro/Exception.html">Exception</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Field" data-name="interro::field">
+      <a href="../../Interro/Field.html">Field</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/JoinClause" data-name="interro::joinclause">
+      <a href="../../Interro/JoinClause.html">JoinClause</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Migration" data-name="interro::migration">
+      <a href="../../Interro/Migration.html">Migration</a>
+      
+    </li>
+  
+  <li class="parent " data-id="interro/Interro/Migrations" data-name="interro::migrations">
+      <a href="../../Interro/Migrations.html">Migrations</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/Migrations/SchemaMigration" data-name="interro::migrations::schemamigration">
+      <a href="../../Interro/Migrations/SchemaMigration.html">SchemaMigration</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Migrations/SQLGenerator" data-name="interro::migrations::sqlgenerator">
+      <a href="../../Interro/Migrations/SQLGenerator.html">SQLGenerator</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="interro/Interro/Model" data-name="interro::model">
+      <a href="../../Interro/Model.html">Model</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/Model/NonStrict" data-name="interro::model::nonstrict">
+      <a href="../../Interro/Model/NonStrict.html">NonStrict</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/NotFound" data-name="interro::notfound">
+      <a href="../../Interro/NotFound.html">NotFound</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/OrderBy" data-name="interro::orderby">
+      <a href="../../Interro/OrderBy.html">OrderBy</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Query" data-name="interro::query">
+      <a href="../../Interro/Query.html">Query</a>
+      
+    </li>
+  
+  <li class="parent " data-id="interro/Interro/QueryBuilder" data-name="interro::querybuilder(t)">
+      <a href="../../Interro/QueryBuilder.html">QueryBuilder</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/QueryBuilder/CompoundQuery" data-name="interro::querybuilder::compoundquery(t)">
+      <a href="../../Interro/QueryBuilder/CompoundQuery.html">CompoundQuery</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryBuilder/InnerJoin" data-name="interro::querybuilder::innerjoin">
+      <a href="../../Interro/QueryBuilder/InnerJoin.html">InnerJoin</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryBuilder/OrderByDirection" data-name="interro::querybuilder::orderbydirection">
+      <a href="../../Interro/QueryBuilder/OrderByDirection.html">OrderByDirection</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryBuilder/ResultSetIterator" data-name="interro::querybuilder::resultsetiterator(t)">
+      <a href="../../Interro/QueryBuilder/ResultSetIterator.html">ResultSetIterator</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryExpression" data-name="interro::queryexpression">
+      <a href="../../Interro/QueryExpression.html">QueryExpression</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryRecord" data-name="interro::queryrecord">
+      <a href="../../Interro/QueryRecord.html">QueryRecord</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryValue" data-name="interro::queryvalue">
+      <a href="../../Interro/QueryValue.html">QueryValue</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/UnexpectedEmptyResultSet" data-name="interro::unexpectedemptyresultset">
+      <a href="../../Interro/UnexpectedEmptyResultSet.html">UnexpectedEmptyResultSet</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Update" data-name="interro::update(t)">
+      <a href="../../Interro/Update.html">Update</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="interro/Interro/Validations" data-name="interro::validations">
+      <a href="../../Interro/Validations.html">Validations</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/Validations/Error" data-name="interro::validations::error">
+      <a href="../../Interro/Validations/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Validations/Failure" data-name="interro::validations::failure">
+      <a href="../../Interro/Validations/Failure.html">Failure</a>
+      
+    </li>
+  
+  <li class=" current" data-id="interro/Interro/Validations/Result" data-name="interro::validations::result(t)">
+      <a href="../../Interro/Validations/Result.html">Result</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Value" data-name="interro::value">
+      <a href="../../Interro/Value.html">Value</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/NamedTuple" data-name="namedtuple(**t)">
+      <a href="../../NamedTuple.html">NamedTuple</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/PQ" data-name="pq">
+      <a href="../../PQ.html">PQ</a>
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">
+    struct
+  </span> Interro::<wbr>Validations::<wbr>Result(T)
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Interro/Validations/Result.html">Interro::Validations::Result(T)</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
+
+
+
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>The entrypoint into validating your objects is to instantiate a
+<code><a href="../../Interro/Validations/Result.html">Result</a>(T)</code>, which you then call validation methods on. When you're
+finished calling validations, you call <code><a href="../../Interro/Validations/Result.html#valid%28%26%29%3AT%7CFailure-instance-method">#valid</a></code> with a block. That block
+will execute if your values pass all validations, returning the value
+in the block (which must be the <code>T</code> type of the <code><a href="../../Interro/Validations/Result.html">Result</a></code>), or an
+<code><a href="../../Interro/Validations/Failure.html">Interro::Validations::Failure</a></code> object, which contains the validation
+errors for the given inputs.</p>
+<pre><code class="language-crystal">struct UserQuery &lt; Interro::QueryBuilder(User)
+  def create(*, name : String, email : String, team : Team, role : User::Role)
+    Result(User).new
+      .validate_presence(name: name, email: email)
+      .validate_uniqueness(&quot;email&quot;) { where(email: email).any? }
+      .validate_format(/\w@\w/, email: email, failure_message: &quot;must be a valid email address&quot;)
+      .valid do
+        insert(
+          name: name,
+          email: email,
+          team_id: team.id,
+          role: role.value,
+        )
+      end
+  end
+end</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/validations.cr#L50" target="_blank">
+        validations.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+  
+  <h2>
+    <a id="constructors" class="anchor" href="#constructors">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructors
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new-class-method" class="signature"><strong>.new</strong></a>
+        
+      </li>
+    
+  </ul>
+
+
+  
+
+  
+
+  
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#%7C%28other%3AResult%29-instance-method" class="signature"><strong>#|</strong>(other : Result)</a>
+        
+          <div class="summary"><p>Combine the errors of two different <code><a href="../../Interro/Validations/Result.html">Result</a></code> instances.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#initialize-instance-method" class="signature"><strong>#initialize</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#valid%28%26%29%3AT%7CFailure-instance-method" class="signature"><strong>#valid</strong>(&) : T | Failure</a>
+        
+          <div class="summary"><p>Execute the block given if all validations have passed, otherwise return a <code><a href="../../Interro/Validations/Failure.html">Failure</a></code> containing all of the validation errors.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#validate%28attribute%3AString%2Cmessage%3AString%2C%26%29-instance-method" class="signature"><strong>#validate</strong>(attribute : String, message : String, &)</a>
+        
+          <div class="summary"><p>Validate a block returns truthy, failing validation with the given <code>message</code> if it returns falsy.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#validate%28message%3AString%2C%26%29-instance-method" class="signature"><strong>#validate</strong>(message : String, &)</a>
+        
+          <div class="summary"><p>Validate a block returns truthy, failing validation with the given <code>message</code> if it returns falsy.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#validate_format%28name%2Cvalue%3AString%2Cformat%3ARegex%2C%2A%2Cfailure_message%3AString%3D%22isinthewrongformat%22%29%3Aself-instance-method" class="signature"><strong>#validate_format</strong>(name, value : String, format : Regex, *, failure_message : String = <span class="s">&quot;is in the wrong format&quot;</span>) : <span class="k">self</span></a>
+        
+          <div class="summary"><p>Validate that <code>value</code> matches the expected format in the <code>Regex</code>, using the attribute name specified in <code>name</code> and a default <code>failure_message</code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#validate_format%28value%3AString%2Cformat%3ARegex%2C%2A%2Cfailure_message%3AString%29%3Aself-instance-method" class="signature"><strong>#validate_format</strong>(value : String, format : Regex, *, failure_message : String) : <span class="k">self</span></a>
+        
+          <div class="summary"><p>Validate that <code>value</code> matches the expected format in the <code>Regex</code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#validate_format%28format%3ARegex%2C%2A%2Aattributes%29%3Aself-instance-method" class="signature"><strong>#validate_format</strong>(format : Regex, **attributes) : <span class="k">self</span></a>
+        
+          <div class="summary"><p>Validate that all of the attributes match the expected format in the <code>Regex</code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#validate_presence%28%2A%2Avalues%29%3Aself-instance-method" class="signature"><strong>#validate_presence</strong>(**values) : <span class="k">self</span></a>
+        
+          <div class="summary"><p>Validate whether all of the <code>values</code> are present by calling <code>.presence</code> on them.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#validate_size%28name%3AString%2Cvalue%2Csize%3ARange%2Cunit%3AString%2C%2A%2Cfailure_message%3Ddefault_validate_size_failure_message%28size%2Cunit%29%29%3Aself-instance-method" class="signature"><strong>#validate_size</strong>(name : String, value, size : Range, unit : String, *, failure_message = default_validate_size_failure_message(size, unit)) : <span class="k">self</span></a>
+        
+          <div class="summary"><p>Validate that <code>value</code> is of the expected <code>size</code> range.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#validate_uniqueness%28attribute%2C%26%29%3Aself-instance-method" class="signature"><strong>#validate_uniqueness</strong>(attribute, &) : <span class="k">self</span></a>
+        
+          <div class="summary"><p>Validate that the given attribute is unique by executing a block that returns truthy if any other objects exist with that attribute.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#validate_uniqueness%28%2A%2Cmessage%3AString%2C%26%29%3Aself-instance-method" class="signature"><strong>#validate_uniqueness</strong>(*, message : String, &) : <span class="k">self</span></a>
+        
+          <div class="summary"><p>Validate that the given attribute is unique by executing a block that returns truthy if any other objects exist with that attribute.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+  <div class="methods-inherited">
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+  </div>
+
+  
+  <h2>
+    <a id="constructor-detail" class="anchor" href="#constructor-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructor Detail
+  </h2>
+  
+    <div class="entry-detail" id="new-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>
+
+        <a class="method-permalink" href="#new-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/validations.cr#L50" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+  
+
+  
+
+  
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="|(other:Result)-instance-method">
+      <div class="signature">
+        
+        def <strong>|</strong>(other : <a href="../../Interro/Validations/Result.html">Result</a>)
+
+        <a class="method-permalink" href="#%7C%28other%3AResult%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Combine the errors of two different <code><a href="../../Interro/Validations/Result.html">Result</a></code> instances. The <code>T</code> types do not have to match.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/validations.cr#L239" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="initialize-instance-method">
+      <div class="signature">
+        
+        def <strong>initialize</strong>
+
+        <a class="method-permalink" href="#initialize-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/validations.cr#L50" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="valid(&amp;):T|Failure-instance-method">
+      <div class="signature">
+        
+        def <strong>valid</strong>(&) : T | <a href="../../Interro/Validations/Failure.html">Failure</a>
+
+        <a class="method-permalink" href="#valid%28%26%29%3AT%7CFailure-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Execute the block given if all validations have passed, otherwise return
+a <code><a href="../../Interro/Validations/Failure.html">Failure</a></code> containing all of the validation errors.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/validations.cr#L247" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="validate(attribute:String,message:String,&amp;)-instance-method">
+      <div class="signature">
+        
+        def <strong>validate</strong>(attribute : String, message : String, &)
+
+        <a class="method-permalink" href="#validate%28attribute%3AString%2Cmessage%3AString%2C%26%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Validate a block returns truthy, failing validation with the given <code>message</code> if it returns falsy.</p>
+<pre><code class="language-crystal"><span class="k">struct</span> <span class="t">Post</span> <span class="o">&lt;</span> <span class="t">Interro</span><span class="t">::</span><span class="t">QueryBuilder</span>(<span class="t">T</span>)
+  table <span class="s">&quot;posts&quot;</span>
+
+  <span class="k">def</span> <span class="m">create</span>(<span class="o">*</span>, title : <span class="t">String</span>, body : <span class="t">String</span>, by author : <span class="t">User</span>, published : <span class="t">Bool</span>, tags : <span class="t">Array</span>(<span class="t">String</span>)? <span class="o">=</span> <span class="n">nil</span>) : <span class="t">Post</span> <span class="o">|</span> <span class="t">Failure</span>
+    <span class="t">Result</span>(<span class="t">Post</span>).new
+      .validate(<span class="s">&quot;tags&quot;</span>, <span class="s">&quot;must be populated for published posts&quot;</span>) <span class="k">do</span>
+        <span class="o">!</span>published <span class="o">||</span> tags.try(<span class="o">&amp;</span>.any?)
+      <span class="k">end</span>
+      .valid <span class="k">do</span>
+        published_at <span class="o">=</span> <span class="t">Time</span>.utc <span class="k">if</span> published
+        insert(
+          title: title,
+          body: body,
+          author_id: author.id,
+          published_at: published_at,
+          tags: tags,
+        )
+      <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/validations.cr#L230" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="validate(message:String,&amp;)-instance-method">
+      <div class="signature">
+        
+        def <strong>validate</strong>(message : String, &)
+
+        <a class="method-permalink" href="#validate%28message%3AString%2C%26%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Validate a block returns truthy, failing validation with the given <code>message</code> if it returns falsy.</p>
+<pre><code class="language-crystal"><span class="k">struct</span> <span class="t">Post</span> <span class="o">&lt;</span> <span class="t">Interro</span><span class="t">::</span><span class="t">QueryBuilder</span>(<span class="t">T</span>)
+  table <span class="s">&quot;posts&quot;</span>
+
+  <span class="k">def</span> <span class="m">create</span>(<span class="o">*</span>, title : <span class="t">String</span>, body : <span class="t">String</span>, by author : <span class="t">User</span>, published : <span class="t">Bool</span>, tags : <span class="t">Array</span>(<span class="t">String</span>)? <span class="o">=</span> <span class="n">nil</span>) : <span class="t">Post</span> <span class="o">|</span> <span class="t">Failure</span>
+    <span class="t">Result</span>(<span class="t">Post</span>).new
+      .validate(<span class="s">&quot;published posts must have tags&quot;</span>) <span class="k">do</span>
+        <span class="o">!</span>published <span class="o">||</span> tags.try(<span class="o">&amp;</span>.any?)
+      <span class="k">end</span>
+      .valid <span class="k">do</span>
+        published_at <span class="o">=</span> <span class="t">Time</span>.utc <span class="k">if</span> published
+        insert(
+          title: title,
+          body: body,
+          author_id: author.id,
+          published_at: published_at,
+          tags: tags,
+        )
+      <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/validations.cr#L200" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="validate_format(name,value:String,format:Regex,*,failure_message:String=&quot;isinthewrongformat&quot;):self-instance-method">
+      <div class="signature">
+        
+        def <strong>validate_format</strong>(name, value : String, format : Regex, *, failure_message : String = <span class="s">&quot;is in the wrong format&quot;</span>) : <span class="k">self</span>
+
+        <a class="method-permalink" href="#validate_format%28name%2Cvalue%3AString%2Cformat%3ARegex%2C%2A%2Cfailure_message%3AString%3D%22isinthewrongformat%22%29%3Aself-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Validate that <code>value</code> matches the expected format in the <code>Regex</code>, using
+the attribute name specified in <code>name</code> and a default <code>failure_message</code>.</p>
+<pre><code class="language-crystal"><span class="t">Result</span>(<span class="t">User</span>).new
+  .validate_format(<span class="s">&quot;email&quot;</span>, email, <span class="s">/\w@\w/</span>, failure_message: <span class="s">&quot;must be a valid email address&quot;</span>)</code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/validations.cr#L102" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="validate_format(value:String,format:Regex,*,failure_message:String):self-instance-method">
+      <div class="signature">
+        
+        def <strong>validate_format</strong>(value : String, format : Regex, *, failure_message : String) : <span class="k">self</span>
+
+        <a class="method-permalink" href="#validate_format%28value%3AString%2Cformat%3ARegex%2C%2A%2Cfailure_message%3AString%29%3Aself-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Validate that <code>value</code> matches the expected format in the <code>Regex</code>. This
+method does not infer a name, so a custom <code>failure_message</code> must be
+provided.</p>
+<pre><code class="language-crystal"><span class="t">Result</span>(<span class="t">User</span>).new
+  .validate_format(email, <span class="s">/\w@\w/</span>, failure_message: <span class="s">&quot;Email must be a valid email address (user@domain.tld)&quot;</span>)</code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/validations.cr#L91" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="validate_format(format:Regex,**attributes):self-instance-method">
+      <div class="signature">
+        
+        def <strong>validate_format</strong>(format : Regex, **attributes) : <span class="k">self</span>
+
+        <a class="method-permalink" href="#validate_format%28format%3ARegex%2C%2A%2Aattributes%29%3Aself-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Validate that all of the attributes match the expected format in the
+<code>Regex</code>.</p>
+<pre><code class="language-crystal">Result(User).new
+  .validate_format(/\w@\w/, email: email)</code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/validations.cr#L75" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="validate_presence(**values):self-instance-method">
+      <div class="signature">
+        
+        def <strong>validate_presence</strong>(**values) : <span class="k">self</span>
+
+        <a class="method-permalink" href="#validate_presence%28%2A%2Avalues%29%3Aself-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Validate whether all of the <code>values</code> are present by calling <code>.presence</code>
+on them.</p>
+<pre><code class="language-crystal"><span class="t">Result</span>(<span class="t">Post</span>).new
+  .validate_presence(title: title, body: body)</code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/validations.cr#L60" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="validate_size(name:String,value,size:Range,unit:String,*,failure_message=default_validate_size_failure_message(size,unit)):self-instance-method">
+      <div class="signature">
+        
+        def <strong>validate_size</strong>(name : String, value, size : Range, unit : String, *, failure_message = default_validate_size_failure_message(size, unit)) : <span class="k">self</span>
+
+        <a class="method-permalink" href="#validate_size%28name%3AString%2Cvalue%2Csize%3ARange%2Cunit%3AString%2C%2A%2Cfailure_message%3Ddefault_validate_size_failure_message%28size%2Cunit%29%29%3Aself-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Validate that <code>value</code> is of the expected <code>size</code> range. Value can be any object that responds to <code>#size</code>.</p>
+<pre><code class="language-crystal"><span class="t">Result</span>(<span class="t">User</span>).new
+  .validate_size(<span class="s">&quot;username&quot;</span>, username, <span class="n">2</span>..<span class="n">64</span>, <span class="s">&quot;characters&quot;</span>)</code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/validations.cr#L114" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="validate_uniqueness(attribute,&amp;):self-instance-method">
+      <div class="signature">
+        
+        def <strong>validate_uniqueness</strong>(attribute, &) : <span class="k">self</span>
+
+        <a class="method-permalink" href="#validate_uniqueness%28attribute%2C%26%29%3Aself-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Validate that the given attribute is unique by executing a block that
+returns truthy if any other objects exist with that attribute.</p>
+<pre><code class="language-crystal"><span class="t">Result</span>(<span class="t">User</span>).new
+  .validate_uniqueness(<span class="s">&quot;email&quot;</span>) { where(email: email).any? }</code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/validations.cr#L157" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="validate_uniqueness(*,message:String,&amp;):self-instance-method">
+      <div class="signature">
+        
+        def <strong>validate_uniqueness</strong>(*, message : String, &) : <span class="k">self</span>
+
+        <a class="method-permalink" href="#validate_uniqueness%28%2A%2Cmessage%3AString%2C%26%29%3Aself-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Validate that the given attribute is unique by executing a block that
+returns truthy if any other objects exist with that attribute.</p>
+<pre><code class="language-crystal"><span class="t">Result</span>(<span class="t">User</span>).new
+  .validate_uniqueness(message: <span class="s">&quot;That email has already been taken&quot;</span>) { where(email: email).any? }</code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/validations.cr#L170" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+</div>
+
+</body>
+</html>

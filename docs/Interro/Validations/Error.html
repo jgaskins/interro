@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Crystal Docs 1.10.1">
+<meta name="crystal_docs.project_version" content="0.3.3">
+<meta name="crystal_docs.project_name" content="interro">
+
+
+
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../js/doc.js"></script>
+
+  <meta name="repository-name" content="interro">
+  <title>Interro::Validations::Error - interro 0.3.3</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "../../";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill="currentColor" fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<input type="checkbox" id="sidebar-btn">
+<label for="sidebar-btn" id="sidebar-btn-label">
+  <svg class="open" xmlns="http://www.w3.org/2000/svg" height="2em" width="2em" viewBox="0 0 512 512"><title>Open Sidebar</title><path fill="currentColor" d="M80 96v64h352V96H80zm0 112v64h352v-64H80zm0 112v64h352v-64H80z"></path></svg>
+  <svg class="close" xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 512 512"><title>Close Sidebar</title><path fill="currentColor" d="m118.6 73.4-45.2 45.2L210.7 256 73.4 393.4l45.2 45.2L256 301.3l137.4 137.3 45.2-45.2L301.3 256l137.3-137.4-45.2-45.2L256 210.7Z"></path></svg>
+</label>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="../../index.html">
+          interro
+        </a>
+      </h1>
+
+      <span class="project-version">
+        0.3.3
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="interro/Interro" data-name="interro">
+      <a href="../../Interro.html">Interro</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/Any" data-name="interro::any">
+      <a href="../../Interro/Any.html">Any</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Config" data-name="interro::config">
+      <a href="../../Interro/Config.html">Config</a>
+      
+    </li>
+  
+  <li class="parent " data-id="interro/Interro/ConflictHandler" data-name="interro::conflicthandler(updatehandler)">
+      <a href="../../Interro/ConflictHandler.html">ConflictHandler</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/ConflictHandler/Action" data-name="interro::conflicthandler::action">
+      <a href="../../Interro/ConflictHandler/Action.html">Action</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/DoNothing" data-name="interro::donothing">
+      <a href="../../Interro/DoNothing.html">DoNothing</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/DynamicQuery" data-name="interro::dynamicquery(t, u)">
+      <a href="../../Interro/DynamicQuery.html">DynamicQuery</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Error" data-name="interro::error">
+      <a href="../../Interro/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Exception" data-name="interro::exception">
+      <a href="../../Interro/Exception.html">Exception</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Field" data-name="interro::field">
+      <a href="../../Interro/Field.html">Field</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/JoinClause" data-name="interro::joinclause">
+      <a href="../../Interro/JoinClause.html">JoinClause</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Migration" data-name="interro::migration">
+      <a href="../../Interro/Migration.html">Migration</a>
+      
+    </li>
+  
+  <li class="parent " data-id="interro/Interro/Migrations" data-name="interro::migrations">
+      <a href="../../Interro/Migrations.html">Migrations</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/Migrations/SchemaMigration" data-name="interro::migrations::schemamigration">
+      <a href="../../Interro/Migrations/SchemaMigration.html">SchemaMigration</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Migrations/SQLGenerator" data-name="interro::migrations::sqlgenerator">
+      <a href="../../Interro/Migrations/SQLGenerator.html">SQLGenerator</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="interro/Interro/Model" data-name="interro::model">
+      <a href="../../Interro/Model.html">Model</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/Model/NonStrict" data-name="interro::model::nonstrict">
+      <a href="../../Interro/Model/NonStrict.html">NonStrict</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/NotFound" data-name="interro::notfound">
+      <a href="../../Interro/NotFound.html">NotFound</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/OrderBy" data-name="interro::orderby">
+      <a href="../../Interro/OrderBy.html">OrderBy</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Query" data-name="interro::query">
+      <a href="../../Interro/Query.html">Query</a>
+      
+    </li>
+  
+  <li class="parent " data-id="interro/Interro/QueryBuilder" data-name="interro::querybuilder(t)">
+      <a href="../../Interro/QueryBuilder.html">QueryBuilder</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/QueryBuilder/CompoundQuery" data-name="interro::querybuilder::compoundquery(t)">
+      <a href="../../Interro/QueryBuilder/CompoundQuery.html">CompoundQuery</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryBuilder/InnerJoin" data-name="interro::querybuilder::innerjoin">
+      <a href="../../Interro/QueryBuilder/InnerJoin.html">InnerJoin</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryBuilder/OrderByDirection" data-name="interro::querybuilder::orderbydirection">
+      <a href="../../Interro/QueryBuilder/OrderByDirection.html">OrderByDirection</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryBuilder/ResultSetIterator" data-name="interro::querybuilder::resultsetiterator(t)">
+      <a href="../../Interro/QueryBuilder/ResultSetIterator.html">ResultSetIterator</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryExpression" data-name="interro::queryexpression">
+      <a href="../../Interro/QueryExpression.html">QueryExpression</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryRecord" data-name="interro::queryrecord">
+      <a href="../../Interro/QueryRecord.html">QueryRecord</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/QueryValue" data-name="interro::queryvalue">
+      <a href="../../Interro/QueryValue.html">QueryValue</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/UnexpectedEmptyResultSet" data-name="interro::unexpectedemptyresultset">
+      <a href="../../Interro/UnexpectedEmptyResultSet.html">UnexpectedEmptyResultSet</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Update" data-name="interro::update(t)">
+      <a href="../../Interro/Update.html">Update</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="interro/Interro/Validations" data-name="interro::validations">
+      <a href="../../Interro/Validations.html">Validations</a>
+      
+        <ul>
+  
+  <li class=" current" data-id="interro/Interro/Validations/Error" data-name="interro::validations::error">
+      <a href="../../Interro/Validations/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Validations/Failure" data-name="interro::validations::failure">
+      <a href="../../Interro/Validations/Failure.html">Failure</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Validations/Result" data-name="interro::validations::result(t)">
+      <a href="../../Interro/Validations/Result.html">Result</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/Interro/Value" data-name="interro::value">
+      <a href="../../Interro/Value.html">Value</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="interro/NamedTuple" data-name="namedtuple(**t)">
+      <a href="../../NamedTuple.html">NamedTuple</a>
+      
+    </li>
+  
+  <li class=" " data-id="interro/PQ" data-name="pq">
+      <a href="../../PQ.html">PQ</a>
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">
+    struct
+  </span> Interro::<wbr>Validations::<wbr>Error
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Interro/Validations/Error.html">Interro::Validations::Error</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
+
+
+
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>Represents a validation error. Can be rendered directly to a template.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/validations.cr#L257" target="_blank">
+        validations.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+  
+  <h2>
+    <a id="constructors" class="anchor" href="#constructors">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructors
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28attribute%3AString%2Cmessage%3AString%29-class-method" class="signature"><strong>.new</strong>(attribute : String, message : String)</a>
+        
+      </li>
+    
+  </ul>
+
+
+  
+
+  
+
+  
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#%3D%3D%28value%3AString%29-instance-method" class="signature"><strong>#==</strong>(value : String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#attribute%3AString-instance-method" class="signature"><strong>#attribute</strong> : String</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#clone-instance-method" class="signature"><strong>#clone</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#copy_with%28attribute_attribute%3D%40attribute%2Cmessage_message%3D%40message%29-instance-method" class="signature"><strong>#copy_with</strong>(attribute _attribute = @attribute, message _message = @message)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#message%3AString-instance-method" class="signature"><strong>#message</strong> : String</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_s%28io%3AIO%29-instance-method" class="signature"><strong>#to_s</strong>(io : IO)</a>
+        
+          <div class="summary"><p>Same as <code>#inspect(io)</code>.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+  <div class="methods-inherited">
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+  </div>
+
+  
+  <h2>
+    <a id="constructor-detail" class="anchor" href="#constructor-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructor Detail
+  </h2>
+  
+    <div class="entry-detail" id="new(attribute:String,message:String)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(attribute : String, message : String)
+
+        <a class="method-permalink" href="#new%28attribute%3AString%2Cmessage%3AString%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/validations.cr#L257" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+  
+
+  
+
+  
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="==(value:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>==</strong>(value : String)
+
+        <a class="method-permalink" href="#%3D%3D%28value%3AString%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/validations.cr#L266" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="attribute:String-instance-method">
+      <div class="signature">
+        
+        def <strong>attribute</strong> : String
+
+        <a class="method-permalink" href="#attribute%3AString-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="clone-instance-method">
+      <div class="signature">
+        
+        def <strong>clone</strong>
+
+        <a class="method-permalink" href="#clone-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/validations.cr#L257" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="copy_with(attribute_attribute=@attribute,message_message=@message)-instance-method">
+      <div class="signature">
+        
+        def <strong>copy_with</strong>(attribute _attribute = @attribute, message _message = @message)
+
+        <a class="method-permalink" href="#copy_with%28attribute_attribute%3D%40attribute%2Cmessage_message%3D%40message%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/validations.cr#L257" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="message:String-instance-method">
+      <div class="signature">
+        
+        def <strong>message</strong> : String
+
+        <a class="method-permalink" href="#message%3AString-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_s(io:IO)-instance-method">
+      <div class="signature">
+        
+        def <strong>to_s</strong>(io : IO)
+
+        <a class="method-permalink" href="#to_s%28io%3AIO%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+            <div class="doc-inherited">
+              Description copied from struct Struct
+            </div>
+          
+          <p>Same as <code>#inspect(io)</code>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.3.3/src/validations.cr#L258" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+</div>
+
+</body>
+</html>
