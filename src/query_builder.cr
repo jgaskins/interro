@@ -508,11 +508,15 @@ module Interro
       sql = String.build do |str|
         str << "SELECT 1 AS one"
         str << " FROM " << sql_table_name
+
         if join = join_clause
           join.each(&.to_sql(str))
         end
 
-        str << " WHERE " << @where_clause.try(&.to_sql)
+        if where = where_clause
+          str << " WHERE " << where.to_sql
+        end
+
         str << " LIMIT 1"
       end
 

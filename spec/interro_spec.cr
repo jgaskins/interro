@@ -663,6 +663,9 @@ describe Interro do
       matching.none?.should eq false
       empty.any?.should eq false
       empty.none?.should eq true
+      # Check whether we can do it on an empty QueryBuilder
+      UserQuery.new.any?.should eq true
+      UserQuery.new.none?.should eq false
     end
 
     describe "transactions" do
