@@ -144,7 +144,7 @@ Here are a few methods provided by `Interro::QueryBuilder`:
 | Method | SQL | Notes |
 |-|-|-|
 | `where(name: "Jamie")` | `WHERE "name" = $1`, `"Jamie"` | |
-| `where { |user| user.created_at < timestamp }` | `WHERE "users"."created_at" < $1`, `timestamp` | |
+| `where { \|user\| user.created_at < timestamp }` | `WHERE "users"."created_at" < $1`, `timestamp` | |
 | `inner_join("groups", as: "g", on: "users.group_id = g.id")` | `INNER JOIN groups AS g ON users.group_id = g.id` | |
 | `order_by(created_at: :desc)` | `ORDER BY created_at DESC` | |
 | `limit(25)` | `LIMIT 25` | |
