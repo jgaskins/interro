@@ -141,17 +141,19 @@ If you're familiar with ActiveRecord, these are very similar to scopes. Interro 
 
 Here are a few methods provided by `Interro::QueryBuilder`:
 
-- `where(name: "Jamie")`
-- `where { |user| user.created_at < timestamp }`
-- `inner_join("groups", as: "g", on: "users.group_id = g.id")`
-- `order_by(created_at: "DESC")`
-- `limit(25)`
-- `scalar("count(*)", as: Int64)`
-- `insert(name: "Jamie", email: "jamie@example.com") : T`: returns the created record
-- `update(role: "admin") : T`: returns the updated models (allowing for immutable models)
-- `delete`
+| Method | SQL | Notes |
+|-|-|-|
+| `where(name: "Jamie")` | `WHERE "name" = $1`, `"Jamie"` | |
+| `where { |user| user.created_at < timestamp }` | `WHERE "users"."created_at" < $1`, `timestamp` | |
+| `inner_join("groups", as: "g", on: "users.group_id = g.id")` | `INNER JOIN groups AS g ON users.group_id = g.id` | |
+| `order_by(created_at: :desc)` | `ORDER BY created_at DESC` | |
+| `limit(25)` | `LIMIT 25` | |
+| `scalar("count(*)", as: Int64)` | `SELECT count(*) FROM #{sql_table_name} #{where_clause}` | |
+| `insert(name: "Jamie", email: "jamie@example.com") : T` | `INSERT INTO #{sql_table_name} (name, email) VALUES ($1, $2)`, `"Jamie"`, `"jamie@example.com"` | Returns the created record |
+| `update(role: "admin") : T` | `UPDATE #{sql_table_name} SET role = $1 #{where_clause}`, `"admin"` | Returns the updated models (allowing for immutable models). **Important:** Make sure you scope this down with a `where` if you don't want to update every row in the table! |
+| `delete` | `DELETE FROM #{sql_table_name} #{where_clause}` | **Important:** scope this down with a `where` if you don't want to delete every row in the table! |
 
-Each one of these methods returns a new instance of the query builder. This lets you compose them in your query builder's methods and even makes your own methods composable. For example:
+Most of these methods returns a new instance of the query builder. This lets you compose them in your query builder's methods and even makes your own methods composable. For example:
 
 ```crystal
 struct UserQuery < Interro::QueryBuilder(User)
