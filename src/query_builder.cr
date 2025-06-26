@@ -524,16 +524,31 @@ module Interro
     end
 
     protected def insert(**values) : T
-      insert values: values, on_conflict: nil
+      insert values
     end
 
     protected def insert(values : NamedTuple) : T
       insert values: values, on_conflict: nil
     end
 
+    protected def insert!(**values) : Bool
+      insert! values
+    end
+
+    protected def insert!(values : NamedTuple) : Bool
+      insert! values: values, on_conflict: nil
+    end
+
     protected def insert(values : NamedTuple, on_conflict : ConflictHandler?) : T
+      create_operation.call(self, values, on_conflict: on_conflict)
+    end
+
+    protected def insert!(values : NamedTuple, on_conflict : ConflictHandler?) : Bool
+      create_operation.call!(self, values, on_conflict: on_conflict)
+    end
+
+    private def create_operation
       CreateOperation(T).new(connection(CONFIG.write_db))
-        .call(self, values, on_conflict: on_conflict)
     end
 
     protected def update(**params) : Array(T)

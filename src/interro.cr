@@ -38,12 +38,38 @@ module Interro
     def initialize(@queryable : DB::Database | DB::Connection)
     end
 
-    def call(query : QueryBuilder(T), params, on_conflict : ConflictHandler? = nil) : T
+    def call(query : QueryBuilder(T), params, on_conflict conflict_handler : ConflictHandler? = nil) : T
       table_name = query.sql_table_name
       args = params
         .values
         .map { |value| Interro::Any.new(value) }
         .to_a
+      sql = generate_query query.sql_table_name, params,
+        on_conflict: conflict_handler,
+        returning: ->(io : IO) { query.select_columns io }
+
+      @queryable.query_one sql, args: args, as: T
+    end
+
+    def call!(query : QueryBuilder(T), params, on_conflict conflict_handler : ConflictHandler? = nil) : Bool
+      table_name = query.sql_table_name
+      args = params
+        .values
+        .map { |value| Interro::Any.new(value) }
+        .to_a
+      sql = generate_query query.sql_table_name, params,
+        on_conflict: conflict_handler,
+        returning: nil
+
+      @queryable.exec(sql, args: args).rows_affected == 1
+    end
+
+    protected def generate_query(
+      table_name : String,
+      params,
+      on_conflict conflict_handler : ConflictHandler?,
+      returning returning_clause,
+    )
       sql = String.build do |str|
         str << "INSERT INTO " << table_name << " ("
         params.each_with_index(1) do |key, value, index|
@@ -56,20 +82,20 @@ module Interro
           str << ", " if index < params.size
         end
         str << ") "
-        if on_conflict
-          if (action = on_conflict.action) && (handler_params = action.params)
+        if conflict_handler
+          if (action = conflict_handler.action) && (handler_params = action.params)
             start = params.size
             handler_params.each_value do |value|
               args << Interro::Any.new(value)
             end
           end
-          on_conflict.to_sql str, start_at: start || 1
+          conflict_handler.to_sql str, start_at: start || 1
         end
-        str << " RETURNING "
-        query.select_columns str
+        if returning_clause
+          str << " RETURNING "
+          returning_clause.call str
+        end
       end
-
-      @queryable.query_one sql, args: args, as: T
     end
   end
 

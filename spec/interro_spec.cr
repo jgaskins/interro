@@ -102,6 +102,10 @@ struct UserQuery < Interro::QueryBuilder(User)
     insert email: email, name: name
   end
 
+  def create!(email : String, name : String)
+    insert! email: email, name: name
+  end
+
   def destroy(user : User)
     self
       .where(id: user.id)
@@ -269,9 +273,9 @@ struct GroupMembershipQuery < Interro::QueryBuilder(GroupMembership)
   table "group_memberships"
 
   def create(user : User, group : Group) : GroupMembership
-    Interro.transaction do |txn|
-      GroupQuery[txn].increment_member_count group
-      with_transaction(txn).insert user_id: user.id, group_id: group.id
+    transaction do
+      GroupQuery.new(self).increment_member_count group
+      insert user_id: user.id, group_id: group.id
     end
   end
 end
@@ -330,46 +334,60 @@ struct NotificationQuery < Interro::QueryBuilder(Notification)
 end
 
 describe Interro do
-  it "can create a row" do
-    email = "foo-#{UUID.random}@example.com"
-
-    user = UserQuery.new.create(email: email, name: "Foo")
-
-    user.should be_a User
-    user.email.should eq email
-    user.name.should eq "Foo"
-  end
-
-  it "can find a row" do
-    email = "finduser-#{UUID.random}@example.com"
-    created_user = UserQuery.new.create(email: email, name: "Find User")
-
-    found_user = UserQuery.new.find!(email: email)
-
-    found_user.email.should eq email
-    found_user.name.should eq "Find User"
-    found_user.id.should eq created_user.id
-    found_user.created_at.should eq created_user.created_at
-    found_user.updated_at.should eq created_user.updated_at
-  end
-
-  it "can handles comparisons with NULL" do
-    query = UserQuery.new
-    active = query.create name: "Active", email: "active-#{UUID.random}@example.com"
-    inactive = query.create name: "Inactive", email: "inactive-#{UUID.random}@example.com"
-    query.deactivate! inactive
-
-    active_users = query.active
-    active_via_block = query.active_but_with_a_block
-
-    active_users.should contain active
-    active_users.should_not contain inactive
-    active_via_block.to_a.should eq active_users.to_a
-  end
-
   describe Interro::QueryBuilder do
     query = UserQuery.new
     created_users = Array.new(11) { query.create email: UUID.random.to_s, name: UUID.random.to_s }
+
+    it "can create a row" do
+      email = "foo-#{UUID.random}@example.com"
+
+      user = UserQuery.new.create(email: email, name: "Foo")
+
+      user.should be_a User
+      user.email.should eq email
+      user.name.should eq "Foo"
+    end
+
+    it "can create a row without returning it for performance reasons" do
+      email = "foo-#{UUID.random}@example.com"
+
+      result = UserQuery.new.create!(email: email, name: "Foo")
+      user = UserQuery.new.find!(email: email)
+
+      result.should eq true
+      # Validating that it actually inserted the record
+      user = UserQuery.new.find!(email: email)
+      user.should be_a User
+      user.email.should eq email
+      user.name.should eq "Foo"
+    end
+
+    it "can find a row" do
+      email = "finduser-#{UUID.random}@example.com"
+      created_user = UserQuery.new.create(email: email, name: "Find User")
+
+      found_user = UserQuery.new.find!(email: email)
+
+      found_user.email.should eq email
+      found_user.name.should eq "Find User"
+      found_user.id.should eq created_user.id
+      found_user.created_at.should eq created_user.created_at
+      found_user.updated_at.should eq created_user.updated_at
+    end
+
+    it "can handles comparisons with NULL" do
+      query = UserQuery.new
+      active = query.create name: "Active", email: "active-#{UUID.random}@example.com"
+      inactive = query.create name: "Inactive", email: "inactive-#{UUID.random}@example.com"
+      query.deactivate! inactive
+
+      active_users = query.active
+      active_via_block = query.active_but_with_a_block
+
+      active_users.should contain active
+      active_users.should_not contain inactive
+      active_via_block.to_a.should eq active_users.to_a
+    end
 
     it "can build a query" do
       users = query
