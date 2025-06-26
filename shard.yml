@@ -26,6 +26,6 @@ executables:
 
 development_dependencies: {}
 
-crystal: 1.0.0
+crystal: 1.14.0
 
 license: MIT
