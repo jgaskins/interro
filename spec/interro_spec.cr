@@ -1,3 +1,4 @@
+require "wait_group"
 require "./spec_helper"
 require "./config"
 
@@ -422,17 +423,33 @@ describe Interro do
       user.should eq created_users[0]
     end
 
-    it "can return an iterator" do
-      users = query
-        .registered_after(created_users[7].created_at)
-        .registered_before(created_users[10].created_at)
-        .in_reverse_chronological_order
-        .each
-        .map(&.itself)
-        .to_a
+    describe "#each (iterator)" do
+      it "can return an iterator" do
+        users = query
+          .registered_after(created_users[7].created_at)
+          .registered_before(created_users[10].created_at)
+          .in_reverse_chronological_order
+          .each
+          .map(&.itself)
+          .to_a
 
-      users.size.should eq 2
-      users.should eq created_users[8..9].reverse
+        users.size.should eq 2
+        users.should eq created_users[8..9].reverse
+      end
+
+      it "uses concurrency-safe iterators" do
+        iterator = UserQuery.new.each
+
+        WaitGroup.wait do |wg|
+          iterator.each_with_index do |user, index|
+            wg.spawn do
+              # If the iterator isn't concurrency-safe, one of these queries will
+              # likely break due to the GroupQuery using the same connection.
+              GroupQuery.new.with_member(user).to_a
+            end
+          end
+        end
+      end
     end
 
     it "can return results with a complex ORDER BY clause" do
