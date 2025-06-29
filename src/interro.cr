@@ -44,7 +44,7 @@ module Interro
         .values
         .map { |value| Interro::Any.new(value) }
         .to_a
-      sql = generate_query query.sql_table_name, params,
+      sql = generate_query query.sql_table_name, params, args,
         on_conflict: conflict_handler,
         returning: ->(io : IO) { query.select_columns io }
 
@@ -57,7 +57,7 @@ module Interro
         .values
         .map { |value| Interro::Any.new(value) }
         .to_a
-      sql = generate_query query.sql_table_name, params,
+      sql = generate_query query.sql_table_name, params, args,
         on_conflict: conflict_handler,
         returning: nil
 
@@ -67,6 +67,7 @@ module Interro
     protected def generate_query(
       table_name : String,
       params,
+      args,
       on_conflict conflict_handler : ConflictHandler?,
       returning returning_clause,
     )

@@ -106,6 +106,13 @@ struct UserQuery < Interro::QueryBuilder(User)
     insert! email: email, name: name
   end
 
+  def upsert(email : String, name : String)
+    data = {email: email, name: name}
+    insert data,
+      on_conflict: Interro::ConflictHandler.new "email",
+        do: Interro::Update.new(set: {name: name, updated_at: Time.utc})
+  end
+
   def destroy(user : User)
     self
       .where(id: user.id)
@@ -360,6 +367,15 @@ describe Interro do
       user.should be_a User
       user.email.should eq email
       user.name.should eq "Foo"
+    end
+
+    it "can upsert a row" do
+      email = "foo-#{UUID.random}@example.com"
+      user = UserQuery.new.create(email: email, name: "Foo")
+
+      upserted = UserQuery.new.upsert(email: email, name: "Bar")
+
+      UserQuery.new.find!(id: user.id).name.should eq "Bar"
     end
 
     it "can find a row" do

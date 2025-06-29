@@ -13,7 +13,7 @@ module Interro
 
   record Any, value : Value do
     def self.new(values : Array)
-      new values.map { |value| Any.new(value) }
+      new values.map { |value| new(value) }
     end
 
     def self.new(any : self)
