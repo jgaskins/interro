@@ -9,60 +9,58 @@ module Interro
     def initialize(@db = CONFIG.write_db)
     end
 
-    def extract_schema : String
-      schema = String.build do |str|
-        str << "-- Generated Schema\n\n"
+    def extract_schema(to io : IO) : Nil
+      io << "-- Generated Schema\n\n"
 
-        # Extract extensions
-        extensions = query_extensions
-        extensions.each do |ext|
-          str << extension_definition(ext)
-          str << "\n"
-        end
-        str << "\n" if !extensions.empty?
+      # Extract extensions
+      extensions = query_extensions
+      extensions.each do |ext|
+        io << extension_definition(ext)
+        io << "\n"
+      end
+      io << "\n" if !extensions.empty?
 
-        # Extract and group tables by name
-        tables = query_tables.group_by(&.table_name)
-        tables.each do |table_name, columns|
-          str << table_definition(columns)
-          str << "\n\n"
-        end
-
-        migrations = query_migrations
-        if migrations.any?
-          str.puts "INSERT INTO schema_migrations (name, added_at)"
-          str.puts "VALUES"
-          migrations.each_with_index 1 do |migration, index|
-            str << "  ('#{migration.name}', '#{migration.added_at}')"
-            if index < migrations.size
-              str.puts ','
-            else
-              str.puts ';'
-            end
-          end
-          str.puts
-        end
-
-        # Extract indexes
-        indexes = query_indexes
-        indexes.each do |index|
-          str << index_definition(index)
-          str << "\n"
-        end
-
-        # Extract foreign keys
-        foreign_keys = query_foreign_keys
-        foreign_keys.each do |fk|
-          str << foreign_key_definition(fk)
-          str << "\n"
-        end
+      # Extract and group tables by name
+      tables = query_tables.group_by(&.table_name)
+      tables.each do |table_name, columns|
+        io << table_definition(columns)
+        io << "\n\n"
       end
 
-      schema
+      migrations = query_migrations
+      if migrations.any?
+        io.puts "INSERT INTO schema_migrations (name, added_at)"
+        io.puts "VALUES"
+        migrations.each_with_index 1 do |migration, index|
+          io << "  ('#{migration.name}', '#{migration.added_at}')"
+          if index < migrations.size
+            io.puts ','
+          else
+            io.puts ';'
+          end
+        end
+        io.puts
+      end
+
+      # Extract indexes
+      indexes = query_indexes
+      indexes.each do |index|
+        io << index_definition(index)
+        io << "\n"
+      end
+
+      # Extract foreign keys
+      foreign_keys = query_foreign_keys
+      foreign_keys.each do |fk|
+        io << foreign_key_definition(fk)
+        io << "\n"
+      end
     end
 
     def save_schema(path : String = "db/schema.sql")
-      File.write(path, extract_schema)
+      File.open path, "w" do |file|
+        extract_schema file
+      end
     end
 
     private def query_extensions
