@@ -130,7 +130,7 @@ module Interro
         SELECT
           t.relname AS table_name,
           i.relname AS index_name,
-          a.attname AS column_name,
+          array_to_string(array_agg(a.attname ORDER BY a.attnum), ', ') AS column_name,
           ix.indisunique AS unique
         FROM pg_class t
         JOIN pg_index ix ON t.oid = ix.indrelid
@@ -139,6 +139,7 @@ module Interro
         WHERE a.attnum = ANY(ix.indkey)
           AND t.relkind = 'r'
           AND t.relnamespace = (SELECT oid FROM pg_namespace WHERE nspname = 'public')
+        GROUP BY t.relname, i.relname, ix.indisunique
         ORDER BY t.relname, i.relname
       SQL
     end
