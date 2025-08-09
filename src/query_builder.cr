@@ -307,7 +307,6 @@ module Interro
       end
 
       if where_clause && (current_where_clause = @where_clause)
-        # pp current_where_clause: current_where_clause, where_clause: where_clause, new: current_where_clause & where_clause
         where_clause = current_where_clause & where_clause
       end
 
