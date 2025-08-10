@@ -165,11 +165,7 @@ module Interro
     end
 
     def self.new(transaction_owner : ::Interro::QueryBuilder)
-      if txn = transaction_owner.transaction
-        self[txn]
-      else
-        new
-      end
+      self[transaction_owner.transaction]
     end
 
     protected property? distinct : Array(String)? = nil
