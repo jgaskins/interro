@@ -160,6 +160,10 @@ module Interro
       new.with_transaction(transaction)
     end
 
+    def self.[](transaction : Nil) : self
+      new
+    end
+
     def self.new(transaction_owner : ::Interro::QueryBuilder)
       if txn = transaction_owner.transaction
         self[txn]
