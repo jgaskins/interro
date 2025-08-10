@@ -3,6 +3,8 @@ require "./join_clause"
 require "./query_record"
 require "./dynamic_query"
 require "./validations"
+require "./create_operation"
+require "./create_many_operation"
 
 module Interro
   alias OrderBy = Hash(String, String)
@@ -546,8 +548,16 @@ module Interro
       create_operation.call!(self, values, on_conflict: on_conflict)
     end
 
+    protected def insert!(records : Array(NamedTuple), on_conflict : ConflictHandler? = nil) : Int32
+      create_many_operation.call!(self, records, on_conflict: on_conflict)
+    end
+
     private def create_operation
       CreateOperation(T).new(connection(CONFIG.write_db))
+    end
+
+    private def create_many_operation
+      CreateManyOperation(T).new(connection(CONFIG.write_db))
     end
 
     protected def update(**params) : Array(T)

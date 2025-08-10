@@ -106,6 +106,10 @@ struct UserQuery < Interro::QueryBuilder(User)
     insert! email: email, name: name
   end
 
+  def create!(user_templates : Array(Template))
+    insert! user_templates.map(&.to_named_tuple)
+  end
+
   def upsert(email : String, name : String)
     data = {email: email, name: name}
     insert data,
@@ -218,6 +222,12 @@ struct UserQuery < Interro::QueryBuilder(User)
 
   def lock_rows
     for_update
+  end
+
+  record Template, email : String, name : String do
+    protected def to_named_tuple
+      {email: email, name: name}
+    end
   end
 end
 
@@ -345,7 +355,7 @@ describe Interro do
     query = UserQuery.new
     created_users = Array.new(11) { query.create email: UUID.random.to_s, name: UUID.random.to_s }
 
-    it "can create a row" do
+    it "can insert a row" do
       email = "foo-#{UUID.random}@example.com"
 
       user = UserQuery.new.create(email: email, name: "Foo")
@@ -355,7 +365,7 @@ describe Interro do
       user.name.should eq "Foo"
     end
 
-    it "can create a row without returning it for performance reasons" do
+    it "can insert a row without returning it" do
       email = "foo-#{UUID.random}@example.com"
 
       result = UserQuery.new.create!(email: email, name: "Foo")
@@ -367,6 +377,14 @@ describe Interro do
       user.should be_a User
       user.email.should eq email
       user.name.should eq "Foo"
+    end
+
+    it "can insert many rows without returning them" do
+      result = UserQuery.new.create!(Array.new(10) { |i|
+        UserQuery::Template.new(email: "one-of-many.#{UUID.v7}", name: "User #{i}")
+      })
+
+      result.should eq 10
     end
 
     it "can upsert a row" do
