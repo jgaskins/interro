@@ -42,14 +42,14 @@ module Interro
         io.puts
       end
 
-      # Extract indexes
-      indexes = query_indexes
+      # Extract indexes (sorted for deterministic order)
+      indexes = query_indexes.sort_by { |idx| {idx.table_name, idx.index_name} }
       indexes.each do |index|
         io << index_definition(index)
         io << "\n"
       end
 
-      # Extract foreign keys
+      # Extract foreign keys (already sorted in query)
       foreign_keys = query_foreign_keys
       foreign_keys.each do |fk|
         io << foreign_key_definition(fk)
@@ -86,13 +86,19 @@ module Interro
         SELECT
           tables.table_name,
           column_name,
-          udt_name data_type,
+          CASE
+            WHEN udt_name LIKE '_%' THEN format_type(atttypid, atttypmod)
+            ELSE udt_name
+          END AS data_type,
           column_default,
           is_nullable = 'YES' AS nullable,
           character_maximum_length
         FROM information_schema.columns
         JOIN information_schema.tables
           USING (table_name)
+        LEFT JOIN pg_attribute
+          ON pg_attribute.attname = column_name
+          AND pg_attribute.attrelid = tables.table_name::regclass
         WHERE tables.table_schema = 'public'
         AND tables.table_type = 'BASE TABLE'
         ORDER BY table_name, ordinal_position
@@ -157,16 +163,22 @@ module Interro
       @db.query_all <<-SQL, as: ForeignKey
         SELECT
           tc.table_name,
+          tc.constraint_name,
           kcu.column_name,
           ccu.table_name AS foreign_table_name,
-          ccu.column_name AS foreign_column_name
+          ccu.column_name AS foreign_column_name,
+          rc.update_rule,
+          rc.delete_rule
         FROM information_schema.table_constraints tc
         JOIN information_schema.key_column_usage kcu
           ON tc.constraint_name = kcu.constraint_name
         JOIN information_schema.constraint_column_usage ccu
           ON ccu.constraint_name = tc.constraint_name
+        LEFT JOIN information_schema.referential_constraints rc
+          ON rc.constraint_name = tc.constraint_name
         WHERE constraint_type = 'FOREIGN KEY'
         AND tc.table_schema = 'public'
+        ORDER BY tc.table_name, tc.constraint_name
       SQL
     end
 
@@ -174,9 +186,12 @@ module Interro
       include DB::Serializable
 
       getter table_name : String
+      getter constraint_name : String
       getter column_name : String
       getter foreign_table_name : String
       getter foreign_column_name : String
+      getter update_rule : String?
+      getter delete_rule : String?
     end
 
     private def extension_definition(extension : Extension) : String
@@ -215,8 +230,19 @@ module Interro
     end
 
     private def foreign_key_definition(fk) : String
-      "ALTER TABLE #{fk.table_name} ADD FOREIGN KEY (#{fk.column_name}) " \
-      "REFERENCES #{fk.foreign_table_name} (#{fk.foreign_column_name});"
+      definition = "ALTER TABLE #{fk.table_name} ADD CONSTRAINT #{fk.constraint_name} " \
+                   "FOREIGN KEY (#{fk.column_name}) " \
+                   "REFERENCES #{fk.foreign_table_name} (#{fk.foreign_column_name})"
+
+      if fk.update_rule && fk.update_rule != "NO ACTION"
+        definition += " ON UPDATE #{fk.update_rule}"
+      end
+
+      if fk.delete_rule && fk.delete_rule != "NO ACTION"
+        definition += " ON DELETE #{fk.delete_rule}"
+      end
+
+      definition + ";"
     end
   end
 end
