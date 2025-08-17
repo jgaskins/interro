@@ -70,7 +70,7 @@ module Interro
             {% end %}
           })
         {% else %}
-          yield T.new(rs)
+          yield {{T.instance}}.new(rs)
         {% end %}
       end
     end
