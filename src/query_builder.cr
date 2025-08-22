@@ -501,6 +501,10 @@ module Interro
       new
     end
 
+    def empty?
+      none?
+    end
+
     def any? : Bool
       !none?
     end
