@@ -120,7 +120,7 @@ module Interro
       @db.query_all <<-SQL, as: SchemaMigration
         SELECT name, added_at::text
         FROM schema_migrations
-        ORDER BY added_at
+        ORDER BY added_at DESC
         SQL
     end
 
