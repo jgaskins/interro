@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="interro">
-  <title>Interro::Validations::Failure - interro v0.5.0</title>
+  <title>Interro::SchemaGenerator::ForeignKey - interro v0.5.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -212,7 +212,7 @@
       
     </li>
   
-  <li class="parent " data-id="interro/Interro/SchemaGenerator" data-name="interro::schemagenerator">
+  <li class="parent open current" data-id="interro/Interro/SchemaGenerator" data-name="interro::schemagenerator">
       <a href="../../Interro/SchemaGenerator.html">SchemaGenerator</a>
       
         <ul>
@@ -227,7 +227,7 @@
       
     </li>
   
-  <li class=" " data-id="interro/Interro/SchemaGenerator/ForeignKey" data-name="interro::schemagenerator::foreignkey">
+  <li class=" current" data-id="interro/Interro/SchemaGenerator/ForeignKey" data-name="interro::schemagenerator::foreignkey">
       <a href="../../Interro/SchemaGenerator/ForeignKey.html">ForeignKey</a>
       
     </li>
@@ -257,7 +257,7 @@
       
     </li>
   
-  <li class="parent open current" data-id="interro/Interro/Validations" data-name="interro::validations">
+  <li class="parent " data-id="interro/Interro/Validations" data-name="interro::validations">
       <a href="../../Interro/Validations.html">Validations</a>
       
         <ul>
@@ -267,7 +267,7 @@
       
     </li>
   
-  <li class=" current" data-id="interro/Interro/Validations/Failure" data-name="interro::validations::failure">
+  <li class=" " data-id="interro/Interro/Validations/Failure" data-name="interro::validations::failure">
       <a href="../../Interro/Validations/Failure.html">Failure</a>
       
     </li>
@@ -313,32 +313,37 @@
 
   <span class="kind">
     struct
-  </span> Interro::<wbr>Validations::<wbr>Failure
+  </span> Interro::<wbr>SchemaGenerator::<wbr>ForeignKey
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Interro/Validations/Failure.html">Interro::Validations::Failure</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Interro/SchemaGenerator/ForeignKey.html">Interro::SchemaGenerator::ForeignKey</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
+
+
+
+
+
+
 
 
 
 
   <h2>
-    <a id="overview" class="anchor" href="#overview">
+    <a id="included-modules" class="anchor" href="#included-modules">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
 </a>
-    Overview
+    Included Modules
   </h2>
-
-  <p>Returned when one or more validations did not pass and contains all of the validation errors.</p>
-
-
-
-
-
-
+  <ul class="other-types-list">
+    
+      <li class="other-type">DB::Mappable</li>
+    
+      <li class="other-type">DB::Serializable</li>
+    
+  </ul>
 
 
 
@@ -359,8 +364,8 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/validations.cr#L272" target="_blank">
-        validations.cr
+      <a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/schema_generator.cr#L185" target="_blank">
+        schema_generator.cr
       </a>
     
     <br/>
@@ -382,12 +387,7 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28errors%3AArray%28Error%29%29-class-method" class="signature"><strong>.new</strong>(errors : Array(Error))</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#new%28error_messages%3AArray%28String%29%29%3AFailure-class-method" class="signature"><strong>.new</strong>(error_messages : Array(String)) : Failure</a>
+        <a href="#new%28rs%3ADB%3A%3AResultSet%29-class-method" class="signature"><strong>.new</strong>(rs : DB::ResultSet)</a>
         
       </li>
     
@@ -395,6 +395,23 @@
 
 
   
+  <h2>
+    <a id="class-method-summary" class="anchor" href="#class-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#from_rs%28rs%3ADB%3A%3AResultSet%29-class-method" class="signature"><strong>.from_rs</strong>(rs : DB::ResultSet)</a>
+        
+      </li>
+    
+  </ul>
+
 
   
 
@@ -410,17 +427,37 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#clone-instance-method" class="signature"><strong>#clone</strong></a>
+        <a href="#column_name%3AString-instance-method" class="signature"><strong>#column_name</strong> : String</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#copy_with%28errors_errors%3D%40errors%29-instance-method" class="signature"><strong>#copy_with</strong>(errors _errors = @errors)</a>
+        <a href="#constraint_name%3AString-instance-method" class="signature"><strong>#constraint_name</strong> : String</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#errors%3AArray%28Error%29-instance-method" class="signature"><strong>#errors</strong> : Array(Error)</a>
+        <a href="#delete_rule%3AString%7CNil-instance-method" class="signature"><strong>#delete_rule</strong> : String | Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#foreign_column_name%3AString-instance-method" class="signature"><strong>#foreign_column_name</strong> : String</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#foreign_table_name%3AString-instance-method" class="signature"><strong>#foreign_table_name</strong> : String</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#table_name%3AString-instance-method" class="signature"><strong>#table_name</strong> : String</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#update_rule%3AString%7CNil-instance-method" class="signature"><strong>#update_rule</strong> : String | Nil</a>
         
       </li>
     
@@ -429,6 +466,41 @@
 
 
   <div class="methods-inherited">
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+  <h3>Constructor methods inherited from module <code>DB::Serializable</code></h3>
+  
+  
+    <a href="../../DB/Serializable.html#new%28%2A%2C__set_for_db_serializablers%3ADB%3A%3AResultSet%29-class-method" class="tooltip">
+      <span>new(*, __set_for_db_serializable rs : DB::ResultSet)</span>
+    new</a>
+    
+  
+
+
+      
+
+
+      
+
+
     
       
 
@@ -481,34 +553,18 @@
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(errors:Array(Error))-class-method">
+    <div class="entry-detail" id="new(rs:DB::ResultSet)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(errors : Array(<a href="../../Interro/Validations/Error.html">Error</a>))
+        def self.<strong>new</strong>(rs : DB::ResultSet)
 
-        <a class="method-permalink" href="#new%28errors%3AArray%28Error%29%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28rs%3ADB%3A%3AResultSet%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/validations.cr#L272" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="new(error_messages:Array(String)):Failure-class-method">
-      <div class="signature">
-        
-        def self.<strong>new</strong>(error_messages : Array(String)) : <a href="../../Interro/Validations/Failure.html">Failure</a>
-
-        <a class="method-permalink" href="#new%28error_messages%3AArray%28String%29%29%3AFailure-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/validations.cr#L273" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/schema_generator.cr#L186" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -516,6 +572,32 @@
 
 
   
+  <h2>
+    <a id="class-method-detail" class="anchor" href="#class-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="from_rs(rs:DB::ResultSet)-class-method">
+      <div class="signature">
+        
+        def self.<strong>from_rs</strong>(rs : DB::ResultSet)
+
+        <a class="method-permalink" href="#from_rs%28rs%3ADB%3A%3AResultSet%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/schema_generator.cr#L186" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
 
   
 
@@ -529,48 +611,114 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="clone-instance-method">
+    <div class="entry-detail" id="column_name:String-instance-method">
       <div class="signature">
         
-        def <strong>clone</strong>
+        def <strong>column_name</strong> : String
 
-        <a class="method-permalink" href="#clone-instance-method">#</a>
+        <a class="method-permalink" href="#column_name%3AString-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/validations.cr#L272" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/schema_generator.cr#L190" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="copy_with(errors_errors=@errors)-instance-method">
+    <div class="entry-detail" id="constraint_name:String-instance-method">
       <div class="signature">
         
-        def <strong>copy_with</strong>(errors _errors = @errors)
+        def <strong>constraint_name</strong> : String
 
-        <a class="method-permalink" href="#copy_with%28errors_errors%3D%40errors%29-instance-method">#</a>
+        <a class="method-permalink" href="#constraint_name%3AString-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/validations.cr#L272" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/schema_generator.cr#L189" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="errors:Array(Error)-instance-method">
+    <div class="entry-detail" id="delete_rule:String|Nil-instance-method">
       <div class="signature">
         
-        def <strong>errors</strong> : Array(<a href="../../Interro/Validations/Error.html">Error</a>)
+        def <strong>delete_rule</strong> : String | Nil
 
-        <a class="method-permalink" href="#errors%3AArray%28Error%29-instance-method">#</a>
+        <a class="method-permalink" href="#delete_rule%3AString%7CNil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/schema_generator.cr#L194" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="foreign_column_name:String-instance-method">
+      <div class="signature">
+        
+        def <strong>foreign_column_name</strong> : String
+
+        <a class="method-permalink" href="#foreign_column_name%3AString-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/schema_generator.cr#L192" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="foreign_table_name:String-instance-method">
+      <div class="signature">
+        
+        def <strong>foreign_table_name</strong> : String
+
+        <a class="method-permalink" href="#foreign_table_name%3AString-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/schema_generator.cr#L191" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="table_name:String-instance-method">
+      <div class="signature">
+        
+        def <strong>table_name</strong> : String
+
+        <a class="method-permalink" href="#table_name%3AString-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/schema_generator.cr#L188" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="update_rule:String|Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>update_rule</strong> : String | Nil
+
+        <a class="method-permalink" href="#update_rule%3AString%7CNil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/schema_generator.cr#L193" target="_blank">View source</a>]
         
       </div>
     </div>

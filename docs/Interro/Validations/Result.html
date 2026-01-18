@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.4.0">
+<meta name="generator" content="Crystal Docs 1.18.2">
+<meta name="crystal_docs.project_version" content="v0.5.0">
 <meta name="crystal_docs.project_name" content="interro">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="interro">
-  <title>Interro::Validations::Result(T) - interro 0.4.0</title>
+  <title>Interro::Validations::Result(T) - interro v0.5.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.4.0
+        v0.5.0
       </span>
     </div>
   </div>
@@ -179,11 +179,6 @@
   
   <li class=" " data-id="interro/Interro/QueryBuilder/CompoundQuery" data-name="interro::querybuilder::compoundquery(t)">
       <a href="../../Interro/QueryBuilder/CompoundQuery.html">CompoundQuery</a>
-      
-    </li>
-  
-  <li class=" " data-id="interro/Interro/QueryBuilder/InnerJoin" data-name="interro::querybuilder::innerjoin">
-      <a href="../../Interro/QueryBuilder/InnerJoin.html">InnerJoin</a>
       
     </li>
   
@@ -344,22 +339,22 @@ will execute if your values pass all validations, returning the value
 in the block (which must be the <code>T</code> type of the <code><a href="../../Interro/Validations/Result.html">Result</a></code>), or an
 <code><a href="../../Interro/Validations/Failure.html">Interro::Validations::Failure</a></code> object, which contains the validation
 errors for the given inputs.</p>
-<pre><code class="language-crystal">struct UserQuery &lt; Interro::QueryBuilder(User)
-  def create(*, name : String, email : String, team : Team, role : User::Role)
-    Result(User).new
+<pre><code class="language-crystal"><span class="k">struct</span> <span class="t">UserQuery</span> <span class="o">&lt;</span> <span class="t">Interro</span><span class="t">::</span><span class="t">QueryBuilder</span>(<span class="t">User</span>)
+  <span class="k">def</span> <span class="m">create</span>(<span class="o">*</span>, name : <span class="t">String</span>, email : <span class="t">String</span>, team : <span class="t">Team</span>, role : <span class="t">User</span><span class="t">::</span><span class="t">Role</span>)
+    <span class="t">Result</span>(<span class="t">User</span>).new
       .validate_presence(name: name, email: email)
-      .validate_uniqueness(&quot;email&quot;) { where(email: email).any? }
-      .validate_format(/\w@\w/, email: email, failure_message: &quot;must be a valid email address&quot;)
-      .valid do
+      .validate_uniqueness(<span class="s">&quot;email&quot;</span>) { where(email: email).any? }
+      .validate_format(<span class="s">/\w@\w/</span>, email: email, failure_message: <span class="s">&quot;must be a valid email address&quot;</span>)
+      .valid <span class="k">do</span>
         insert(
           name: name,
           email: email,
           team_id: team.id,
           role: role.value,
         )
-      end
-  end
-end</code></pre>
+      <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
 
 
 
@@ -386,7 +381,7 @@ end</code></pre>
   </h2>
   
     
-      <a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/validations.cr#L50" target="_blank">
+      <a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/validations.cr#L50" target="_blank">
         validations.cr
       </a>
     
@@ -581,7 +576,7 @@ end</code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/validations.cr#L50" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/validations.cr#L50" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -618,7 +613,7 @@ end</code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/validations.cr#L239" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/validations.cr#L239" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -634,7 +629,7 @@ end</code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/validations.cr#L50" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/validations.cr#L50" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -656,7 +651,7 @@ a <code><a href="../../Interro/Validations/Failure.html">Failure</a></code> cont
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/validations.cr#L247" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/validations.cr#L247" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -697,7 +692,7 @@ a <code><a href="../../Interro/Validations/Failure.html">Failure</a></code> cont
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/validations.cr#L230" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/validations.cr#L230" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -738,7 +733,7 @@ a <code><a href="../../Interro/Validations/Failure.html">Failure</a></code> cont
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/validations.cr#L200" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/validations.cr#L200" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -762,7 +757,7 @@ the attribute name specified in <code>name</code> and a default <code>failure_me
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/validations.cr#L102" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/validations.cr#L102" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -787,7 +782,7 @@ provided.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/validations.cr#L91" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/validations.cr#L91" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -804,14 +799,14 @@ provided.</p>
           
           <p>Validate that all of the attributes match the expected format in the
 <code>Regex</code>.</p>
-<pre><code class="language-crystal">Result(User).new
-  .validate_format(/\w@\w/, email: email)</code></pre>
+<pre><code class="language-crystal"><span class="t">Result</span>(<span class="t">User</span>).new
+  .validate_format(<span class="s">/\w@\w/</span>, email: email)</code></pre>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/validations.cr#L75" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/validations.cr#L75" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -835,7 +830,7 @@ on them.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/validations.cr#L60" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/validations.cr#L60" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -858,7 +853,7 @@ on them.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/validations.cr#L114" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/validations.cr#L114" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -882,7 +877,7 @@ returns truthy if any other objects exist with that attribute.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/validations.cr#L157" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/validations.cr#L157" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -906,7 +901,7 @@ returns truthy if any other objects exist with that attribute.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/validations.cr#L170" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/validations.cr#L170" target="_blank">View source</a>]
         
       </div>
     </div>

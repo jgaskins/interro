@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.4.0">
+<meta name="generator" content="Crystal Docs 1.18.2">
+<meta name="crystal_docs.project_version" content="v0.5.0">
 <meta name="crystal_docs.project_name" content="interro">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="interro">
-  <title>Interro::QueryBuilder(T) - interro 0.4.0</title>
+  <title>Interro::QueryBuilder(T) - interro v0.5.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.4.0
+        v0.5.0
       </span>
     </div>
   </div>
@@ -179,11 +179,6 @@
   
   <li class=" " data-id="interro/Interro/QueryBuilder/CompoundQuery" data-name="interro::querybuilder::compoundquery(t)">
       <a href="../Interro/QueryBuilder/CompoundQuery.html">CompoundQuery</a>
-      
-    </li>
-  
-  <li class=" " data-id="interro/Interro/QueryBuilder/InnerJoin" data-name="interro::querybuilder::innerjoin">
-      <a href="../Interro/QueryBuilder/InnerJoin.html">InnerJoin</a>
       
     </li>
   
@@ -474,14 +469,14 @@ the <code><a href="../Interro/Validations.html">Interro::Validations</a></code> 
   </h2>
   
     
-      <a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/dynamic_query.cr#L4" target="_blank">
+      <a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/dynamic_query.cr#L4" target="_blank">
         dynamic_query.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/query_builder.cr#L104" target="_blank">
+      <a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L106" target="_blank">
         query_builder.cr
       </a>
     
@@ -505,6 +500,11 @@ the <code><a href="../Interro/Validations.html">Interro::Validations</a></code> 
     
       <li class="entry-summary">
         <a href="#%5B%5D%28transaction%3ADB%3A%3ATransaction%29%3Aself-class-method" class="signature"><strong>.[]</strong>(transaction : DB::Transaction) : <span class="k">self</span></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#%5B%5D%28transaction%3ANil%29%3Aself-class-method" class="signature"><strong>.[]</strong>(transaction : Nil) : <span class="k">self</span></a>
         
       </li>
     
@@ -596,6 +596,13 @@ the <code><a href="../Interro/Validations.html">Interro::Validations</a></code> 
         <a href="#each%28%26%3AT-%3E%29-instance-method" class="signature"><strong>#each</strong>(& : T -> )</a>
         
           <div class="summary"><p>Must yield this collection's elements to the block.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#empty%3F-instance-method" class="signature"><strong>#empty?</strong></a>
+        
+          <div class="summary"><p>Returns <code>true</code> if <code>self</code> does not contain any element.</p></div>
         
       </li>
     
@@ -754,7 +761,23 @@ the <code><a href="../Interro/Validations.html">Interro::Validations</a></code> 
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/query_builder.cr#L157" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L156" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="[](transaction:Nil):self-class-method">
+      <div class="signature">
+        
+        def self.<strong>[]</strong>(transaction : Nil) : <span class="k">self</span>
+
+        <a class="method-permalink" href="#%5B%5D%28transaction%3ANil%29%3Aself-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L160" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -770,7 +793,7 @@ the <code><a href="../Interro/Validations.html">Interro::Validations</a></code> 
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/query_builder.cr#L161" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L164" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -786,7 +809,7 @@ the <code><a href="../Interro/Validations.html">Interro::Validations</a></code> 
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/query_builder.cr#L104" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L106" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -816,7 +839,7 @@ the <code><a href="../Interro/Validations.html">Interro::Validations</a></code> 
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/query_builder.cr#L123" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L125" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -832,7 +855,7 @@ the <code><a href="../Interro/Validations.html">Interro::Validations</a></code> 
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/query_builder.cr#L109" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L111" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -860,7 +883,7 @@ the <code><a href="../Interro/Validations.html">Interro::Validations</a></code> 
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/query_builder.cr#L254" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L253" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -876,7 +899,7 @@ the <code><a href="../Interro/Validations.html">Interro::Validations</a></code> 
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/query_builder.cr#L258" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L257" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -892,7 +915,7 @@ the <code><a href="../Interro/Validations.html">Interro::Validations</a></code> 
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/query_builder.cr#L250" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L249" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -928,7 +951,7 @@ semantics are required.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/query_builder.cr#L502" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L522" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -944,7 +967,7 @@ semantics are required.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/query_builder.cr#L262" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L261" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -969,7 +992,7 @@ semantics are required.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/query_builder.cr#L193" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L192" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -994,7 +1017,38 @@ semantics are required.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/query_builder.cr#L201" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L200" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="empty?-instance-method">
+      <div class="signature">
+        
+        def <strong>empty?</strong>
+
+        <a class="method-permalink" href="#empty%3F-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+            <div class="doc-inherited">
+              Description copied from module Enumerable(T)
+            </div>
+          
+          <p>Returns <code>true</code> if <code>self</code> does not contain any element.</p>
+<pre><code class="language-crystal">(<span class="o">[]</span> <span class="k">of</span> <span class="t">Int32</span>).empty? <span class="c"># =&gt; true</span>
+([<span class="n">1</span>]).empty?         <span class="c"># =&gt; false</span>
+[<span class="n">nil</span>, <span class="n">false</span>].empty?  <span class="c"># =&gt; false</span></code></pre>
+<ul>
+<li><code>#present?</code> returns the inverse.</li>
+</ul>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L518" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1022,7 +1076,7 @@ an empty collection, in which case it returns an empty array.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/query_builder.cr#L184" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L183" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1050,7 +1104,7 @@ if the collection is empty.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/query_builder.cr#L180" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L179" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1078,7 +1132,7 @@ When the collection is empty, returns <code>nil</code>.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/query_builder.cr#L188" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L187" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1094,7 +1148,7 @@ When the collection is empty, returns <code>nil</code>.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/query_builder.cr#L104" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L106" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1110,7 +1164,7 @@ When the collection is empty, returns <code>nil</code>.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/query_builder.cr#L221" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L220" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1138,7 +1192,7 @@ When the collection is empty, returns <code>nil</code>.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/query_builder.cr#L506" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L526" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1154,7 +1208,7 @@ When the collection is empty, returns <code>nil</code>.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/query_builder.cr#L238" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L237" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1170,7 +1224,7 @@ When the collection is empty, returns <code>nil</code>.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/query_builder.cr#L244" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/query_builder.cr#L243" target="_blank">View source</a>]
         
       </div>
     </div>

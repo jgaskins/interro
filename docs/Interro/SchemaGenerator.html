@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="interro">
-  <title>Interro::Update(T) - interro v0.5.0</title>
+  <title>Interro::SchemaGenerator - interro v0.5.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -212,7 +212,7 @@
       
     </li>
   
-  <li class="parent " data-id="interro/Interro/SchemaGenerator" data-name="interro::schemagenerator">
+  <li class="parent open current" data-id="interro/Interro/SchemaGenerator" data-name="interro::schemagenerator">
       <a href="../Interro/SchemaGenerator.html">SchemaGenerator</a>
       
         <ul>
@@ -252,7 +252,7 @@
       
     </li>
   
-  <li class=" current" data-id="interro/Interro/Update" data-name="interro::update(t)">
+  <li class=" " data-id="interro/Interro/Update" data-name="interro::update(t)">
       <a href="../Interro/Update.html">Update</a>
       
     </li>
@@ -312,13 +312,13 @@
 <h1 class="type-name">
 
   <span class="kind">
-    struct
-  </span> Interro::<wbr>Update(T)
+    class
+  </span> Interro::<wbr>SchemaGenerator
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../Interro/Update.html">Interro::Update(T)</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../Interro/SchemaGenerator.html">Interro::SchemaGenerator</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
@@ -328,20 +328,6 @@
 
 
 
-
-  <h2>
-    <a id="included-modules" class="anchor" href="#included-modules">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Included Modules
-  </h2>
-  <ul class="other-types-list">
-    
-      <li class="other-type"><a href="../Interro/ConflictHandler/Action.html">Interro::ConflictHandler::Action</a></li>
-    
-  </ul>
 
 
 
@@ -362,8 +348,8 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/update.cr#L4" target="_blank">
-        update.cr
+      <a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/schema_generator.cr#L6" target="_blank">
+        schema_generator.cr
       </a>
     
     <br/>
@@ -385,7 +371,7 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28setparams%3AT%29-class-method" class="signature"><strong>.new</strong>(set params : T)</a>
+        <a href="#new%28db%3ADB%3A%3ADatabase%3DCONFIG.write_db%29-class-method" class="signature"><strong>.new</strong>(db : DB::Database = <span class="t">CONFIG</span>.write_db)</a>
         
       </li>
     
@@ -408,12 +394,12 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#params%3AT-instance-method" class="signature"><strong>#params</strong> : T</a>
+        <a href="#extract_schema%28toio%3AIO%29%3ANil-instance-method" class="signature"><strong>#extract_schema</strong>(to io : IO) : Nil</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#to_sql%28io%2Cstart_atinitial_index%29%3ANil-instance-method" class="signature"><strong>#to_sql</strong>(io, start_at initial_index) : Nil</a>
+        <a href="#save_schema%28path%3AString%3D%22db/schema.sql%22%29-instance-method" class="signature"><strong>#save_schema</strong>(path : String = <span class="s">&quot;db/schema.sql&quot;</span>)</a>
         
       </li>
     
@@ -422,46 +408,6 @@
 
 
   <div class="methods-inherited">
-    
-      
-
-  <h3>Instance methods inherited from module <code><a href="../Interro/ConflictHandler/Action.html">Interro::ConflictHandler::Action</a></code></h3>
-  
-  
-    <a href="../Interro/ConflictHandler/Action.html#params-instance-method" class="tooltip">
-      <span>params</span>
-    params</a>, 
-    
-  
-    <a href="../Interro/ConflictHandler/Action.html#to_sql%28io%2Cstart_atinitial_index%29%3ANil-instance-method" class="tooltip">
-      <span>to_sql(io, start_at initial_index) : Nil</span>
-    to_sql</a>
-    
-  
-
-
-      
-
-
-      
-
-
-      
-
-
-    
-      
-
-
-      
-
-
-      
-
-
-      
-
-
     
       
 
@@ -501,18 +447,18 @@
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(setparams:T)-class-method">
+    <div class="entry-detail" id="new(db:DB::Database=CONFIG.write_db)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(set params : T)
+        def self.<strong>new</strong>(db : DB::Database = <span class="t">CONFIG</span>.write_db)
 
-        <a class="method-permalink" href="#new%28setparams%3AT%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28db%3ADB%3A%3ADatabase%3DCONFIG.write_db%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/update.cr#L9" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/schema_generator.cr#L9" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -533,34 +479,34 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="params:T-instance-method">
+    <div class="entry-detail" id="extract_schema(toio:IO):Nil-instance-method">
       <div class="signature">
         
-        def <strong>params</strong> : T
+        def <strong>extract_schema</strong>(to io : IO) : Nil
 
-        <a class="method-permalink" href="#params%3AT-instance-method">#</a>
+        <a class="method-permalink" href="#extract_schema%28toio%3AIO%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/update.cr#L7" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/schema_generator.cr#L12" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="to_sql(io,start_atinitial_index):Nil-instance-method">
+    <div class="entry-detail" id="save_schema(path:String=&quot;db/schema.sql&quot;)-instance-method">
       <div class="signature">
         
-        def <strong>to_sql</strong>(io, start_at initial_index) : Nil
+        def <strong>save_schema</strong>(path : String = <span class="s">&quot;db/schema.sql&quot;</span>)
 
-        <a class="method-permalink" href="#to_sql%28io%2Cstart_atinitial_index%29%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#save_schema%28path%3AString%3D%22db/schema.sql%22%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/update.cr#L12" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/schema_generator.cr#L60" target="_blank">View source</a>]
         
       </div>
     </div>

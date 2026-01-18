@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.4.0">
+<meta name="generator" content="Crystal Docs 1.18.2">
+<meta name="crystal_docs.project_version" content="v0.5.0">
 <meta name="crystal_docs.project_name" content="interro">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="interro">
-  <title>Interro::Migrations - interro 0.4.0</title>
+  <title>Interro::Migrations - interro v0.5.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.4.0
+        v0.5.0
       </span>
     </div>
   </div>
@@ -179,11 +179,6 @@
   
   <li class=" " data-id="interro/Interro/QueryBuilder/CompoundQuery" data-name="interro::querybuilder::compoundquery(t)">
       <a href="../Interro/QueryBuilder/CompoundQuery.html">CompoundQuery</a>
-      
-    </li>
-  
-  <li class=" " data-id="interro/Interro/QueryBuilder/InnerJoin" data-name="interro::querybuilder::innerjoin">
-      <a href="../Interro/QueryBuilder/InnerJoin.html">InnerJoin</a>
       
     </li>
   
@@ -351,7 +346,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/migrations.cr#L8" target="_blank">
+      <a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/migrations.cr#L8" target="_blank">
         migrations.cr
       </a>
     
@@ -377,9 +372,9 @@
   filename <span class="o">=</span> <span class="t">File</span>.basename(<span class="t">File</span>.dirname(path))
   timestamp, name <span class="o">=</span> filename.split(<span class="s">&quot;-&quot;</span>)
   time <span class="o">=</span> <span class="t">Time</span>.parse_utc(timestamp, <span class="s">&quot;%Y_%m_%d_%H_%M_%S_%9N&quot;</span>)
-  migration <span class="o">=</span> (  __temp_197 <span class="o">=</span> name
-  __temp_198 <span class="o">=</span> <span class="t">NAME_MAP</span>
-  __temp_198[__temp_197]? <span class="o">||</span> (__temp_198[__temp_197] <span class="o">=</span> <span class="t">Migration</span>.new(name, time))
+  migration <span class="o">=</span> (  __temp_97231827_1 <span class="o">=</span> name
+  __temp_97231827_2 <span class="o">=</span> <span class="t">NAME_MAP</span>
+  __temp_97231827_2[__temp_97231827_1]? <span class="o">||</span> (__temp_97231827_2[__temp_97231827_1] <span class="o">=</span> <span class="t">Migration</span>.new(name, time))
 )
 
   <span class="k">if</span> path.ends_with?(<span class="s">&quot;up.sql&quot;</span>)
@@ -507,7 +502,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/migrations.cr#L54" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/migrations.cr#L54" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -523,7 +518,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/migrations.cr#L143" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/migrations.cr#L143" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -539,7 +534,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/migrations.cr#L151" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/migrations.cr#L151" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -555,7 +550,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/migrations.cr#L132" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/migrations.cr#L132" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -571,7 +566,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/migrations.cr#L138" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/migrations.cr#L138" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -587,7 +582,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/migrations.cr#L108" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/migrations.cr#L108" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -603,7 +598,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/migrations.cr#L117" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/migrations.cr#L117" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -619,7 +614,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/migrations.cr#L87" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/migrations.cr#L87" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -635,7 +630,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.4.0/src/migrations.cr#L96" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/vv0.5.0/src/migrations.cr#L96" target="_blank">View source</a>]
         
       </div>
     </div>

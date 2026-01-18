@@ -153,9 +153,6 @@ module Interro
       end
     end
 
-    struct InnerJoin
-    end
-
     def self.[](transaction : ::DB::Transaction) : self
       new.with_transaction(transaction)
     end
@@ -265,12 +262,14 @@ module Interro
       scalar "count(*)", as: Int64
     end
 
+    # :doc:
     protected def find(**params) : T?
       query = where(**params).limit(1)
 
       connection(CONFIG.read_db).query_one? query.to_sql, args: query.args + [1], as: T
     end
 
+    # :doc:
     protected def inner_join(other_table, on condition : String, as relation = nil)
       new = dup
       new.join_clause = join_clause.dup
@@ -278,6 +277,7 @@ module Interro
       new
     end
 
+    # :doc:
     protected def left_join(other_table, on condition : String, as relation = nil)
       new = dup
       new.join_clause = join_clause.dup
@@ -285,6 +285,7 @@ module Interro
       new
     end
 
+    # :doc:
     protected def where(**params : Value | Any | Array) : self
       where_clause = nil
       args = Array(Any).new(initial_capacity: params.size)
@@ -324,6 +325,7 @@ module Interro
       new
     end
 
+    # :doc:
     protected def where(table = sql_table_alias, &block : QueryRecord -> QueryExpression) : self
       index = @args.size
       where_clause = yield(QueryRecord.new(table) { index += 1 })
@@ -339,6 +341,7 @@ module Interro
       new
     end
 
+    # :doc:
     protected def where(lhs : String, comparator : String, rhs : String, values : Array(Value) = [] of Value) : self
       # Must upcast all values in the array to Interro::Value objects
       values = values.map { |value| Any.new(value) }
@@ -370,6 +373,7 @@ module Interro
       new
     end
 
+    # :doc:
     protected def where(expression : String, values : Array(Value) = [] of Value) : self
       # Must upcast all values in the array to Interro::Value objects
       values = values.map { |value| Any.new(value) }
@@ -396,6 +400,7 @@ module Interro
       new
     end
 
+    # :doc:
     protected def order_by(**params : OrderByDirection) : self
       order_by(**params.transform_values(&.to_s))
     end
@@ -419,6 +424,7 @@ module Interro
       end
     end
 
+    # :doc:
     protected def order_by(**params : String) : self
       order_by_clause = OrderBy.new(initial_capacity: params.size)
       params.each { |key, value| order_by_clause[key.to_s] = value }
@@ -432,6 +438,7 @@ module Interro
       new
     end
 
+    # :doc:
     protected def order_by(expression, direction) : self
       order_by_clause = OrderBy{expression => direction}
 
@@ -444,24 +451,28 @@ module Interro
       new
     end
 
+    # :doc:
     protected def limit(count : Int) : self
       new = dup
       new.limit_clause = count
       new
     end
 
+    # :doc:
     protected def offset(count : Int) : self
       new = dup
       new.offset_clause = count
       new
     end
 
+    # :doc:
     protected def distinct(on expressions : Enumerable(String)) : self
       new = dup
       new.distinct = expressions.to_a
       new
     end
 
+    # :doc:
     protected def distinct(on expression : String = "*") : self
       distinct({expression})
     end
@@ -472,6 +483,7 @@ module Interro
       new
     end
 
+    # :doc:
     protected def scalar(select expression : String, as type : U.class) : U forall U
       args = @args
       if offset = offset_clause
@@ -489,12 +501,14 @@ module Interro
       connection(CONFIG.read_db).scalar(sql, args: @args).as(U)
     end
 
+    # :doc:
     protected def for_update
       new = dup
       new.for_update = true
       new
     end
 
+    # :doc:
     protected def skip_locked
       new = dup
       new.skip_locked = true
@@ -528,30 +542,37 @@ module Interro
       !connection(CONFIG.read_db).query_one? sql, args: @args, as: Int32
     end
 
+    # :doc:
     protected def insert(**values) : T
       insert values
     end
 
+    # :doc:
     protected def insert(values : NamedTuple) : T
       insert values: values, on_conflict: nil
     end
 
+    # :doc:
     protected def insert!(**values) : Bool
       insert! values
     end
 
+    # :doc:
     protected def insert!(values : NamedTuple) : Bool
       insert! values: values, on_conflict: nil
     end
 
+    # :doc:
     protected def insert(values : NamedTuple, on_conflict : ConflictHandler?) : T
       create_operation.call(self, values, on_conflict: on_conflict)
     end
 
+    # :doc:
     protected def insert!(values : NamedTuple, on_conflict : ConflictHandler?) : Bool
       create_operation.call!(self, values, on_conflict: on_conflict)
     end
 
+    # :doc:
     protected def insert!(records : Array(NamedTuple), on_conflict : ConflictHandler? = nil) : Int32
       create_many_operation.call!(self, records, on_conflict: on_conflict)
     end
@@ -564,10 +585,12 @@ module Interro
       CreateManyOperation(T).new(connection(CONFIG.write_db))
     end
 
+    # :doc:
     protected def update(**params) : Array(T)
       update params
     end
 
+    # :doc:
     protected def update(*expressions) : Array(T)
       UpdateOperation(T).new(connection(CONFIG.write_db))
         .call self,
@@ -575,6 +598,7 @@ module Interro
           where: @where_clause
     end
 
+    # :doc:
     protected def update(set clause : String, args : Array)
       clause = clause.gsub(/\$(\d+)\b/) do |match|
         "$#{$1.to_i + @args.size - 1}"
@@ -587,6 +611,7 @@ module Interro
           where: @where_clause
     end
 
+    # :doc:
     protected def update(params : NamedTuple) : Array(T)
       UpdateOperation(T).new(connection(CONFIG.write_db))
         .call self,
@@ -594,6 +619,7 @@ module Interro
           where: @where_clause
     end
 
+    # :doc:
     protected def delete
       DeleteOperation.new(connection(CONFIG.write_db))
         .call sql_table_name,
@@ -608,6 +634,7 @@ module Interro
       connection(CONFIG.read_db)
     end
 
+    # :doc:
     protected def transaction(&)
       Interro.transaction do |txn|
         old_txn = @transaction
@@ -618,6 +645,7 @@ module Interro
       end
     end
 
+    # :doc:
     # How to determine which columns get selected in these queries, the default
     # is the instance variables for the model that are not ignored with a
     # `DB::Field` annotation with `ignore: true`. To change this, override this
@@ -675,10 +703,12 @@ module Interro
       {% end %}
     end
 
+    # :doc:
     protected def select_columns
       String.build { |str| select_columns str }
     end
 
+    # :doc:
     protected def select_columns(relation_name : String? = nil)
       relation_name ||= model_table_mappings[T]
       String.build { |str| select_columns str, relation_name }
@@ -729,8 +759,9 @@ module Interro
       {% end %}
     end
 
-    protected def to_sql(str) : Nil
-      to_sql(str) { select_columns str }
+    # :doc:
+    protected def to_sql(io) : Nil
+      to_sql(io) { select_columns io }
     end
 
     private def to_sql(str, &) : Nil

@@ -3,8 +3,6 @@ module Interro
   end
 
   module Model
-    include ::DB::Mappable
-
     macro included
       def self.new(rs : ::DB::ResultSet)
         instance = allocate
