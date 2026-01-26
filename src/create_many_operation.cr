@@ -65,9 +65,11 @@ module Interro
         end
         if conflict_handler
           if (action = conflict_handler.action) && (handler_params = action.params)
-            start = params.size
-            handler_params.each_value do |value|
-              args << Interro::Any.new(value)
+            if handler_params.responds_to? :each_value
+              start = params.size
+              handler_params.each_value do |value|
+                args << Interro::Any.new(value)
+              end
             end
           end
           conflict_handler.to_sql str, start_at: start || 1

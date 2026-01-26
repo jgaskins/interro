@@ -11,12 +11,18 @@ module Interro
 
     def to_sql(io, start_at initial_index) : Nil
       io << "UPDATE SET "
-      params.each_with_index 1 do |key, _, index|
-        io << key.to_s << " = $" << initial_index + index
-        if index < params.size
-          io << ", "
+      {% if T <= Hash || T <= NamedTuple %}
+        params.each_with_index 1 do |key, _, index|
+          io << key.to_s << " = $" << initial_index + index
+          if index < params.size
+            io << ", "
+          end
         end
-      end
+      {% elsif T <= String %}
+        io << params
+      {% else %}
+        {% raise "The `set` argument for `Interro::Update.new` must be a Hash, NamedTuple, or String. Got: #{T}" %}
+      {% end %}
     end
   end
 end
