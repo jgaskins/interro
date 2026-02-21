@@ -118,7 +118,7 @@ module Interro
 
     private def query_migrations
       @db.query_all <<-SQL, as: SchemaMigration
-        SELECT name, added_at::text
+        SELECT name, (added_at AT TIME ZONE 'UTC')::text AS added_at
         FROM schema_migrations
         ORDER BY added_at DESC
         SQL
