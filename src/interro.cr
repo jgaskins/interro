@@ -142,8 +142,6 @@ module DB
     # is almost identical to the canonical DB::Serializable, but we had to copy
     # the entire thing because it's all inside a single macro.
     macro included
-      include ::DB::Mappable
-
       # Define a `new` and `from_rs` directly in the type, like JSON::Serializable
       # For proper overload resolution
 
