@@ -15,8 +15,7 @@ dependencies:
   pg:
     github: will/crystal-pg
   dotenv:
-    github: jgaskins/cr-dotenv
-    version: "~> 0.7.1"
+    github: gdotdesign/cr-dotenv
 
 scripts:
   postinstall: shards build interro-migration
