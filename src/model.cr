@@ -4,6 +4,9 @@ module Interro
 
   module Model
     macro included
+      # Define a `new` and `from_rs` directly in the type, like JSON::Serializable
+      # For proper overload resolution
+
       def self.new(rs : ::DB::ResultSet)
         instance = allocate
         instance.initialize(__set_for_db_serializable: rs)
@@ -28,7 +31,7 @@ module Interro
           super
         end
 
-        def self.from_rs(rs : ::DB::Result_set)
+        def self.from_rs(rs : ::DB::ResultSet)
           super
         end
       end
@@ -57,7 +60,7 @@ module Interro
           %found{name} = false
         {% end %}
 
-        rs.each_column do |col_name|
+        rs.each_column_from_last do |col_name|
           case col_name
             {% for name, value in properties %}
               when {{value[:key]}}
@@ -74,6 +77,11 @@ module Interro
                 rescue exc
                   ::raise ::DB::MappingException.new(exc.message, self.class.to_s, {{name.stringify}}, cause: exc)
                 end
+
+                {% for name_for_check, __value in properties %}
+                  next unless %found{name_for_check}
+                {% end %}
+                break
             {% end %}
           else
             rs.read # Advance set, but discard result
@@ -83,7 +91,7 @@ module Interro
 
         {% for key, value in properties %}
           {% unless value[:nilable] || value[:default] != nil %}
-            if %var{key}.is_a?(Nil) && !%found{key}
+            if %var{key}.nil? && !%found{key}
               ::raise ::DB::MappingException.new("Missing column {{value[:key].id}}", self.class.to_s, {{key.stringify}})
             end
           {% end %}

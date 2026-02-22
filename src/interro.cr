@@ -141,6 +141,7 @@ module DB
     # Adding support for deserializing multiple entities in a single query. This
     # is almost identical to the canonical DB::Serializable, but we had to copy
     # the entire thing because it's all inside a single macro.
+
     macro included
       # Define a `new` and `from_rs` directly in the type, like JSON::Serializable
       # For proper overload resolution
@@ -161,6 +162,18 @@ module DB
       ensure
         rs.close
       end
+
+      # Inject the class methods into subclasses as well
+
+      macro inherited
+        def self.new(rs : ::DB::ResultSet)
+          super
+        end
+
+        def self.from_rs(rs : ::DB::ResultSet)
+          super
+        end
+      end
     end
 
     def initialize(*, __set_for_db_serializable rs : ::DB::ResultSet)
@@ -171,11 +184,7 @@ module DB
           {% unless ann && ann[:ignore] %}
             {%
               properties[ivar.id] = {
-                type: if ivar.type.union?
-                  "::Union(#{ivar.type.union_types.map { |t| "::#{t}".id }.join(" | ").id})".id
-                else
-                  "::#{ivar.type}".id
-                end,
+                type:      ivar.type,
                 key:       ((ann && ann[:key]) || ivar).id.stringify,
                 default:   ivar.default_value,
                 nilable:   ivar.type.nilable?,
@@ -229,11 +238,13 @@ module DB
 
         {% for key, value in properties %}
           {% if value[:nilable] %}
-            @{{key}} = %var{key}
-          {% elsif value[:default] != nil %}
-            if %found{key} && %var{key}
+            {% if value[:default] != nil %}
+              @{{key}} = %found{key} ? %var{key} : {{value[:default]}}
+            {% else %}
               @{{key}} = %var{key}
-            end
+            {% end %}
+          {% elsif value[:default] != nil %}
+            @{{key}} = %var{key}.is_a?(Nil) ? {{value[:default]}} : %var{key}
           {% else %}
             @{{key}} = %var{key}.as({{value[:type]}})
           {% end %}
@@ -251,5 +262,13 @@ class PG::ResultSet
     (@column_index...column_count).each do |i|
       yield column_name(i)
     end
+  end
+
+  def read(type : DB::Serializable.class)
+    type.new(self)
+  end
+
+  def read(type : Interro::Model.class)
+    type.new(self)
   end
 end
