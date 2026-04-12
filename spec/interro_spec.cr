@@ -279,6 +279,10 @@ struct GroupQuery < Interro::QueryBuilder(Group)
     where(id: group.id).update "member_count = member_count + 1"
   end
 
+  def increment_member_count(group : Group, count : Int)
+    where(id: group.id).update "member_count = member_count + $1", [count]
+  end
+
   private def join_to_users
     self
       .inner_join("group_memberships", as: "gm", on: "gm.group_id = groups.id")
@@ -291,7 +295,7 @@ struct GroupMembershipQuery < Interro::QueryBuilder(GroupMembership)
 
   def create(user : User, group : Group) : GroupMembership
     transaction do
-      GroupQuery.new(self).increment_member_count group
+      GroupQuery.new(self).increment_member_count group, 1
       insert user_id: user.id, group_id: group.id
     end
   end
