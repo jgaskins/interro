@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="interro">
-  <title>Interro::QueryValue - interro 0.5.3</title>
+  <title>Interro::Transaction - interro 0.5.3</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -207,7 +207,7 @@
       
     </li>
   
-  <li class=" current" data-id="interro/Interro/QueryValue" data-name="interro::queryvalue">
+  <li class=" " data-id="interro/Interro/QueryValue" data-name="interro::queryvalue">
       <a href="../Interro/QueryValue.html">QueryValue</a>
       
     </li>
@@ -247,7 +247,7 @@
       
     </li>
   
-  <li class="parent " data-id="interro/Interro/Transaction" data-name="interro::transaction">
+  <li class="parent open current" data-id="interro/Interro/Transaction" data-name="interro::transaction">
       <a href="../Interro/Transaction.html">Transaction</a>
       
         <ul>
@@ -327,13 +327,13 @@
 <h1 class="type-name">
 
   <span class="kind">
-    struct
-  </span> Interro::<wbr>QueryValue
+    class
+  </span> Interro::<wbr>Transaction
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../Interro/QueryValue.html">Interro::QueryValue</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../Interro/Transaction.html">Interro::Transaction</a></li><li class="superclass">DB::Transaction</li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
@@ -363,8 +363,8 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/query_value.cr#L5" target="_blank">
-        query_value.cr
+      <a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/transaction.cr#L4" target="_blank">
+        transaction.cr
       </a>
     
     <br/>
@@ -386,7 +386,7 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28value%3AString%2Cindex%3AInt32%29-class-method" class="signature"><strong>.new</strong>(value : String, index : Int32)</a>
+        <a href="#new%28original%3ADB%3A%3ATransaction%29-class-method" class="signature"><strong>.new</strong>(original : DB::Transaction)</a>
         
       </li>
     
@@ -409,93 +409,26 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#%21%3D%28other%3ANil%29-instance-method" class="signature"><strong>#!=</strong>(other : Nil)</a>
+        <a href="#after_commit%28%26block%29-instance-method" class="signature"><strong>#after_commit</strong>(&block)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#%21%3D%28other%3AValue%29-instance-method" class="signature"><strong>#!=</strong>(other : Value)</a>
+        <a href="#after_rollback%28%26block%29-instance-method" class="signature"><strong>#after_rollback</strong>(&block)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#%26%28other%3AValue%29-instance-method" class="signature"><strong>#&</strong>(other : Value)</a>
+        <a href="#commit-instance-method" class="signature"><strong>#commit</strong></a>
         
-          <div class="summary"><p>Bitwise operator</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#%3C%28other%3AValue%29-instance-method" class="signature"><strong>#<</strong>(other : Value)</a>
+          <div class="summary"><p>commits the current transaction</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#%3C%3D%28other%3AValue%29-instance-method" class="signature"><strong>#<=</strong>(other : Value)</a>
+        <a href="#rollback-instance-method" class="signature"><strong>#rollback</strong></a>
         
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#%3D%3D%28other%3ANil%29-instance-method" class="signature"><strong>#==</strong>(other : Nil)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#%3D%3D%28other%3AValue%29-instance-method" class="signature"><strong>#==</strong>(other : Value)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#%3E%28other%3AValue%29-instance-method" class="signature"><strong>#></strong>(other : Value)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#%3E%3D%28other%3AValue%29-instance-method" class="signature"><strong>#>=</strong>(other : Value)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#%5E%28other%3AValue%29-instance-method" class="signature"><strong>#^</strong>(other : Value)</a>
-        
-          <div class="summary"><p>Bitwise operator</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#%7C%28other%3AValue%29-instance-method" class="signature"><strong>#|</strong>(other : Value)</a>
-        
-          <div class="summary"><p>Bitwise operator</p></div>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#in%3F%28array%3AEnumerable%28Value%29%29-instance-method" class="signature"><strong>#in?</strong>(array : Enumerable(Value))</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#in%3F%28array%3AEnumerable%28Any%29%29-instance-method" class="signature"><strong>#in?</strong>(array : Enumerable(Any))</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#index%3AInt32-instance-method" class="signature"><strong>#index</strong> : Int32</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#not_in%3F%28array%3AEnumerable%28Value%29%29-instance-method" class="signature"><strong>#not_in?</strong>(array : Enumerable(Value))</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#not_in%3F%28array%3AEnumerable%28Any%29%29-instance-method" class="signature"><strong>#not_in?</strong>(array : Enumerable(Any))</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#value%3AString-instance-method" class="signature"><strong>#value</strong> : String</a>
+          <div class="summary"><p>rollbacks the current transaction</p></div>
         
       </li>
     
@@ -504,6 +437,32 @@
 
 
   <div class="methods-inherited">
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
     
       
 
@@ -556,18 +515,18 @@
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(value:String,index:Int32)-class-method">
+    <div class="entry-detail" id="new(original:DB::Transaction)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(value : String, index : Int32)
+        def self.<strong>new</strong>(original : DB::Transaction)
 
-        <a class="method-permalink" href="#new%28value%3AString%2Cindex%3AInt32%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28original%3ADB%3A%3ATransaction%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/query_value.cr#L9" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/transaction.cr#L10" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -588,289 +547,84 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="!=(other:Nil)-instance-method">
+    <div class="entry-detail" id="after_commit(&amp;block)-instance-method">
       <div class="signature">
         
-        def <strong>!=</strong>(other : Nil)
+        def <strong>after_commit</strong>(&block)
 
-        <a class="method-permalink" href="#%21%3D%28other%3ANil%29-instance-method">#</a>
+        <a class="method-permalink" href="#after_commit%28%26block%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/query_value.cr#L40" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/transaction.cr#L13" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="!=(other:Value)-instance-method">
+    <div class="entry-detail" id="after_rollback(&amp;block)-instance-method">
       <div class="signature">
         
-        def <strong>!=</strong>(other : <a href="../Interro/Value.html">Value</a>)
+        def <strong>after_rollback</strong>(&block)
 
-        <a class="method-permalink" href="#%21%3D%28other%3AValue%29-instance-method">#</a>
+        <a class="method-permalink" href="#after_rollback%28%26block%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/query_value.cr#L36" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/transaction.cr#L17" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="&amp;(other:Value)-instance-method">
+    <div class="entry-detail" id="commit-instance-method">
       <div class="signature">
         
-        def <strong>&</strong>(other : <a href="../Interro/Value.html">Value</a>)
+        def <strong>commit</strong>
 
-        <a class="method-permalink" href="#%26%28other%3AValue%29-instance-method">#</a>
+        <a class="method-permalink" href="#commit-instance-method">#</a>
       </div>
       
         <div class="doc">
           
-          <p>Bitwise operator</p>
+            <div class="doc-inherited">
+              Description copied from class DB::Transaction
+            </div>
+          
+          <p>commits the current transaction</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/query_value.cr#L60" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/transaction.cr#L21" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="&lt;(other:Value)-instance-method">
+    <div class="entry-detail" id="rollback-instance-method">
       <div class="signature">
         
-        def <strong><</strong>(other : <a href="../Interro/Value.html">Value</a>)
+        def <strong>rollback</strong>
 
-        <a class="method-permalink" href="#%3C%28other%3AValue%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/query_value.cr#L28" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="&lt;=(other:Value)-instance-method">
-      <div class="signature">
-        
-        def <strong><=</strong>(other : <a href="../Interro/Value.html">Value</a>)
-
-        <a class="method-permalink" href="#%3C%3D%28other%3AValue%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/query_value.cr#L20" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="==(other:Nil)-instance-method">
-      <div class="signature">
-        
-        def <strong>==</strong>(other : Nil)
-
-        <a class="method-permalink" href="#%3D%3D%28other%3ANil%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/query_value.cr#L16" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="==(other:Value)-instance-method">
-      <div class="signature">
-        
-        def <strong>==</strong>(other : <a href="../Interro/Value.html">Value</a>)
-
-        <a class="method-permalink" href="#%3D%3D%28other%3AValue%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/query_value.cr#L12" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="&gt;(other:Value)-instance-method">
-      <div class="signature">
-        
-        def <strong>></strong>(other : <a href="../Interro/Value.html">Value</a>)
-
-        <a class="method-permalink" href="#%3E%28other%3AValue%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/query_value.cr#L32" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="&gt;=(other:Value)-instance-method">
-      <div class="signature">
-        
-        def <strong>>=</strong>(other : <a href="../Interro/Value.html">Value</a>)
-
-        <a class="method-permalink" href="#%3E%3D%28other%3AValue%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/query_value.cr#L24" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="^(other:Value)-instance-method">
-      <div class="signature">
-        
-        def <strong>^</strong>(other : <a href="../Interro/Value.html">Value</a>)
-
-        <a class="method-permalink" href="#%5E%28other%3AValue%29-instance-method">#</a>
+        <a class="method-permalink" href="#rollback-instance-method">#</a>
       </div>
       
         <div class="doc">
           
-          <p>Bitwise operator</p>
+            <div class="doc-inherited">
+              Description copied from class DB::Transaction
+            </div>
+          
+          <p>rollbacks the current transaction</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/query_value.cr#L60" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="|(other:Value)-instance-method">
-      <div class="signature">
-        
-        def <strong>|</strong>(other : <a href="../Interro/Value.html">Value</a>)
-
-        <a class="method-permalink" href="#%7C%28other%3AValue%29-instance-method">#</a>
-      </div>
-      
-        <div class="doc">
-          
-          <p>Bitwise operator</p>
-        </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/query_value.cr#L60" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="in?(array:Enumerable(Value))-instance-method">
-      <div class="signature">
-        
-        def <strong>in?</strong>(array : Enumerable(<a href="../Interro/Value.html">Value</a>))
-
-        <a class="method-permalink" href="#in%3F%28array%3AEnumerable%28Value%29%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/query_value.cr#L44" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="in?(array:Enumerable(Any))-instance-method">
-      <div class="signature">
-        
-        def <strong>in?</strong>(array : Enumerable(<a href="../Interro/Any.html">Any</a>))
-
-        <a class="method-permalink" href="#in%3F%28array%3AEnumerable%28Any%29%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/query_value.cr#L48" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="index:Int32-instance-method">
-      <div class="signature">
-        
-        def <strong>index</strong> : Int32
-
-        <a class="method-permalink" href="#index%3AInt32-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/query_value.cr#L7" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="not_in?(array:Enumerable(Value))-instance-method">
-      <div class="signature">
-        
-        def <strong>not_in?</strong>(array : Enumerable(<a href="../Interro/Value.html">Value</a>))
-
-        <a class="method-permalink" href="#not_in%3F%28array%3AEnumerable%28Value%29%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/query_value.cr#L52" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="not_in?(array:Enumerable(Any))-instance-method">
-      <div class="signature">
-        
-        def <strong>not_in?</strong>(array : Enumerable(<a href="../Interro/Any.html">Any</a>))
-
-        <a class="method-permalink" href="#not_in%3F%28array%3AEnumerable%28Any%29%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/query_value.cr#L56" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="value:String-instance-method">
-      <div class="signature">
-        
-        def <strong>value</strong> : String
-
-        <a class="method-permalink" href="#value%3AString-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/query_value.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/transaction.cr#L29" target="_blank">View source</a>]
         
       </div>
     </div>

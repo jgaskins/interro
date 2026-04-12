@@ -10,7 +10,7 @@ require "./model"
 
 #
 module Interro
-  VERSION = "0.5.2"
+  VERSION = "0.5.3"
 
   class Error < ::Exception
   end

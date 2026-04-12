@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="interro">
-  <title>Interro::Validations::Error - interro 0.5.3</title>
+  <title>Interro::Transaction::AlreadyClosed - interro 0.5.3</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -247,12 +247,12 @@
       
     </li>
   
-  <li class="parent " data-id="interro/Interro/Transaction" data-name="interro::transaction">
+  <li class="parent open current" data-id="interro/Interro/Transaction" data-name="interro::transaction">
       <a href="../../Interro/Transaction.html">Transaction</a>
       
         <ul>
   
-  <li class=" " data-id="interro/Interro/Transaction/AlreadyClosed" data-name="interro::transaction::alreadyclosed">
+  <li class=" current" data-id="interro/Interro/Transaction/AlreadyClosed" data-name="interro::transaction::alreadyclosed">
       <a href="../../Interro/Transaction/AlreadyClosed.html">AlreadyClosed</a>
       
     </li>
@@ -272,12 +272,12 @@
       
     </li>
   
-  <li class="parent open current" data-id="interro/Interro/Validations" data-name="interro::validations">
+  <li class="parent " data-id="interro/Interro/Validations" data-name="interro::validations">
       <a href="../../Interro/Validations.html">Validations</a>
       
         <ul>
   
-  <li class=" current" data-id="interro/Interro/Validations/Error" data-name="interro::validations::error">
+  <li class=" " data-id="interro/Interro/Validations/Error" data-name="interro::validations::error">
       <a href="../../Interro/Validations/Error.html">Error</a>
       
     </li>
@@ -327,27 +327,16 @@
 <h1 class="type-name">
 
   <span class="kind">
-    struct
-  </span> Interro::<wbr>Validations::<wbr>Error
+    class
+  </span> Interro::<wbr>Transaction::<wbr>AlreadyClosed
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Interro/Validations/Error.html">Interro::Validations::Error</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Interro/Transaction/AlreadyClosed.html">Interro::Transaction::AlreadyClosed</a></li><li class="superclass"><a href="../../Interro/Error.html">Interro::Error</a></li><li class="superclass">Exception</li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
-
-  <h2>
-    <a id="overview" class="anchor" href="#overview">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Overview
-  </h2>
-
-  <p>Represents a validation error. Can be rendered directly to a template.</p>
 
 
 
@@ -374,8 +363,8 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/validations.cr#L257" target="_blank">
-        validations.cr
+      <a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/transaction.cr#L71" target="_blank">
+        transaction.cr
       </a>
     
     <br/>
@@ -386,73 +375,12 @@
 
 
   
-  <h2>
-    <a id="constructors" class="anchor" href="#constructors">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Constructors
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#new%28attribute%3AString%2Cmessage%3AString%29-class-method" class="signature"><strong>.new</strong>(attribute : String, message : String)</a>
-        
-      </li>
-    
-  </ul>
-
 
   
 
   
 
   
-  <h2>
-    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Instance Method Summary
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#%3D%3D%28value%3AString%29-instance-method" class="signature"><strong>#==</strong>(value : String)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#attribute%3AString-instance-method" class="signature"><strong>#attribute</strong> : String</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#clone-instance-method" class="signature"><strong>#clone</strong></a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#copy_with%28attribute_attribute%3D%40attribute%2Cmessage_message%3D%40message%29-instance-method" class="signature"><strong>#copy_with</strong>(attribute _attribute = @attribute, message _message = @message)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#message%3AString-instance-method" class="signature"><strong>#message</strong> : String</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#to_s%28io%3AIO%29-instance-method" class="signature"><strong>#to_s</strong>(io : IO)</a>
-        
-          <div class="summary"><p>Same as <code>#inspect(io)</code>.</p></div>
-        
-      </li>
-    
-  </ul>
-
 
 
   <div class="methods-inherited">
@@ -496,152 +424,28 @@
 
 
     
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
   </div>
 
   
-  <h2>
-    <a id="constructor-detail" class="anchor" href="#constructor-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Constructor Detail
-  </h2>
-  
-    <div class="entry-detail" id="new(attribute:String,message:String)-class-method">
-      <div class="signature">
-        
-        def self.<strong>new</strong>(attribute : String, message : String)
-
-        <a class="method-permalink" href="#new%28attribute%3AString%2Cmessage%3AString%29-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/validations.cr#L257" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-
 
   
 
   
 
   
-  <h2>
-    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Instance Method Detail
-  </h2>
-  
-    <div class="entry-detail" id="==(value:String)-instance-method">
-      <div class="signature">
-        
-        def <strong>==</strong>(value : String)
-
-        <a class="method-permalink" href="#%3D%3D%28value%3AString%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/validations.cr#L266" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="attribute:String-instance-method">
-      <div class="signature">
-        
-        def <strong>attribute</strong> : String
-
-        <a class="method-permalink" href="#attribute%3AString-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="clone-instance-method">
-      <div class="signature">
-        
-        def <strong>clone</strong>
-
-        <a class="method-permalink" href="#clone-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/validations.cr#L257" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="copy_with(attribute_attribute=@attribute,message_message=@message)-instance-method">
-      <div class="signature">
-        
-        def <strong>copy_with</strong>(attribute _attribute = @attribute, message _message = @message)
-
-        <a class="method-permalink" href="#copy_with%28attribute_attribute%3D%40attribute%2Cmessage_message%3D%40message%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/validations.cr#L257" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="message:String-instance-method">
-      <div class="signature">
-        
-        def <strong>message</strong> : String
-
-        <a class="method-permalink" href="#message%3AString-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="to_s(io:IO)-instance-method">
-      <div class="signature">
-        
-        def <strong>to_s</strong>(io : IO)
-
-        <a class="method-permalink" href="#to_s%28io%3AIO%29-instance-method">#</a>
-      </div>
-      
-        <div class="doc">
-          
-            <div class="doc-inherited">
-              Description copied from struct Struct
-            </div>
-          
-          <p>Same as <code>#inspect(io)</code>.</p>
-        </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/interro/blob/v0.5.3/src/validations.cr#L258" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-
 
 
 </div>
