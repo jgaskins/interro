@@ -422,7 +422,6 @@ describe Interro do
     end
 
     it "can handles comparisons with NULL" do
-      query = UserQuery.new
       active = query.create name: "Active", email: "active-#{UUID.random}@example.com"
       inactive = query.create name: "Inactive", email: "inactive-#{UUID.random}@example.com"
       query.deactivate! inactive
