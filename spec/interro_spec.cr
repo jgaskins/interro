@@ -203,9 +203,9 @@ struct UserQuery < Interro::QueryBuilder(User)
   end
 
   def members_of_group_with_id(id : UUID)
-    self
-      .inner_join("group_memberships", as: "gm", on: "gm.user_id = users.id")
-      .where("gm.group_id": id)
+    where id: GroupMembershipQuery.new(self)
+      .for(group_id: id)
+      .subquery(select: "user_id")
   end
 
   def deactivate!(user : User)
@@ -292,6 +292,14 @@ end
 
 struct GroupMembershipQuery < Interro::QueryBuilder(GroupMembership)
   table "group_memberships"
+
+  def for(group : Group)
+    for group_id: group.id
+  end
+
+  def for(*, group_id : UUID)
+    where group_id: group_id
+  end
 
   def create(user : User, group : Group) : GroupMembership
     transaction do

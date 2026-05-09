@@ -262,6 +262,42 @@ module Interro
       scalar "count(*)", as: Int64
     end
 
+    def subquery(select select_clause : String) : Subquery
+      Subquery.new(
+        select: select_clause,
+        from: sql_table_name,
+        where: where_clause,
+      )
+    end
+
+    struct Subquery
+      getter select_clause : String
+      getter relation : String
+      getter where_clause : QueryExpression?
+
+      def initialize(
+        select @select_clause,
+        from @relation,
+        where @where_clause,
+      )
+      end
+
+      def to_sql
+        String.build do |sql|
+          to_sql sql
+        end
+      end
+
+      def to_sql(io : IO) : Nil
+        io << "SELECT " << select_clause
+        io << " FROM " << relation
+        if where = where_clause
+          io << " WHERE "
+          where.to_sql io
+        end
+      end
+    end
+
     # :doc:
     protected def find(**params) : T?
       query = where(**params).limit(1)
@@ -286,7 +322,7 @@ module Interro
     end
 
     # :doc:
-    protected def where(**params : Value | Any | Array) : self
+    protected def where(**params : Value | Any | Array | Subquery) : self
       where_clause = nil
       args = Array(Any).new(initial_capacity: params.size)
       params.each_with_index(@args.size + 1) do |key, value, index|
@@ -297,6 +333,19 @@ module Interro
           any = Any.new(value)
           args << any
           new_clause = QueryExpression.new(key.to_s, "=", "ANY($#{index})", [any])
+        when Subquery
+          if where = value.where_clause
+            where_args = where.values
+          else
+            where_args = [] of Any
+          end
+          args.concat where_args
+          new_clause = QueryExpression.new(
+            key.to_s,
+            "IN",
+            "(#{value.to_sql})",
+            where_args,
+          )
         else
           args << Any.new(value)
           new_clause = QueryExpression.new(key.to_s, "=", "$#{index}", [Any.new(value)])
