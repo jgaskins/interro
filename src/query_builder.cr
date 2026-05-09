@@ -649,10 +649,6 @@ module Interro
 
     # :doc:
     protected def update(set clause : String, args : Array)
-      clause = clause.gsub(/\$(\d+)\b/) do |match|
-        "$#{$1}"
-      end
-
       UpdateOperation(T).new(connection(CONFIG.write_db))
         .call self,
           set: clause,
