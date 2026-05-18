@@ -12,16 +12,16 @@ jobs:
       fail-fast: false
       matrix:
         crystal:
-        - 1.14.1
-        - 1.15.1
-        - 1.16.3
-        - latest
-        - nightly
+        - "1.18"
+        - "1.19"
+        - "latest"
+        - "nightly"
         postgres:
         - "14"
         - "15"
         - "16"
         - "17"
+        - "18"
 
     # Service containers to run with the job
     services:
