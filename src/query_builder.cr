@@ -374,6 +374,48 @@ module Interro
       new
     end
 
+    def where_exists(**params : Subquery) : self
+      where_clause = nil
+      args = Array(Any).new(initial_capacity: params.size)
+
+      params.each_with_index(@args.size + 1) do |key, value, index|
+        if where = value.where_clause
+          where_args = where.values
+          args.concat where_args
+        else
+          where_args = [] of Any
+        end
+
+        new_clause = QueryExpression.new(
+          key.to_s,
+          "IN",
+          "(#{value.to_sql})",
+          where_args,
+        )
+
+        if where_clause
+          where_clause &= new_clause
+        else
+          where_clause = new_clause
+        end
+      end
+
+      if where_clause && (current_where_clause = @where_clause)
+        where_clause = current_where_clause & where_clause
+      end
+
+      new = dup
+      if where_clause
+        new.where_clause = where_clause
+        if @args.any?
+          new.args = @args + args
+        else # If the current array is empty, we don't need to concatenate
+          new.args = args
+        end
+      end
+      new
+    end
+
     # :doc:
     protected def where(table = sql_table_alias, &block : QueryRecord -> QueryExpression) : self
       index = @args.size

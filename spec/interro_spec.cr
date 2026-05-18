@@ -37,6 +37,8 @@ struct Group
   getter member_count : Int64
   getter created_at : Time
   getter updated_at : Time
+
+  def_equals_and_hash id
 end
 
 struct GroupMembership
@@ -267,6 +269,15 @@ struct GroupQuery < Interro::QueryBuilder(Group)
       .fetch(columns, as: {Group, User})
   end
 
+  def that_have_members
+    group_memberships = GroupMembershipQuery.new(self)
+    where_exists(
+      id: group_memberships
+        .where("#{group_memberships.sql_table_name}.group_id = groups.id")
+        .subquery("group_id")
+    )
+  end
+
   def at_most(count : Int32)
     limit count
   end
@@ -281,6 +292,14 @@ struct GroupQuery < Interro::QueryBuilder(Group)
 
   def increment_member_count(group : Group, count : Int)
     where(id: group.id).update "member_count = member_count + $1", [count]
+  end
+
+  def scope_to(groups : Enumerable(Group))
+    where id: groups.map(&.id)
+  end
+
+  def reload(group : Group) : Group
+    with_id(group.id).first
   end
 
   private def join_to_users
@@ -714,18 +733,32 @@ describe Interro do
       users.should_not contain excluded
     end
 
-    it "can run subqueries" do
-      included = create_user(email: "included-#{UUID.random}")
-      excluded = create_user(email: "excluded-#{UUID.random}")
-      group = create_group
-      another_group = create_group
-      GroupMembershipQuery.new.create(user: included, group: group)
-      GroupMembershipQuery.new.create(user: excluded, group: another_group)
+    describe "subqueries" do
+      it "queries on membership in a set" do
+        included = create_user(email: "included-#{UUID.random}")
+        excluded = create_user(email: "excluded-#{UUID.random}")
+        group = create_group
+        another_group = create_group
+        GroupMembershipQuery.new.create(user: included, group: group)
+        GroupMembershipQuery.new.create(user: excluded, group: another_group)
 
-      users = query.members_of_group_with_id(group.id).to_a
+        users = query.members_of_group_with_id(group.id).to_a
 
-      users.should contain included
-      users.should_not contain excluded
+        users.should contain included
+        users.should_not contain excluded
+      end
+
+      it "queries with WHERE EXISTS" do
+        user = create_user(email: "included-#{UUID.random}")
+        included = create_group
+        excluded = create_group
+        GroupMembershipQuery.new.create(user: user, group: included)
+
+        groups = GroupQuery.new.that_have_members.to_a
+
+        groups.should contain included
+        groups.should_not contain excluded
+      end
     end
 
     it "can use arbitrary operators" do
