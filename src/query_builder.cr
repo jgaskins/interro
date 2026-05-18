@@ -5,6 +5,8 @@ require "./dynamic_query"
 require "./validations"
 require "./create_operation"
 require "./create_many_operation"
+require "./update_operation"
+require "./delete_operation"
 
 module Interro
   alias OrderBy = Hash(String, String)
