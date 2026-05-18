@@ -222,8 +222,8 @@ struct UserQuery < Interro::QueryBuilder(User)
     scalar("count(*)", as: Int64)
   end
 
-  def lock_rows
-    for_update
+  def lock_rows(*, skip_locked : Bool = false)
+    for_update skip_locked: skip_locked
   end
 
   record Template, email : String, name : String do
@@ -881,15 +881,29 @@ describe Interro do
       end
     end
 
-    # I'm not 100% sure if the implementation of this test is a great idea
     it "can lock records with FOR UPDATE" do
       user = create_user
-      Interro.transaction do |txn|
-        fetched_user = UserQuery[txn]
+      Interro.transaction do |txn1|
+        fetched_user = UserQuery[txn1]
           .with_id(user.id)
           .lock_rows
           .to_sql
           .should end_with "FOR UPDATE"
+
+        # Different transaction
+        Interro.transaction do |txn2|
+          UserQuery[txn1]
+            .with_id(user.id)
+            .lock_rows(skip_locked: true)
+            .to_a
+            .should eq [user]
+
+          UserQuery[txn2] # note: different transaction
+            .with_id(user.id)
+            .lock_rows(skip_locked: true)
+            .to_a
+            .should be_empty
+        end
       end
     end
 

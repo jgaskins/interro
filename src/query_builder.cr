@@ -593,13 +593,15 @@ module Interro
     end
 
     # :doc:
-    protected def for_update
+    protected def for_update(*, skip_locked : Bool = false)
       new = dup
       new.for_update = true
+      new.skip_locked = skip_locked
       new
     end
 
     # :doc:
+    @[Deprecated("The `SKIP LOCKED` option must be part of the `FOR UPDATE` clause, so it has been added to the `for_update` method.")]
     protected def skip_locked
       new = dup
       new.skip_locked = true
