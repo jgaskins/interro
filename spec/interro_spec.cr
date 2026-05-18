@@ -798,6 +798,40 @@ describe Interro do
           gq.with_id(group.id).first.name.should eq "The Same Group"
         end
       end
+
+      it "runs a block after committing" do
+        run = false
+
+        Interro.transaction &.after_commit { run = true }
+
+        run.should be_true
+      end
+
+      it "runs a block after rollback" do
+        rolled_back = false
+        committed = false
+        count = 0
+        error = nil
+
+        begin
+          Interro.transaction do |txn|
+            txn.after_rollback do
+              rolled_back = true
+              count += 1
+            end
+            txn.after_commit { committed = true }
+
+            raise "hell"
+          end
+        rescue ex
+          error = ex
+        end
+
+        committed.should eq false
+        rolled_back.should be_true
+        count.should eq 1
+        error.should be_a Exception
+      end
     end
 
     describe "returning different types" do

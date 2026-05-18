@@ -18,19 +18,24 @@ module Interro
   class UnexpectedEmptyResultSet < Error
   end
 
-  def self.transaction(& : DB::Transaction -> T) forall T
+  def self.transaction(& : Transaction -> T) forall T
     result = uninitialized T
-    completed = false
-    CONFIG.write_db.transaction do |txn|
-      result = yield txn
-      completed = true
+    rolled_back = false
+    CONFIG.write_db.using_connection do |connection|
+      txn = connection.begin_transaction
+      transaction = Transaction.new(txn)
+
+      begin
+        result = yield transaction
+        transaction.commit
+        result
+      rescue ex
+        transaction.rollback
+        raise ex
+      end
     end
 
-    if completed
-      result
-    else
-      raise "Transaction block is incomplete - unexpected rollback?"
-    end
+    result
   end
 
   # :nodoc:
@@ -272,3 +277,5 @@ class PG::ResultSet
     type.new(self)
   end
 end
+
+require "./transaction"
