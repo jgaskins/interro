@@ -815,7 +815,7 @@ describe Interro do
           UserQuery.new.with_id(user.id).first?.should eq nil
           GroupQuery.new.with_id(group.id).first?.should eq nil
         else
-          raise "One of these are nil and should not be: #{{user: user, group: group}}"
+          raise "One of these are not nil and both should be nil: #{{user: user, group: group}}"
         end
       end
 
@@ -828,6 +828,7 @@ describe Interro do
           gq = GroupQuery[txn]
 
           gq.change_name(group, "The Same Group")
+          GroupQuery.new.with_id(group.id).first.name.should eq "The Group"
           gq.with_id(group.id).first.name.should eq "The Same Group"
         end
       end
