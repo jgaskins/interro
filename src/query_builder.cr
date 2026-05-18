@@ -711,6 +711,36 @@ module Interro
     end
 
     # :doc:
+    protected def update!(**params) : Int64
+      update! params
+    end
+
+    # :doc:
+    protected def update!(*expressions) : Int64
+      UpdateOperation(T).new(connection(CONFIG.write_db))
+        .call! self,
+          set: expressions.join(", "),
+          where: @where_clause
+    end
+
+    # :doc:
+    protected def update!(set clause : String, args : Array) : Int64
+      UpdateOperation(T).new(connection(CONFIG.write_db))
+        .call! self,
+          set: clause,
+          args: args,
+          where: @where_clause
+    end
+
+    # :doc:
+    protected def update!(params : NamedTuple) : Int64
+      UpdateOperation(T).new(connection(CONFIG.write_db))
+        .call! self,
+          set: params,
+          where: @where_clause
+    end
+
+    # :doc:
     protected def delete
       DeleteOperation.new(connection(CONFIG.write_db))
         .call sql_table_name,

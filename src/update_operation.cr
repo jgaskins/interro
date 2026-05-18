@@ -9,6 +9,32 @@ module Interro
     end
 
     def call(query, set values : NamedTuple, where : QueryExpression? = nil) forall U
+      args = build_args(values, where)
+      @queryable.query_all to_sql(query, where, values, returning: true), args: args, as: T
+    end
+
+    def call(query, set values : String, args : Array(Value) = [] of Value, where : QueryExpression? = nil)
+      if where
+        args = where.values + args
+      end
+
+      @queryable.query_all to_sql(query, where, values, returning: true), args: args, as: T
+    end
+
+    def call!(query, set values : NamedTuple, where : QueryExpression? = nil) : Int64
+      args = build_args(values, where)
+      @queryable.exec(to_sql(query, where, values, returning: false), args: args).rows_affected
+    end
+
+    def call!(query, set values : String, args : Array(Value) = [] of Value, where : QueryExpression? = nil) : Int64
+      if where
+        args = where.values + args
+      end
+
+      @queryable.exec(to_sql(query, where, values, returning: false), args: args).rows_affected
+    end
+
+    private def build_args(values : NamedTuple, where)
       if values.is_a? NamedTuple()
         args = [] of String
       else
@@ -17,19 +43,10 @@ module Interro
           args = where.values + args
         end
       end
-
-      @queryable.query_all to_sql(query, where, values), args: args, as: T
+      args
     end
 
-    def call(query, set values : String, args : Array(Value) = [] of Value, where : QueryExpression? = nil)
-      if where
-        args = where.values + args
-      end
-
-      @queryable.query_all to_sql(query, where, values), args: args, as: T
-    end
-
-    def to_sql(query, where, values)
+    def to_sql(query, where, values, *, returning : Bool = true)
       table_name = query.sql_table_name
 
       sql = String.build do |str|
@@ -42,8 +59,10 @@ module Interro
           where.to_sql str
         end
 
-        str << " RETURNING "
-        query.select_columns str
+        if returning
+          str << " RETURNING "
+          query.select_columns str
+        end
       end
     end
 

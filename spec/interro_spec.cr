@@ -172,6 +172,14 @@ struct UserQuery < Interro::QueryBuilder(User)
     where(id: user.id, email: user.email).update(name: name, email: email)
   end
 
+  def change_name!(user : User, name : String)
+    where(id: user.id).update!(name: name)
+  end
+
+  def deactivate_all!(ids : Array(UUID))
+    where(id: ids).update!(deactivated_at: Time.utc)
+  end
+
   def with_id_in_kwargs(ids : Array(UUID))
     where id: ids
   end
@@ -292,6 +300,14 @@ struct GroupQuery < Interro::QueryBuilder(Group)
 
   def increment_member_count(group : Group, count : Int)
     where(id: group.id).update "member_count = member_count + $1", [count]
+  end
+
+  def increment_member_count!(group : Group)
+    where(id: group.id).update! "member_count = member_count + 1"
+  end
+
+  def increment_member_count!(group : Group, count : Int)
+    where(id: group.id).update! "member_count = member_count + $1", [count]
   end
 
   def scope_to(groups : Enumerable(Group))
@@ -702,6 +718,43 @@ describe Interro do
       group = results.first
 
       group.member_count.should eq 1
+    end
+
+    it "can update a record without returning it" do
+      user = created_users[1]
+      new_name = "Jamie #{UUID.v7}"
+
+      result = query.change_name!(user, name: new_name)
+
+      result.should eq 1
+      query.find!(id: user.id).name.should eq new_name
+    end
+
+    it "can update multiple records without returning them" do
+      users = Array.new(3) { create_user }
+      ids = users.map(&.id)
+
+      result = query.deactivate_all!(ids)
+
+      result.should eq 3
+    end
+
+    it "can update records with SQL expressions without returning them" do
+      group = create_group
+
+      result = GroupQuery.new.increment_member_count!(group)
+
+      result.should eq 1
+      GroupQuery.new.reload(group).member_count.should eq 1
+    end
+
+    it "can update records with parameterized SQL expressions without returning them" do
+      group = create_group
+
+      result = GroupQuery.new.increment_member_count!(group, 5)
+
+      result.should eq 1
+      GroupQuery.new.reload(group).member_count.should eq 5
     end
 
     it "can delete records" do
