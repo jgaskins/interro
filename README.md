@@ -60,8 +60,6 @@ and in our `down.sql` file:
 DROP TABLE users
 ```
 
-**Note:** You can only execute one statement per SQL file. Additional statements must be done inside a separate migration.
-
 ### Executing the migration
 
 Your `CreateUsers` migration can be executed with the following command:
