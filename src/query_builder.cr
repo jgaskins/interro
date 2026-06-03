@@ -622,6 +622,9 @@ module Interro
       sql = String.build do |str|
         str << "SELECT 1 AS one"
         str << " FROM " << sql_table_name
+        if sql_table_name != sql_table_alias
+          str << " AS " << sql_table_alias
+        end
 
         if join = join_clause
           join.each(&.to_sql(str))
