@@ -79,11 +79,9 @@ end
 struct FakeUser
   include Interro::Model
 
-  @[Interro::Field(select: "gen_random_uuid()", as: "id")]
   getter id : UUID
-
-  @[Interro::Field(select: "md5(random()::text)")]
   getter name : String
+  getter? active : Bool
 end
 
 struct Notification
@@ -371,7 +369,19 @@ struct GroupTaskQuery < Interro::QueryBuilder(GroupTask)
 end
 
 struct FakeUserQuery < Interro::QueryBuilder(FakeUser)
-  table "generate_series(1, 1000)", as: "fake_users"
+  table <<-SQL, as: "fake_users"
+    (
+      SELECT
+        uuidv7() id,
+        md5(random()::text) name,
+        generate_series % 2 = 0 active
+      FROM generate_series(1, 1000)
+    )
+    SQL
+
+  def active
+    where "fake_users.active": true
+  end
 end
 
 struct NotificationQuery < Interro::QueryBuilder(Notification)
@@ -966,6 +976,13 @@ describe Interro do
 
       fake_user.id.should be_a UUID
       fake_user.name.bytesize.should eq 32 # MD5 hexdigests are 32 bytes
+    end
+
+    it "uses the table alias" do
+      FakeUserQuery.new
+        .active
+        .all?(&.active?)
+        .should eq true
     end
   end
 end

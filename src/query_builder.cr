@@ -120,7 +120,7 @@ module Interro
       end
 
       def model_table_mappings
-        { T => {{name}} }
+        { T => sql_table_alias }
       end
     end
 
