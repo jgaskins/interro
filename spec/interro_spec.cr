@@ -372,7 +372,7 @@ struct FakeUserQuery < Interro::QueryBuilder(FakeUser)
   table <<-SQL, as: "fake_users"
     (
       SELECT
-        uuidv7() id,
+        gen_random_uuid() id,
         md5(random()::text) name,
         generate_series % 2 = 0 active
       FROM generate_series(1, 1000)
