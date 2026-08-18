@@ -289,6 +289,16 @@ module Interro
       )
       end
 
+      # This subquery as the right-hand side of an IN, e.g. `id IN (SELECT ...)`.
+      def in_expression(column : String) : QueryExpression
+        if where = where_clause
+          where_args = where.values
+        else
+          where_args = [] of Any
+        end
+        QueryExpression.new(column, "IN", "(#{to_sql})", where_args)
+      end
+
       def to_sql
         String.build do |sql|
           to_sql sql
@@ -341,18 +351,8 @@ module Interro
           args << any
           new_clause = QueryExpression.new(key.to_s, "=", "ANY($#{index})", [any])
         when Subquery
-          if where = value.where_clause
-            where_args = where.values
-          else
-            where_args = [] of Any
-          end
-          args.concat where_args
-          new_clause = QueryExpression.new(
-            key.to_s,
-            "IN",
-            "(#{value.to_sql})",
-            where_args,
-          )
+          new_clause = value.in_expression(key.to_s)
+          args.concat new_clause.values
         else
           args << Any.new(value)
           new_clause = QueryExpression.new(key.to_s, "=", "$#{index}", [Any.new(value)])
@@ -386,19 +386,8 @@ module Interro
       args = Array(Any).new(initial_capacity: params.size)
 
       params.each_with_index(self.args.size + 1) do |key, value, index|
-        if where = value.where_clause
-          where_args = where.values
-          args.concat where_args
-        else
-          where_args = [] of Any
-        end
-
-        new_clause = QueryExpression.new(
-          key.to_s,
-          "IN",
-          "(#{value.to_sql})",
-          where_args,
-        )
+        new_clause = value.in_expression(key.to_s)
+        args.concat new_clause.values
 
         if where_clause
           where_clause &= new_clause
