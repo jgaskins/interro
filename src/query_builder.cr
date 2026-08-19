@@ -435,11 +435,11 @@ module Interro
 
       # Translate $1, $2, ... $n to the numbers they should be.
       arg_count = args.size
-      lhs = lhs.gsub /\$(\d+)/ do |match|
+      lhs = lhs.gsub /\$(\d+)/ do |_, match|
         index = match[1].to_i
         "$#{arg_count + index}"
       end
-      rhs = rhs.gsub /\$(\d+)/ do |match|
+      rhs = rhs.gsub /\$(\d+)/ do |_, match|
         index = match[1].to_i
         "$#{arg_count + index}"
       end
@@ -467,7 +467,7 @@ module Interro
 
       # Translate $1, $2, ... $n to the numbers they should be.
       arg_count = args.size
-      expression = expression.gsub /\$(\d+)/ do |match|
+      expression = expression.gsub /\$(\d+)/ do |_, match|
         index = match[1].to_i
         "$#{arg_count + index}"
       end
@@ -527,7 +527,7 @@ module Interro
 
     # :doc:
     protected def order_by(expression, direction, args : Array(Interro::Value)? = nil) : self
-      expression = expression.gsub /\$(\d+)/ do |match|
+      expression = expression.gsub /\$(\d+)/ do |_, match|
         index = match[1].to_i
         "$#{self.args.size + index}"
       end
@@ -1037,7 +1037,7 @@ module Interro
         lhs_arg_count = @lhs.args.size
         rhs = @rhs
           .to_sql
-          .gsub(/\$(\d+)/) { |match| "$#{match[1].to_i + lhs_arg_count}" }
+          .gsub(/\$(\d+)/) { |_, match| "$#{match[1].to_i + lhs_arg_count}" }
 
         arg_count = lhs_arg_count + @rhs.args.size
 

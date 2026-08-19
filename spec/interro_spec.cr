@@ -155,6 +155,14 @@ struct UserQuery < Interro::QueryBuilder(User)
     subquery select: "id"
   end
 
+  def with_name_in_ten(names : Array(String))
+    where "name IN ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", names
+  end
+
+  def with_email(email : String)
+    where email: email
+  end
+
   def registered_after(time : Time)
     where { |user| user.created_at > time }
   end
@@ -970,6 +978,18 @@ describe Interro do
 
         groups.should contain included
         groups.should_not contain excluded
+      end
+    end
+
+    describe "composing raw where fragments" do
+      it "renumbers multi-digit placeholders" do
+        target = create_user(name: "MultiDigit 0")
+        names = Array.new(10) { |i| "MultiDigit #{i}" }
+
+        matching = query.with_email(target.email).with_name_in_ten(names)
+
+        matching.to_sql.should end_with %{WHERE (email = $1) AND (name IN ($2, $3, $4, $5, $6, $7, $8, $9, $10, $11))}
+        matching.to_a.should eq [target]
       end
     end
 
