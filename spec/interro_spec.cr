@@ -151,6 +151,10 @@ struct UserQuery < Interro::QueryBuilder(User)
     where name: name
   end
 
+  def ids
+    subquery select: "id"
+  end
+
   def registered_after(time : Time)
     where { |user| user.created_at > time }
   end
@@ -174,6 +178,10 @@ struct UserQuery < Interro::QueryBuilder(User)
 
   def at_most(count : Int32)
     limit count
+  end
+
+  def offset_by(count : Int32)
+    offset count
   end
 
   def change_name(user : User, name : String)
@@ -242,6 +250,15 @@ struct UserQuery < Interro::QueryBuilder(User)
 
   def by_name_similarity_to(name : String)
     order_by "levenshtein(users.name, $1)", "ASC", [name]
+  end
+
+  def distinct_names_in_order
+    distinct(on: "users.name").order_by("users.name": :asc)
+  end
+
+  def distinct_by_name_similarity(term : String)
+    distinct(on: "users.name")
+      .order_by("levenshtein(users.name, $1)", "ASC", [term])
   end
 
   def count : Int64
@@ -553,6 +570,18 @@ describe Interro do
       users.should eq created_users[2...7].reverse
     end
 
+    it "can limit and offset a query" do
+      ordered = query
+        .registered_before(created_users[7].created_at)
+        .in_reverse_chronological_order
+
+      ordered.at_most(5).to_a.should eq created_users[2...7].reverse
+
+      paged = ordered.at_most(5).offset_by(1)
+      paged.to_sql.should end_with %{OFFSET $2 LIMIT $3}
+      paged.to_a.should eq created_users[1...6].reverse
+    end
+
     it "can build a query with a compound where clause" do
       users = query
         .registered_before_with_compound_where_clause(created_users[7].created_at)
@@ -703,6 +732,26 @@ describe Interro do
       # What we want is to return t1 and t2 only once each, so the size of the
       # result set should be 2.
       TaskQuery.new.for(user).size.should eq 2
+    end
+
+    it "can combine DISTINCT ON with ORDER BY" do
+      create_user(name: "Distinct #{UUID.random}")
+
+      matching = query.distinct_names_in_order
+
+      matching.to_sql.should contain "DISTINCT ON (users.name, users.name)"
+      matching.to_a.size.should be > 0
+    end
+
+    it "can combine DISTINCT ON with a parameterized ORDER BY" do
+      user = create_user(name: "Similar #{UUID.random}")
+
+      matching = query.distinct_by_name_similarity(user.name)
+
+      # Note that both sites reference the same placeholder, which is required by Postgres.
+      matching.to_sql.should contain "DISTINCT ON (users.name, levenshtein(users.name, $1))"
+      matching.to_sql.should end_with "ORDER BY levenshtein(users.name, $1) ASC"
+      matching.to_a.map(&.id).should contain user.id
     end
 
     describe "matching values in an array" do
@@ -875,6 +924,12 @@ describe Interro do
       users.should_not contain only_lhs
     end
 
+    it "renders compound queries to SQL" do
+      compound = query.with_name("LHS") | query.with_name("RHS")
+
+      compound.to_sql.should contain "UNION"
+    end
+
     it "can limit compound queries" do
       2.times { create_user(name: "Limit LHS") }
       2.times { create_user(name: "Limit RHS") }
@@ -897,6 +952,12 @@ describe Interro do
 
         users.should contain included
         users.should_not contain excluded
+      end
+
+      it "renders a subquery on its own" do
+        subquery = UserQuery.new.with_name("Someone").ids
+
+        subquery.to_sql.should eq %{SELECT id FROM users WHERE name = $1}
       end
 
       it "queries with WHERE EXISTS" do
