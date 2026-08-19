@@ -1017,6 +1017,14 @@ describe Interro do
       UserQuery.new.search("search").should contain user
     end
 
+    it "generates a correct any? query when the order by includes placeholder arguments" do
+      user = create_user
+
+      ordered = UserQuery.new.by_name_similarity_to(user.name)
+      ordered.to_sql.should end_with %{ORDER BY levenshtein(users.name, $1) ASC}
+      ordered.any?.should eq true
+    end
+
     it "can check whether any records match" do
       user = create_user
       matching = UserQuery.new.with_id(user.id)

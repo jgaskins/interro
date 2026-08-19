@@ -624,7 +624,7 @@ module Interro
         str << " LIMIT 1"
       end
 
-      !connection(CONFIG.read_db).query_one? sql, args: args, as: Int32
+      !connection(CONFIG.read_db).query_one? sql, args: where_clause.try(&.values) || [] of Any, as: Int32
     end
 
     # :doc:
