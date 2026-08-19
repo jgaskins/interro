@@ -200,20 +200,12 @@ module Interro
       ResultSetIterator(T).new(
         db: connection(CONFIG.read_db),
         query: to_sql,
-        args: args,
+        args: bind_args,
       )
     end
 
     def each(& : T ->)
-      args = self.args
-      if offset = offset_clause
-        args += [offset] of Interro::Value
-      end
-      if limit = limit_clause
-        args += [limit] of Interro::Value
-      end
-
-      connection(Interro::CONFIG.read_db).query_each to_sql, args: args do |rs|
+      connection(Interro::CONFIG.read_db).query_each to_sql, args: bind_args do |rs|
         {% begin %}
           {% if T < Tuple %}
             yield({ {% for type, index in T.type_vars %} rs.read({{type}}) {% if index < T.type_vars.size - 1 %},{% end %} {% end %} })
@@ -319,7 +311,7 @@ module Interro
     protected def find(**params) : T?
       query = where(**params).limit(1)
 
-      connection(CONFIG.read_db).query_one? query.to_sql, args: query.args + [1], as: T
+      connection(CONFIG.read_db).query_one? query.to_sql, args: query.bind_args, as: T
     end
 
     # :doc:
@@ -579,18 +571,7 @@ module Interro
 
     # :doc:
     protected def scalar(select expression : String, as type : U.class) : U forall U
-      if args = @args
-        args = args.map { |arg| Any.new arg }
-      else
-        args = [] of Interro::Any
-      end
-
-      if offset = offset_clause
-        args << Any.new offset
-      end
-      if limit = limit_clause
-        args << Any.new limit
-      end
+      args = bind_args
 
       sql = String.build do |str|
         to_sql str do
@@ -967,6 +948,19 @@ module Interro
       end
     end
 
+    # :nodoc:
+    # The args to bind when executing this query: the composed args plus the values for the OFFSET/LIMIT placeholders `to_sql` emits after them.
+    protected def bind_args : Array(Any)
+      args = self.args
+      if offset = offset_clause
+        args += [Any.new(offset)]
+      end
+      if limit = limit_clause
+        args += [Any.new(limit)]
+      end
+      args
+    end
+
     private def connection(db)
       @transaction.try(&.connection) || db
     end
@@ -1016,7 +1010,7 @@ module Interro
       end
 
       def each(& : T ->)
-        args = @lhs.args + @rhs.args
+        args = @lhs.bind_args + @rhs.bind_args
         if limit
           args << Any.new(limit)
         end
@@ -1034,17 +1028,18 @@ module Interro
 
       def to_sql
         lhs = @lhs.to_sql
-        lhs_arg_count = @lhs.args.size
+        lhs_arg_count = @lhs.bind_args.size
         rhs = @rhs
           .to_sql
           .gsub(/\$(\d+)/) { |_, match| "$#{match[1].to_i + lhs_arg_count}" }
 
-        arg_count = lhs_arg_count + @rhs.args.size
+        arg_count = lhs_arg_count + @rhs.bind_args.size
 
+        # Parentheses needed so each side can have its own LIMIT/OFFSET.
         String.build do |str|
-          str << lhs
+          str << '(' << lhs << ')'
           str << ' ' << @combinator << ' '
-          str << rhs
+          str << '(' << rhs << ')'
           if @limit
             str << " LIMIT $" << (arg_count += 1)
           end

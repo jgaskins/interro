@@ -645,6 +645,15 @@ describe Interro do
         users.should eq created_users[8..9].reverse
       end
 
+      it "binds the limit when iterating" do
+        name = "Lazily Limited #{UUID.random}"
+        3.times { create_user(name: name) }
+
+        users = query.with_name(name).at_most(2).each.to_a
+
+        users.size.should eq 2
+      end
+
       it "uses concurrency-safe iterators" do
         iterator = UserQuery.new.each
 
@@ -906,6 +915,15 @@ describe Interro do
       query.with_id(deleted.id).should be_empty
       query.with_id(not_deleted.id).should_not be_empty
       query.with_id(not_deleted.id).should contain not_deleted
+    end
+
+    it "binds a limit applied to one side of a compound query" do
+      2.times { create_user(name: "Side LHS") }
+      2.times { create_user(name: "Side RHS") }
+
+      users = (query.with_name("Side LHS").at_most(1) | query.with_name("Side RHS")).to_a
+
+      users.size.should eq 3
     end
 
     it "can run UNION queries" do
