@@ -173,14 +173,13 @@ module Interro
       self[transaction_owner.transaction]
     end
 
-    protected property? distinct : Array(String)? = nil
+    protected property? distinct : Array(QueryExpression)? = nil
     protected property join_clause : Array(JoinClause) { [] of JoinClause }
     protected property where_clause : QueryExpression?
     protected property order_by_clause : OrderBy?
     protected property limit_clause : Int32? = nil
     protected property offset_clause : Int32? = nil
     protected property transaction : Transaction? = nil
-    protected property args : Array(Any) { Array(Any).new }
     protected property? for_update = false
     protected property? skip_locked = false
 
@@ -198,15 +197,18 @@ module Interro
     end
 
     def each
+      sql, args = render
       ResultSetIterator(T).new(
         db: connection(CONFIG.read_db),
-        query: to_sql,
-        args: bind_args,
+        query: sql,
+        args: args,
       )
     end
 
     def each(& : T ->)
-      connection(Interro::CONFIG.read_db).query_each to_sql, args: bind_args do |rs|
+      sql, args = render
+
+      connection(Interro::CONFIG.read_db).query_each sql, args: args do |rs|
         {% begin %}
           {% if T < Tuple %}
             yield({ {% for type, index in T.type_vars %} rs.read({{type}}) {% if index < T.type_vars.size - 1 %},{% end %} {% end %} })
@@ -225,7 +227,6 @@ module Interro
       else
         new.where_clause ||= other.where_clause
       end
-      new.args += other.args
       if (my_order = new.order_by_clause) && (their_order = other.order_by_clause)
         new.order_by_clause = my_order.merge(their_order)
       else
@@ -241,9 +242,7 @@ module Interro
     end
 
     def to_sql : String
-      String.build do |str|
-        to_sql str
-      end
+      render[0]
     end
 
     def |(other : self) : CompoundQuery
@@ -284,35 +283,41 @@ module Interro
 
       # This subquery as the right-hand side of an IN, e.g. `id IN (SELECT ...)`.
       def in_expression(column : String) : QueryExpression
-        if where = where_clause
-          where_args = where.values
-        else
-          where_args = [] of Any
-        end
-        QueryExpression.new(column, "IN", "(#{to_sql})", where_args)
+        parts = [] of QueryExpression::Part
+        parts << "#{column} IN ("
+        parts.concat to_parts
+        parts << ")"
+        QueryExpression.new(parts)
       end
 
+      # Renders the subquery on its own, numbering arguments from `$1`.
       def to_sql
         String.build do |sql|
           to_sql sql
         end
       end
 
+      # :ditto:
       def to_sql(io : IO) : Nil
-        io << "SELECT " << select_clause
-        io << " FROM " << relation
+        QueryExpression.new(to_parts).to_sql io
+      end
+
+      private def to_parts : Array(QueryExpression::Part)
+        parts = [] of QueryExpression::Part
+        parts << "SELECT #{select_clause} FROM #{relation}"
         if where = where_clause
-          io << " WHERE "
-          where.to_sql io
+          parts << " WHERE "
+          parts.concat where.parts
         end
+        parts
       end
     end
 
     # :doc:
     protected def find(**params) : T?
-      query = where(**params).limit(1)
+      sql, args = where(**params).limit(1).render
 
-      connection(CONFIG.read_db).query_one? query.to_sql, args: query.bind_args, as: T
+      connection(CONFIG.read_db).query_one? sql, args: args, as: T
     end
 
     # :doc:
@@ -334,21 +339,16 @@ module Interro
     # :doc:
     protected def where(**params : Value | Any | Array | Subquery) : self
       where_clause = nil
-      args = Array(Any).new(initial_capacity: params.size)
-      params.each_with_index(self.args.size + 1) do |key, value, index|
+      params.each do |key, value|
         case value
         when Nil
-          new_clause = QueryExpression.new(key.to_s, "IS", "NULL", [] of Any)
+          new_clause = QueryExpression.new("#{key} IS NULL")
         when Array
-          any = Any.new(value)
-          args << any
-          new_clause = QueryExpression.new(key.to_s, "=", "ANY($#{index})", [any])
+          new_clause = QueryExpression.new("#{key} = ANY(", Any.new(value), ")")
         when Subquery
           new_clause = value.in_expression(key.to_s)
-          args.concat new_clause.values
         else
-          args << Any.new(value)
-          new_clause = QueryExpression.new(key.to_s, "=", "$#{index}", [Any.new(value)])
+          new_clause = QueryExpression.new("#{key} = ", Any.new(value))
         end
 
         if where_clause
@@ -365,22 +365,15 @@ module Interro
       new = dup
       if where_clause
         new.where_clause = where_clause
-        if self.args.any?
-          new.args = self.args + args
-        else # If the current array is empty, we don't need to concatenate
-          new.args = args
-        end
       end
       new
     end
 
     def where_exists(**params : Subquery) : self
       where_clause = nil
-      args = Array(Any).new(initial_capacity: params.size)
 
-      params.each_with_index(self.args.size + 1) do |key, value, index|
+      params.each do |key, value|
         new_clause = value.in_expression(key.to_s)
-        args.concat new_clause.values
 
         if where_clause
           where_clause &= new_clause
@@ -396,20 +389,13 @@ module Interro
       new = dup
       if where_clause
         new.where_clause = where_clause
-        if self.args.any?
-          new.args = self.args + args
-        else # If the current array is empty, we don't need to concatenate
-          new.args = args
-        end
       end
       new
     end
 
     # :doc:
     protected def where(table = sql_table_alias, &block : QueryRecord -> QueryExpression) : self
-      index = args.size
-      where_clause = yield(QueryRecord.new(table) { index += 1 })
-      values = where_clause.values
+      where_clause = yield(QueryRecord.new(table) { 1 })
 
       if current_where_clause = @where_clause
         where_clause = current_where_clause & where_clause
@@ -417,40 +403,12 @@ module Interro
 
       new = dup
       new.where_clause = where_clause
-      new.args = args + values
       new
     end
 
     # :doc:
     protected def where(lhs : String, comparator : String, rhs : String, values : Array(Value) = [] of Value) : self
-      # Must upcast all values in the array to Interro::Value objects
-      values = values.map { |value| Any.new(value) }
-
-      # Translate $1, $2, ... $n to the numbers they should be.
-      arg_count = args.size
-      lhs = lhs.gsub /\$(\d+)/ do |_, match|
-        index = match[1].to_i
-        "$#{arg_count + index}"
-      end
-      rhs = rhs.gsub /\$(\d+)/ do |_, match|
-        index = match[1].to_i
-        "$#{arg_count + index}"
-      end
-
-      where_clause = Interro::QueryExpression.new(lhs, comparator, rhs, values)
-
-      if current_where_clause = @where_clause
-        where_clause = current_where_clause & where_clause
-      end
-
-      new = dup
-      new.where_clause = where_clause
-      if args.any?
-        new.args = args + values
-      else # If the current array is empty, we don't need to concatenate
-        new.args = values
-      end
-      new
+      where "#{lhs} #{comparator} #{rhs}", values
     end
 
     # :doc:
@@ -458,13 +416,7 @@ module Interro
       # Must upcast all values in the array to Interro::Value objects
       values = values.map { |value| Any.new(value) }
 
-      # Translate $1, $2, ... $n to the numbers they should be.
-      arg_count = args.size
-      expression = expression.gsub /\$(\d+)/ do |_, match|
-        index = match[1].to_i
-        "$#{arg_count + index}"
-      end
-      where_clause = Interro::QueryExpression.new(expression, values)
+      where_clause = Interro::QueryExpression.parse(expression, values)
 
       if current_where_clause = @where_clause
         where_clause = current_where_clause & where_clause
@@ -472,11 +424,6 @@ module Interro
 
       new = dup
       new.where_clause = where_clause
-      if args.any?
-        new.args = args + values
-      else # If the current array is empty, we don't need to concatenate
-        new.args = values
-      end
       new
     end
 
@@ -507,7 +454,7 @@ module Interro
     # :doc:
     protected def order_by(**params : String) : self
       order_by_clause = OrderBy.new(initial_capacity: params.size)
-      params.each { |key, value| order_by_clause[QueryExpression.new(key.to_s, [] of Any)] = value }
+      params.each { |key, value| order_by_clause[QueryExpression.new(key.to_s)] = value }
 
       if current_order_clause = @order_by_clause
         order_by_clause = current_order_clause.merge(order_by_clause)
@@ -520,12 +467,8 @@ module Interro
 
     # :doc:
     protected def order_by(expression, direction, args : Array(Interro::Value)? = nil) : self
-      expression = expression.gsub /\$(\d+)/ do |_, match|
-        index = match[1].to_i
-        "$#{self.args.size + index}"
-      end
       values = args.try(&.map { |arg| Any.new arg }) || [] of Any
-      order_by_clause = OrderBy{QueryExpression.new(expression, values) => direction.to_s}
+      order_by_clause = OrderBy{QueryExpression.parse(expression, values) => direction.to_s}
 
       if current_order_clause = @order_by_clause
         order_by_clause = current_order_clause.merge(order_by_clause)
@@ -533,9 +476,6 @@ module Interro
 
       new = dup
       new.order_by_clause = order_by_clause
-      if args
-        new.args += args.map { |arg| Any.new arg }
-      end
       new
     end
 
@@ -556,7 +496,7 @@ module Interro
     # :doc:
     protected def distinct(on expressions : Enumerable(String)) : self
       new = dup
-      new.distinct = expressions.to_a
+      new.distinct = expressions.map { |expression| QueryExpression.parse(expression, [] of Any) }.to_a
       new
     end
 
@@ -573,10 +513,9 @@ module Interro
 
     # :doc:
     protected def scalar(select expression : String, as type : U.class) : U forall U
-      args = bind_args
-
+      args = [] of Any
       sql = String.build do |str|
-        to_sql str do
+        to_sql str, args do
           expression.to_s str
         end
       end
@@ -608,6 +547,7 @@ module Interro
     end
 
     def none? : Bool
+      args = [] of Any
       sql = String.build do |str|
         str << "SELECT 1 AS one"
         str << " FROM " << sql_table_name
@@ -620,13 +560,14 @@ module Interro
         end
 
         if where = where_clause
-          str << " WHERE " << where.to_sql
+          str << " WHERE "
+          where.to_sql str, args
         end
 
         str << " LIMIT 1"
       end
 
-      !connection(CONFIG.read_db).query_one? sql, args: where_clause.try(&.values) || [] of Any, as: Int32
+      !connection(CONFIG.read_db).query_one? sql, args: args, as: Int32
     end
 
     # :doc:
@@ -878,16 +819,23 @@ module Interro
     end
 
     # :doc:
-    protected def to_sql(io) : Nil
-      to_sql(io) { select_columns io }
+    protected def to_sql(io, args : Array(Any)) : Nil
+      to_sql(io, args) { select_columns io }
     end
 
-    private def to_sql(str, &) : Nil
+    private def to_sql(str, args : Array(Any), &) : Nil
+      # Postgres requires that an expression appearing in both the DISTINCT ON subclause and ORDER BY must render identically in both (including placeholder numbers).
+      # This cache is used to render such expressions once, thus emitting placeholders once.
+      rendered = {} of QueryExpression => String
+      render_once = ->(expression : QueryExpression) do
+        rendered[expression] ||= String.build { |sql| expression.to_sql sql, args }
+      end
+
       str << "SELECT "
       if distinct_expressions = self.distinct?
         # If you provide DISTINCT and an ORDER BY, the ORDER BY clause must also
         # appear in the DISTINCT subclause.
-        distinct_subclause = distinct_expressions.map { |expression| QueryExpression.new(expression, [] of Any) }
+        distinct_subclause = distinct_expressions
         if order_by = @order_by_clause
           distinct_subclause += order_by.keys
         end
@@ -896,7 +844,7 @@ module Interro
         unless distinct_subclause.empty?
           str << "ON ("
           distinct_subclause.each_with_index 1 do |expression, index|
-            expression.to_sql str
+            str << render_once.call(expression)
             if index < distinct_subclause.size
               str << ", "
             end
@@ -919,28 +867,27 @@ module Interro
 
       if where = @where_clause
         str << " WHERE "
-        where.to_sql str
+        where.to_sql str, args
       end
 
       if order = @order_by_clause
         str << " ORDER BY "
-        order.each_with_index(1) do |(key, direction), index|
-          key.to_sql str
-          str << ' ' << direction.upcase
+        order.each_with_index(1) do |(expression, direction), index|
+          str << render_once.call(expression) << ' ' << direction.upcase
           if index < order.size
             str << ", "
           end
         end
       end
 
-      placeholder = args.size
-
       if offset = @offset_clause
-        str << " OFFSET $" << (placeholder += 1)
+        args << Any.new(offset)
+        str << " OFFSET $" << args.size
       end
 
       if limit = @limit_clause
-        str << " LIMIT $" << (placeholder += 1)
+        args << Any.new(limit)
+        str << " LIMIT $" << args.size
       end
 
       if for_update?
@@ -953,16 +900,13 @@ module Interro
     end
 
     # :nodoc:
-    # The args to bind when executing this query: the composed args plus the values for the OFFSET/LIMIT placeholders `to_sql` emits after them.
-    protected def bind_args : Array(Any)
-      args = self.args
-      if offset = offset_clause
-        args += [Any.new(offset)]
+    # Renders the query and the args to bind together, in one pass: each value is appended to the args array as it is emitted, so its placeholder number is simply its position in that array.
+    protected def render : {String, Array(Any)}
+      args = [] of Any
+      sql = String.build do |str|
+        to_sql str, args
       end
-      if limit = limit_clause
-        args += [Any.new(limit)]
-      end
-      args
+      {sql, args}
     end
 
     private def connection(db)
@@ -1014,12 +958,9 @@ module Interro
       end
 
       def each(& : T ->)
-        args = @lhs.bind_args + @rhs.bind_args
-        if limit
-          args << Any.new(limit)
-        end
+        sql, args = render
 
-        @connection.query_each to_sql, args: args do |rs|
+        @connection.query_each sql, args: args do |rs|
           yield T.new(rs)
         end
       end
@@ -1031,23 +972,26 @@ module Interro
       end
 
       def to_sql
-        lhs = @lhs.to_sql
-        lhs_arg_count = @lhs.bind_args.size
-        rhs = @rhs
-          .to_sql
-          .gsub(/\$(\d+)/) { |_, match| "$#{match[1].to_i + lhs_arg_count}" }
+        render[0]
+      end
 
-        arg_count = lhs_arg_count + @rhs.bind_args.size
+      private def render : {String, Array(Any)}
+        args = [] of Any
 
         # Parentheses needed so each side can have its own LIMIT/OFFSET.
-        String.build do |str|
-          str << '(' << lhs << ')'
-          str << ' ' << @combinator << ' '
-          str << '(' << rhs << ')'
-          if @limit
-            str << " LIMIT $" << (arg_count += 1)
+        sql = String.build do |str|
+          str << '('
+          @lhs.to_sql str, args
+          str << ") " << @combinator << " ("
+          @rhs.to_sql str, args
+          str << ')'
+          if limit = @limit
+            args << Any.new(limit)
+            str << " LIMIT $" << args.size
           end
         end
+
+        {sql, args}
       end
     end
   end

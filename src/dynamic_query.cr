@@ -26,7 +26,6 @@ module Interro
           order_by: @order_by_clause,
           offset: @offset_clause,
           limit: @limit_clause,
-          args: @args,
           transaction: transaction,
           delegate: delegate,
         )
@@ -47,7 +46,6 @@ module Interro
       order_by @order_by_clause,
       offset @offset_clause,
       limit @limit_clause,
-      @args,
       @transaction,
       @delegate : U,
     )
@@ -72,7 +70,6 @@ module Interro
       @delegate.order_by_clause = @order_by_clause
       @delegate.offset_clause = @offset_clause
       @delegate.limit_clause = @limit_clause
-      @delegate.args = @args
       @delegate.transaction = @transaction
       %new_query = @delegate.{{call}}
       case %new_query
@@ -86,7 +83,6 @@ module Interro
           order_by: %new_query.order_by_clause,
           offset: %new_query.offset_clause,
           limit: %new_query.limit_clause,
-          args: %new_query.args,
           transaction: %new_query.transaction,
           delegate: @delegate,
         )

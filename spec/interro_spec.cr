@@ -163,6 +163,14 @@ struct UserQuery < Interro::QueryBuilder(User)
     where email: email
   end
 
+  def with_id_in(subquery : Interro::QueryBuilder::Subquery)
+    where id: subquery
+  end
+
+  def with_id_in_and_named(subquery : Interro::QueryBuilder::Subquery, name : String)
+    where id: subquery, name: name
+  end
+
   def registered_after(time : Time)
     where { |user| user.created_at > time }
   end
@@ -267,6 +275,11 @@ struct UserQuery < Interro::QueryBuilder(User)
   def distinct_by_name_similarity(term : String)
     distinct(on: "users.name")
       .order_by("levenshtein(users.name, $1)", "ASC", [term])
+  end
+
+  def distinct_by_placeholder
+    # This is not allowed and raises ArgumentError.
+    distinct(on: "levenshtein(users.name, $1)")
   end
 
   def count : Int64
@@ -384,6 +397,10 @@ struct GroupMembershipQuery < Interro::QueryBuilder(GroupMembership)
       GroupQuery.new(self).increment_member_count group, 1
       insert user_id: user.id, group_id: group.id
     end
+  end
+
+  def user_ids
+    subquery select: "user_id"
   end
 end
 
@@ -771,6 +788,12 @@ describe Interro do
       matching.to_a.map(&.id).should contain user.id
     end
 
+    it "rejects a placeholder in a DISTINCT ON expression" do
+      expect_raises ArgumentError, "references $1" do
+        query.distinct_by_placeholder
+      end
+    end
+
     describe "matching values in an array" do
       ids = created_users.map(&.id).first(3)
 
@@ -986,6 +1009,42 @@ describe Interro do
         subquery.to_sql.should eq %{SELECT id FROM users WHERE name = $1}
       end
 
+      it "numbers a subquery's placeholders after the outer query's args" do
+        carol = create_user(name: "Carol")
+        create_user(name: "Carol")
+
+        subquery = UserQuery.new.with_email(carol.email).with_name("Carol").ids
+        matching = query.with_email(carol.email).with_id_in_and_named(subquery, "Carol")
+
+        matching.to_sql.should end_with %{WHERE (email = $1) AND ((id IN (SELECT id FROM users WHERE (email = $2) AND (name = $3))) AND (name = $4))}
+        matching.to_a.map(&.id).should eq [carol.id]
+      end
+
+      it "numbers a where_exists subquery's placeholders after the outer query's args" do
+        heidi = create_user(name: "Heidi #{UUID.random}")
+        group = create_group
+        GroupMembershipQuery.new.create(user: heidi, group: group)
+
+        membership = GroupMembershipQuery.new.for(group_id: group.id).user_ids
+        matching = query.with_name(heidi.name).where_exists(id: membership)
+
+        matching.to_sql.should end_with %{WHERE (name = $1) AND (id IN (SELECT user_id FROM group_memberships WHERE group_id = $2))}
+        matching.to_a.map(&.id).should eq [heidi.id]
+      end
+
+      it "numbers a subquery from $1 even when its builder holds order_by args" do
+        grace = create_user(name: "Grace")
+
+        subquery = UserQuery.new
+          .by_name_similarity_to("Grace")
+          .with_email(grace.email)
+          .ids
+        matching = query.with_id_in(subquery)
+
+        matching.to_sql.should end_with %{WHERE id IN (SELECT id FROM users WHERE email = $1)}
+        matching.to_a.map(&.id).should eq [grace.id]
+      end
+
       it "queries with WHERE EXISTS" do
         user = create_user(email: "included-#{UUID.random}")
         included = create_group
@@ -1009,6 +1068,16 @@ describe Interro do
         matching.to_sql.should end_with %{WHERE (email = $1) AND (name IN ($2, $3, $4, $5, $6, $7, $8, $9, $10, $11))}
         matching.to_a.should eq [target]
       end
+    end
+
+    it "numbers a merged query's placeholders after the receiving query's args" do
+      erin = create_user(name: "Erin #{UUID.random}")
+
+      matching = query.with_email(erin.email)
+        .merge(UserQuery.new.with_name(erin.name).by_name_similarity_to(erin.name))
+
+      matching.to_sql.should end_with %{WHERE (email = $1) AND (name = $2) ORDER BY levenshtein(users.name, $3) ASC}
+      matching.to_a.map(&.id).should eq [erin.id]
     end
 
     it "can use arbitrary operators" do
