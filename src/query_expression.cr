@@ -63,7 +63,8 @@ module Interro
       self.class.new parts
     end
 
-    private PLACEHOLDER = /\$(\d+)/
+    # Matches either a $n placeholder, capturing n, or a whole single-quoted SQL string literal ('' being an escaped quote), with no capture.
+    private PLACEHOLDER_OR_LITERAL = /\$(\d+)|'[^']*(?:''[^']*)*'/
 
     # Parses a raw SQL fragment, resolving each `$n` placeholder to the value it references: `$1` is `values[0]`, and so on.
     # Raises `ArgumentError` if a placeholder references no value.
@@ -71,8 +72,11 @@ module Interro
       parts = [] of Part
       cursor = 0
 
-      fragment.scan(PLACEHOLDER) do |match|
-        number = match[1]
+      # String literals are matched so that a $n inside one cannot match as a placeholder.
+      fragment.scan(PLACEHOLDER_OR_LITERAL) do |match|
+        # A literal match has no capture.
+        next unless number = match[1]?
+
         index = number.to_i
         unless index.in?(1..values.size)
           raise ArgumentError.new("SQL fragment #{fragment.inspect} references $#{number}, but only #{values.size} values were provided")

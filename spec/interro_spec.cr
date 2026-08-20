@@ -163,6 +163,10 @@ struct UserQuery < Interro::QueryBuilder(User)
     where email: email
   end
 
+  def named_with_literal_dollar
+    where "name = 'it''s $7'"
+  end
+
   def with_id_in(subquery : Interro::QueryBuilder::Subquery)
     where id: subquery
   end
@@ -1067,6 +1071,15 @@ describe Interro do
 
         matching.to_sql.should end_with %{WHERE (email = $1) AND (name IN ($2, $3, $4, $5, $6, $7, $8, $9, $10, $11))}
         matching.to_a.should eq [target]
+      end
+
+      it "leaves $n inside string literals alone" do
+        judy = create_user(name: "it's $7")
+
+        matching = query.with_email(judy.email).named_with_literal_dollar
+
+        matching.to_sql.should end_with %{WHERE (email = $1) AND (name = 'it''s $7')}
+        matching.to_a.map(&.id).should eq [judy.id]
       end
     end
 

@@ -42,6 +42,13 @@ module Interro
           QueryExpression.parse("a = $0", [Any.new(1)])
         end
       end
+
+      it "leaves $n inside string literals alone, including '' escapes" do
+        expression = QueryExpression.parse("note = 'it''s $1' AND id = $1", [Any.new(1)])
+
+        expression.to_sql.should eq "note = 'it''s $1' AND id = $1"
+        expression.values.should eq [Any.new(1)]
+      end
     end
 
     describe "#to_sql" do
