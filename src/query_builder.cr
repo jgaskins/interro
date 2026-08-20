@@ -10,7 +10,8 @@ require "./delete_operation"
 require "./transaction"
 
 module Interro
-  alias OrderBy = Hash(String, String)
+  # QueryExpression => direction
+  alias OrderBy = Hash(QueryExpression, String)
 
   # Defining `QueryBuilder` objects is a way to create composable queries. For
   # example, if you have the following `Model` and `QueryBuilder`:
@@ -506,7 +507,7 @@ module Interro
     # :doc:
     protected def order_by(**params : String) : self
       order_by_clause = OrderBy.new(initial_capacity: params.size)
-      params.each { |key, value| order_by_clause[key.to_s] = value }
+      params.each { |key, value| order_by_clause[QueryExpression.new(key.to_s, [] of Any)] = value }
 
       if current_order_clause = @order_by_clause
         order_by_clause = current_order_clause.merge(order_by_clause)
@@ -523,7 +524,8 @@ module Interro
         index = match[1].to_i
         "$#{self.args.size + index}"
       end
-      order_by_clause = OrderBy{expression => direction.to_s}
+      values = args.try(&.map { |arg| Any.new arg }) || [] of Any
+      order_by_clause = OrderBy{QueryExpression.new(expression, values) => direction.to_s}
 
       if current_order_clause = @order_by_clause
         order_by_clause = current_order_clause.merge(order_by_clause)
@@ -882,9 +884,10 @@ module Interro
 
     private def to_sql(str, &) : Nil
       str << "SELECT "
-      if distinct_subclause = self.distinct?
+      if distinct_expressions = self.distinct?
         # If you provide DISTINCT and an ORDER BY, the ORDER BY clause must also
         # appear in the DISTINCT subclause.
+        distinct_subclause = distinct_expressions.map { |expression| QueryExpression.new(expression, [] of Any) }
         if order_by = @order_by_clause
           distinct_subclause += order_by.keys
         end
@@ -893,7 +896,7 @@ module Interro
         unless distinct_subclause.empty?
           str << "ON ("
           distinct_subclause.each_with_index 1 do |expression, index|
-            str << expression
+            expression.to_sql str
             if index < distinct_subclause.size
               str << ", "
             end
@@ -922,7 +925,8 @@ module Interro
       if order = @order_by_clause
         str << " ORDER BY "
         order.each_with_index(1) do |(key, direction), index|
-          str << key << ' ' << direction.upcase
+          key.to_sql str
+          str << ' ' << direction.upcase
           if index < order.size
             str << ", "
           end
