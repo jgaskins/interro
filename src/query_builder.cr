@@ -395,7 +395,7 @@ module Interro
 
     # :doc:
     protected def where(table = sql_table_alias, &block : QueryRecord -> QueryExpression) : self
-      where_clause = yield(QueryRecord.new(table) { 1 })
+      where_clause = yield(QueryRecord.new(table))
 
       if current_where_clause = @where_clause
         where_clause = current_where_clause & where_clause

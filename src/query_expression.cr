@@ -9,11 +9,6 @@ module Interro
     # Placeholder numbers are assigned when the query is rendered in `#to_sql`.
     getter parts : Array(Part)
 
-    # Still used by QueryValue; removed in the next commit.
-    def self.new(lhs, comparator, rhs, values : Array(Any))
-      parse "#{lhs} #{comparator} #{rhs}", values
-    end
-
     def self.new(*parts : Part) : self
       array = Array(Part).new(parts.size)
       parts.each { |part| array << part }
