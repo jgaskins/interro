@@ -68,7 +68,7 @@ module Interro
 
     # Parses a raw SQL fragment, resolving each `$n` placeholder to the value it references: `$1` is `values[0]`, and so on.
     # Raises `ArgumentError` if a placeholder references no value.
-    def self.parse(fragment : String, values : Array(Any)) : self
+    def self.parse(fragment : String, values : Array(Value) = [] of Value) : self
       parts = [] of Part
       cursor = 0
 
@@ -84,7 +84,7 @@ module Interro
 
         prefix = fragment[cursor...match.begin]
         parts << prefix unless prefix.empty?
-        parts << values[index - 1]
+        parts << Any.new(values[index - 1])
         cursor = match.end
       end
 

@@ -272,6 +272,10 @@ struct UserQuery < Interro::QueryBuilder(User)
     order_by "levenshtein(users.name, $1)", "ASC", [name]
   end
 
+  def by_reversed_name
+    order_by "reverse(users.name)", "ASC"
+  end
+
   def distinct_names_in_order
     distinct(on: "users.name").order_by("users.name": :asc)
   end
@@ -720,6 +724,12 @@ describe Interro do
       results = query.by_name_similarity_to(created_users.first.name).to_a
 
       results.first.should eq created_users.first
+    end
+
+    it "can perform ORDER BY on a raw expression with no args" do
+      results = query.by_reversed_name.to_a.select { |user| created_users.includes? user }
+
+      results.should eq created_users.sort_by(&.name.reverse)
     end
 
     it "can be used to return all values" do

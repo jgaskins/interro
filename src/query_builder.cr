@@ -413,9 +413,6 @@ module Interro
 
     # :doc:
     protected def where(expression : String, values : Array(Value) = [] of Value) : self
-      # Must upcast all values in the array to Interro::Value objects
-      values = values.map { |value| Any.new(value) }
-
       where_clause = Interro::QueryExpression.parse(expression, values)
 
       if current_where_clause = @where_clause
@@ -466,9 +463,8 @@ module Interro
     end
 
     # :doc:
-    protected def order_by(expression, direction, args : Array(Interro::Value)? = nil) : self
-      values = args.try(&.map { |arg| Any.new arg }) || [] of Any
-      order_by_clause = OrderBy{QueryExpression.parse(expression, values) => direction.to_s}
+    protected def order_by(expression, direction, args : Array(Interro::Value) = [] of Value) : self
+      order_by_clause = OrderBy{QueryExpression.parse(expression, args) => direction.to_s}
 
       if current_order_clause = @order_by_clause
         order_by_clause = current_order_clause.merge(order_by_clause)
@@ -496,7 +492,7 @@ module Interro
     # :doc:
     protected def distinct(on expressions : Enumerable(String)) : self
       new = dup
-      new.distinct = expressions.map { |expression| QueryExpression.parse(expression, [] of Any) }.to_a
+      new.distinct = expressions.map { |expression| QueryExpression.parse(expression) }.to_a
       new
     end
 
