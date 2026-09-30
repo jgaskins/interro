@@ -688,6 +688,11 @@ module Interro
     end
 
     # :doc:
+    protected def insert(records : Array(NamedTuple), on_conflict : ConflictHandler? = nil) : Array(T)
+      create_many_operation.call(self, records, on_conflict: on_conflict)
+    end
+
+    # :doc:
     protected def insert!(records : Array(NamedTuple), on_conflict : ConflictHandler? = nil) : Int32
       create_many_operation.call!(self, records, on_conflict: on_conflict)
     end

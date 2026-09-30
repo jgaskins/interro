@@ -106,6 +106,10 @@ struct UserQuery < Interro::QueryBuilder(User)
     insert! email: email, name: name
   end
 
+  def create(user_templates : Array(Template))
+    insert user_templates.map(&.to_named_tuple)
+  end
+
   def create!(user_templates : Array(Template))
     insert! user_templates.map(&.to_named_tuple)
   end
@@ -115,6 +119,12 @@ struct UserQuery < Interro::QueryBuilder(User)
     insert data,
       on_conflict: Interro::ConflictHandler.new "email",
         do: Interro::Update.new(set: {name: name, updated_at: Time.utc})
+  end
+
+  def upsert(user_templates : Array(Template), name_on_conflict : String) : Array(User)
+    insert user_templates.map(&.to_named_tuple),
+      on_conflict: Interro::ConflictHandler.new("email",
+        do: Interro::Update.new(set: {name: name_on_conflict}))
   end
 
   def upsert!(user_templates : Array(Template), name_on_conflict : String) : Int32
@@ -445,6 +455,17 @@ describe Interro do
       user.email.should eq email
       user.name.should eq "Foo"
     end
+    
+    it "can insert many rows" do
+      templates = Array.new(10) { |i|
+        UserQuery::Template.new(email: "one-of-many.#{UUID.v7}", name: "User #{i}")
+      }
+
+      users = UserQuery.new.create(templates)
+
+      users.map(&.email).should eq templates.map(&.email)
+      users.map(&.name).should eq templates.map(&.name)
+    end
 
     it "can insert many rows without returning them" do
       result = UserQuery.new.create!(Array.new(10) { |i|
@@ -464,6 +485,22 @@ describe Interro do
     end
 
     it "can upsert multiple rows" do
+      templates = [
+        UserQuery::Template.new(email: "pip-#{UUID.random}@example.com", name: "Pip"),
+        UserQuery::Template.new(email: "pat-#{UUID.random}@example.com", name: "Pat"),
+      ]
+
+      # No rows exist yet, so this only inserts; the conflict update does not run.
+      inserted = query.upsert(templates, name_on_conflict: "ignored")
+      inserted.map(&.name).should eq %w[Pip Pat]
+
+      # Every row now conflicts on email, so the handler updates each name.
+      upserted = query.upsert(templates, name_on_conflict: "Updated")
+      upserted.map(&.id).should eq inserted.map(&.id)
+      upserted.map(&.name).should eq %w[Updated Updated]
+    end
+
+    it "can upsert multiple rows without returning them" do
       templates = [
         UserQuery::Template.new(email: "ivy-#{UUID.random}@example.com", name: "Ivy"),
         UserQuery::Template.new(email: "jack-#{UUID.random}@example.com", name: "Jack"),

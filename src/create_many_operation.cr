@@ -8,17 +8,17 @@ module Interro
     def initialize(@queryable : DB::Database | DB::Connection)
     end
 
-    def call(query : QueryBuilder(T), params, on_conflict conflict_handler : ConflictHandler? = nil) : T
+    def call(query : QueryBuilder(T), params : Array(NamedTuple), on_conflict conflict_handler : ConflictHandler? = nil) : Array(T)
       table_name = query.sql_table_name
       args = params
-        .values
+        .flat_map(&.values.to_a)
         .map { |value| Interro::Any.new(value) }
         .to_a
       sql = generate_query query.sql_table_name, params, args,
         on_conflict: conflict_handler,
         returning: ->(io : IO) { query.select_columns io }
 
-      @queryable.query_one sql, args: args, as: T
+      @queryable.query_all sql, args: args, as: T
     end
 
     def call!(query : QueryBuilder(T), params : Array(NamedTuple), on_conflict conflict_handler : ConflictHandler? = nil) : Int32
@@ -28,7 +28,8 @@ module Interro
         .map { |value| Interro::Any.new(value) }
         .to_a
       sql = generate_query query.sql_table_name, params, args,
-        on_conflict: conflict_handler
+        on_conflict: conflict_handler,
+        returning: nil
 
       @queryable.exec(sql, args: args)
         .rows_affected
@@ -42,6 +43,7 @@ module Interro
       params : Array(NamedTuple),
       args,
       on_conflict conflict_handler : ConflictHandler?,
+      returning returning_clause,
     )
       String.build do |str|
         str << "INSERT INTO " << table_name << " ("
@@ -74,6 +76,10 @@ module Interro
             end
           end
           conflict_handler.to_sql str, start_at: start || 1
+        end
+        if returning_clause
+          str << " RETURNING "
+          returning_clause.call str
         end
       end
     end
