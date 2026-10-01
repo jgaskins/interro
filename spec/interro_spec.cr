@@ -455,7 +455,7 @@ describe Interro do
       user.email.should eq email
       user.name.should eq "Foo"
     end
-    
+
     it "can insert many rows" do
       templates = Array.new(10) { |i|
         UserQuery::Template.new(email: "one-of-many.#{UUID.v7}", name: "User #{i}")

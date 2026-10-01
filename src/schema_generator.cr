@@ -95,10 +95,10 @@ module Interro
           character_maximum_length
         FROM information_schema.columns
         JOIN information_schema.tables
-          USING (table_name)
+          USING (table_schema, table_name)
         LEFT JOIN pg_attribute
           ON pg_attribute.attname = column_name
-          AND pg_attribute.attrelid = tables.table_name::regclass
+          AND pg_attribute.attrelid = format('%I.%I', tables.table_schema, tables.table_name)::regclass
         WHERE tables.table_schema = 'public'
         AND tables.table_type = 'BASE TABLE'
         ORDER BY table_name, ordinal_position
