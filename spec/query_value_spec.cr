@@ -4,7 +4,7 @@ require "../src/query_value"
 
 module Interro
   describe QueryValue do
-    value = QueryValue.new("my_value", 1)
+    value = QueryValue.new("my_value")
 
     it "checks equal" do
       (value == 42).to_sql.should eq "my_value = $1"

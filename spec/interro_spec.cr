@@ -151,6 +151,30 @@ struct UserQuery < Interro::QueryBuilder(User)
     where name: name
   end
 
+  def ids
+    subquery select: "id"
+  end
+
+  def with_name_in_ten(names : Array(String))
+    where "name IN ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", names
+  end
+
+  def with_email(email : String)
+    where email: email
+  end
+
+  def named_with_literal_dollar
+    where "name = 'it''s $7'"
+  end
+
+  def with_id_in(subquery : Interro::QueryBuilder::Subquery)
+    where id: subquery
+  end
+
+  def with_id_in_and_named(subquery : Interro::QueryBuilder::Subquery, name : String)
+    where id: subquery, name: name
+  end
+
   def registered_after(time : Time)
     where { |user| user.created_at > time }
   end
@@ -174,6 +198,10 @@ struct UserQuery < Interro::QueryBuilder(User)
 
   def at_most(count : Int32)
     limit count
+  end
+
+  def offset_by(count : Int32)
+    offset count
   end
 
   def change_name(user : User, name : String)
@@ -242,6 +270,24 @@ struct UserQuery < Interro::QueryBuilder(User)
 
   def by_name_similarity_to(name : String)
     order_by "levenshtein(users.name, $1)", "ASC", [name]
+  end
+
+  def by_reversed_name
+    order_by "reverse(users.name)", "ASC"
+  end
+
+  def distinct_names_in_order
+    distinct(on: "users.name").order_by("users.name": :asc)
+  end
+
+  def distinct_by_name_similarity(term : String)
+    distinct(on: "users.name")
+      .order_by("levenshtein(users.name, $1)", "ASC", [term])
+  end
+
+  def distinct_by_placeholder
+    # This is not allowed and raises ArgumentError.
+    distinct(on: "levenshtein(users.name, $1)")
   end
 
   def count : Int64
@@ -359,6 +405,10 @@ struct GroupMembershipQuery < Interro::QueryBuilder(GroupMembership)
       GroupQuery.new(self).increment_member_count group, 1
       insert user_id: user.id, group_id: group.id
     end
+  end
+
+  def user_ids
+    subquery select: "user_id"
   end
 end
 
@@ -553,6 +603,18 @@ describe Interro do
       users.should eq created_users[2...7].reverse
     end
 
+    it "can limit and offset a query" do
+      ordered = query
+        .registered_before(created_users[7].created_at)
+        .in_reverse_chronological_order
+
+      ordered.at_most(5).to_a.should eq created_users[2...7].reverse
+
+      paged = ordered.at_most(5).offset_by(1)
+      paged.to_sql.should end_with %{OFFSET $2 LIMIT $3}
+      paged.to_a.should eq created_users[1...6].reverse
+    end
+
     it "can build a query with a compound where clause" do
       users = query
         .registered_before_with_compound_where_clause(created_users[7].created_at)
@@ -608,6 +670,15 @@ describe Interro do
         users.should eq created_users[8..9].reverse
       end
 
+      it "binds the limit when iterating" do
+        name = "Lazily Limited #{UUID.random}"
+        3.times { create_user(name: name) }
+
+        users = query.with_name(name).at_most(2).each.to_a
+
+        users.size.should eq 2
+      end
+
       it "uses concurrency-safe iterators" do
         iterator = UserQuery.new.each
 
@@ -653,6 +724,12 @@ describe Interro do
       results = query.by_name_similarity_to(created_users.first.name).to_a
 
       results.first.should eq created_users.first
+    end
+
+    it "can perform ORDER BY on a raw expression with no args" do
+      results = query.by_reversed_name.to_a.select { |user| created_users.includes? user }
+
+      results.should eq created_users.sort_by(&.name.reverse)
     end
 
     it "can be used to return all values" do
@@ -703,6 +780,32 @@ describe Interro do
       # What we want is to return t1 and t2 only once each, so the size of the
       # result set should be 2.
       TaskQuery.new.for(user).size.should eq 2
+    end
+
+    it "can combine DISTINCT ON with ORDER BY" do
+      create_user(name: "Distinct #{UUID.random}")
+
+      matching = query.distinct_names_in_order
+
+      matching.to_sql.should contain "DISTINCT ON (users.name, users.name)"
+      matching.to_a.size.should be > 0
+    end
+
+    it "can combine DISTINCT ON with a parameterized ORDER BY" do
+      user = create_user(name: "Similar #{UUID.random}")
+
+      matching = query.distinct_by_name_similarity(user.name)
+
+      # Note that both sites reference the same placeholder, which is required by Postgres.
+      matching.to_sql.should contain "DISTINCT ON (users.name, levenshtein(users.name, $1))"
+      matching.to_sql.should end_with "ORDER BY levenshtein(users.name, $1) ASC"
+      matching.to_a.map(&.id).should contain user.id
+    end
+
+    it "rejects a placeholder in a DISTINCT ON expression" do
+      expect_raises ArgumentError, "references $1" do
+        query.distinct_by_placeholder
+      end
     end
 
     describe "matching values in an array" do
@@ -851,6 +954,15 @@ describe Interro do
       query.with_id(not_deleted.id).should contain not_deleted
     end
 
+    it "binds a limit applied to one side of a compound query" do
+      2.times { create_user(name: "Side LHS") }
+      2.times { create_user(name: "Side RHS") }
+
+      users = (query.with_name("Side LHS").at_most(1) | query.with_name("Side RHS")).to_a
+
+      users.size.should eq 3
+    end
+
     it "can run UNION queries" do
       lhs = Array.new(3) { create_user(name: "LHS") }
       rhs = Array.new(3) { create_user(name: "RHS") }
@@ -873,6 +985,12 @@ describe Interro do
 
       users.should contain both
       users.should_not contain only_lhs
+    end
+
+    it "renders compound queries to SQL" do
+      compound = query.with_name("LHS") | query.with_name("RHS")
+
+      compound.to_sql.should contain "UNION"
     end
 
     it "can limit compound queries" do
@@ -899,6 +1017,48 @@ describe Interro do
         users.should_not contain excluded
       end
 
+      it "renders a subquery on its own" do
+        subquery = UserQuery.new.with_name("Someone").ids
+
+        subquery.to_sql.should eq %{SELECT id FROM users WHERE name = $1}
+      end
+
+      it "numbers a subquery's placeholders after the outer query's args" do
+        carol = create_user(name: "Carol")
+        create_user(name: "Carol")
+
+        subquery = UserQuery.new.with_email(carol.email).with_name("Carol").ids
+        matching = query.with_email(carol.email).with_id_in_and_named(subquery, "Carol")
+
+        matching.to_sql.should end_with %{WHERE (email = $1) AND ((id IN (SELECT id FROM users WHERE (email = $2) AND (name = $3))) AND (name = $4))}
+        matching.to_a.map(&.id).should eq [carol.id]
+      end
+
+      it "numbers a where_exists subquery's placeholders after the outer query's args" do
+        heidi = create_user(name: "Heidi #{UUID.random}")
+        group = create_group
+        GroupMembershipQuery.new.create(user: heidi, group: group)
+
+        membership = GroupMembershipQuery.new.for(group_id: group.id).user_ids
+        matching = query.with_name(heidi.name).where_exists(id: membership)
+
+        matching.to_sql.should end_with %{WHERE (name = $1) AND (id IN (SELECT user_id FROM group_memberships WHERE group_id = $2))}
+        matching.to_a.map(&.id).should eq [heidi.id]
+      end
+
+      it "numbers a subquery from $1 even when its builder holds order_by args" do
+        grace = create_user(name: "Grace")
+
+        subquery = UserQuery.new
+          .by_name_similarity_to("Grace")
+          .with_email(grace.email)
+          .ids
+        matching = query.with_id_in(subquery)
+
+        matching.to_sql.should end_with %{WHERE id IN (SELECT id FROM users WHERE email = $1)}
+        matching.to_a.map(&.id).should eq [grace.id]
+      end
+
       it "queries with WHERE EXISTS" do
         user = create_user(email: "included-#{UUID.random}")
         included = create_group
@@ -912,10 +1072,49 @@ describe Interro do
       end
     end
 
+    describe "composing raw where fragments" do
+      it "renumbers multi-digit placeholders" do
+        target = create_user(name: "MultiDigit 0")
+        names = Array.new(10) { |i| "MultiDigit #{i}" }
+
+        matching = query.with_email(target.email).with_name_in_ten(names)
+
+        matching.to_sql.should end_with %{WHERE (email = $1) AND (name IN ($2, $3, $4, $5, $6, $7, $8, $9, $10, $11))}
+        matching.to_a.should eq [target]
+      end
+
+      it "leaves $n inside string literals alone" do
+        judy = create_user(name: "it's $7")
+
+        matching = query.with_email(judy.email).named_with_literal_dollar
+
+        matching.to_sql.should end_with %{WHERE (email = $1) AND (name = 'it''s $7')}
+        matching.to_a.map(&.id).should eq [judy.id]
+      end
+    end
+
+    it "numbers a merged query's placeholders after the receiving query's args" do
+      erin = create_user(name: "Erin #{UUID.random}")
+
+      matching = query.with_email(erin.email)
+        .merge(UserQuery.new.with_name(erin.name).by_name_similarity_to(erin.name))
+
+      matching.to_sql.should end_with %{WHERE (email = $1) AND (name = $2) ORDER BY levenshtein(users.name, $3) ASC}
+      matching.to_a.map(&.id).should eq [erin.id]
+    end
+
     it "can use arbitrary operators" do
       user = create_user(name: "Search User")
 
       UserQuery.new.search("search").should contain user
+    end
+
+    it "generates a correct any? query when the order by includes placeholder arguments" do
+      user = create_user
+
+      ordered = UserQuery.new.by_name_similarity_to(user.name)
+      ordered.to_sql.should end_with %{ORDER BY levenshtein(users.name, $1) ASC}
+      ordered.any?.should eq true
     end
 
     it "can check whether any records match" do
