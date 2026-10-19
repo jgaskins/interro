@@ -298,6 +298,12 @@ struct UserQuery < Interro::QueryBuilder(User)
     for_update skip_locked: skip_locked
   end
 
+  def delete_all
+    # We protect against unscoped DELETE statements. In this case, it's actually
+    # what we want.
+    where("true").delete
+  end
+
   record Template, email : String, name : String do
     protected def to_named_tuple
       {email: email, name: name}
@@ -480,7 +486,12 @@ end
 describe Interro do
   describe Interro::QueryBuilder do
     query = UserQuery.new
-    created_users = Array.new(11) { query.create email: UUID.random.to_s, name: UUID.random.to_s }
+    created_users = [] of User
+
+    before_each do
+      query.delete_all
+      created_users = Array.new(11) { query.create email: UUID.random.to_s, name: UUID.random.to_s }
+    end
 
     it "can insert a row" do
       email = "foo-#{UUID.random}@example.com"
@@ -809,7 +820,9 @@ describe Interro do
     end
 
     describe "matching values in an array" do
-      ids = created_users.map(&.id).first(3)
+      ids = [] of UUID
+
+      before_each { ids = created_users.map(&.id).first(3) }
 
       it "can find a record with a value in an array" do
         user_ids = query
