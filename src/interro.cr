@@ -13,7 +13,7 @@ require "./ext/pg/result_set"
 
 #
 module Interro
-  VERSION = "0.6.3"
+  VERSION = "0.6.4"
 
   def self.transaction(& : Transaction -> T) forall T
     result = uninitialized T

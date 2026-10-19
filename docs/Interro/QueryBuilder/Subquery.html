@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.18.2">
-<meta name="crystal_docs.project_version" content="0.6.3">
+<meta name="crystal_docs.project_version" content="0.6.4">
 <meta name="crystal_docs.project_name" content="interro">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="interro">
-  <title>Interro::QueryBuilder::Subquery - interro 0.6.3</title>
+  <title>Interro::QueryBuilder::Subquery - interro 0.6.4</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.6.3
+        0.6.4
       </span>
     </div>
   </div>
@@ -197,8 +197,18 @@
       
     </li>
   
-  <li class=" " data-id="interro/Interro/QueryExpression" data-name="interro::queryexpression">
+  <li class="parent " data-id="interro/Interro/QueryExpression" data-name="interro::queryexpression">
       <a href="../../Interro/QueryExpression.html">QueryExpression</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/QueryExpression/Part" data-name="interro::queryexpression::part">
+      <a href="../../Interro/QueryExpression/Part.html">Part</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -363,7 +373,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/query_builder.cr#L280" target="_blank">
+      <a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/query_builder.cr#L272" target="_blank">
         query_builder.cr
       </a>
     
@@ -409,6 +419,13 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
+        <a href="#in_expression%28column%3AString%29%3AQueryExpression-instance-method" class="signature"><strong>#in_expression</strong>(column : String) : QueryExpression</a>
+        
+          <div class="summary"><p>This subquery as the right-hand side of an IN, e.g.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#relation%3AString-instance-method" class="signature"><strong>#relation</strong> : String</a>
         
       </li>
@@ -421,10 +438,14 @@
       <li class="entry-summary">
         <a href="#to_sql%28io%3AIO%29%3ANil-instance-method" class="signature"><strong>#to_sql</strong>(io : IO) : Nil</a>
         
+          <div class="summary"><p>Renders the subquery on its own, numbering arguments from <code>$1</code>.</p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#to_sql-instance-method" class="signature"><strong>#to_sql</strong></a>
+        
+          <div class="summary"><p>Renders the subquery on its own, numbering arguments from <code>$1</code>.</p></div>
         
       </li>
     
@@ -501,7 +522,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/query_builder.cr#L285" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/query_builder.cr#L277" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -522,6 +543,27 @@
     Instance Method Detail
   </h2>
   
+    <div class="entry-detail" id="in_expression(column:String):QueryExpression-instance-method">
+      <div class="signature">
+        
+        def <strong>in_expression</strong>(column : String) : <a href="../../Interro/QueryExpression.html">QueryExpression</a>
+
+        <a class="method-permalink" href="#in_expression%28column%3AString%29%3AQueryExpression-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>This subquery as the right-hand side of an IN, e.g. <code>id IN (SELECT ...)</code>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/query_builder.cr#L285" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
     <div class="entry-detail" id="relation:String-instance-method">
       <div class="signature">
         
@@ -533,7 +575,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/query_builder.cr#L282" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/query_builder.cr#L274" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -549,7 +591,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/query_builder.cr#L281" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/query_builder.cr#L273" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -562,10 +604,15 @@
         <a class="method-permalink" href="#to_sql%28io%3AIO%29%3ANil-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Renders the subquery on its own, numbering arguments from <code>$1</code>.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/query_builder.cr#L298" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/query_builder.cr#L301" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -578,10 +625,15 @@
         <a class="method-permalink" href="#to_sql-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Renders the subquery on its own, numbering arguments from <code>$1</code>.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/query_builder.cr#L292" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/query_builder.cr#L294" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -597,7 +649,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/query_builder.cr#L283" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/query_builder.cr#L275" target="_blank">View source</a>]
         
       </div>
     </div>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.18.2">
-<meta name="crystal_docs.project_version" content="0.6.3">
+<meta name="crystal_docs.project_version" content="0.6.4">
 <meta name="crystal_docs.project_name" content="interro">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="interro">
-  <title>Interro::DynamicQuery(T, U) - interro 0.6.3</title>
+  <title>Interro::DynamicQuery(T, U) - interro 0.6.4</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.6.3
+        0.6.4
       </span>
     </div>
   </div>
@@ -197,8 +197,18 @@
       
     </li>
   
-  <li class=" " data-id="interro/Interro/QueryExpression" data-name="interro::queryexpression">
+  <li class="parent " data-id="interro/Interro/QueryExpression" data-name="interro::queryexpression">
       <a href="../Interro/QueryExpression.html">QueryExpression</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/QueryExpression/Part" data-name="interro::queryexpression::part">
+      <a href="../Interro/QueryExpression/Part.html">Part</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -363,7 +373,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/dynamic_query.cr#L37" target="_blank">
+      <a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/dynamic_query.cr#L36" target="_blank">
         dynamic_query.cr
       </a>
     
@@ -386,7 +396,7 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28selectselect_columns%3AString%2Cdistinct%2Cfromsql_table_name%3AString%2Cjoinjoin_clause%2Cwherewhere_clause%2Corder_byorder_by_clause%2Coffsetoffset_clause%2Climitlimit_clause%2Cargs%2Ctransaction%2Cdelegate%3AU%29-class-method" class="signature"><strong>.new</strong>(select select_columns : String, distinct, from sql_table_name : String, join join_clause, where where_clause, order_by order_by_clause, offset offset_clause, limit limit_clause, args, transaction, delegate : U)</a>
+        <a href="#new%28selectselect_columns%3AString%2Cdistinct%2Cfromsql_table_name%3AString%2Cjoinjoin_clause%2Cwherewhere_clause%2Corder_byorder_by_clause%2Coffsetoffset_clause%2Climitlimit_clause%2Ctransaction%2Cdelegate%3AU%29-class-method" class="signature"><strong>.new</strong>(select select_columns : String, distinct, from sql_table_name : String, join join_clause, where where_clause, order_by order_by_clause, offset offset_clause, limit limit_clause, transaction, delegate : U)</a>
         
       </li>
     
@@ -671,18 +681,18 @@
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(selectselect_columns:String,distinct,fromsql_table_name:String,joinjoin_clause,wherewhere_clause,order_byorder_by_clause,offsetoffset_clause,limitlimit_clause,args,transaction,delegate:U)-class-method">
+    <div class="entry-detail" id="new(selectselect_columns:String,distinct,fromsql_table_name:String,joinjoin_clause,wherewhere_clause,order_byorder_by_clause,offsetoffset_clause,limitlimit_clause,transaction,delegate:U)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(select select_columns : String, distinct, from sql_table_name : String, join join_clause, where where_clause, order_by order_by_clause, offset offset_clause, limit limit_clause, args, transaction, delegate : U)
+        def self.<strong>new</strong>(select select_columns : String, distinct, from sql_table_name : String, join join_clause, where where_clause, order_by order_by_clause, offset offset_clause, limit limit_clause, transaction, delegate : U)
 
-        <a class="method-permalink" href="#new%28selectselect_columns%3AString%2Cdistinct%2Cfromsql_table_name%3AString%2Cjoinjoin_clause%2Cwherewhere_clause%2Corder_byorder_by_clause%2Coffsetoffset_clause%2Climitlimit_clause%2Cargs%2Ctransaction%2Cdelegate%3AU%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28selectselect_columns%3AString%2Cdistinct%2Cfromsql_table_name%3AString%2Cjoinjoin_clause%2Cwherewhere_clause%2Corder_byorder_by_clause%2Coffsetoffset_clause%2Climitlimit_clause%2Ctransaction%2Cdelegate%3AU%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/dynamic_query.cr#L41" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/dynamic_query.cr#L40" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -712,7 +722,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/dynamic_query.cr#L68" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/dynamic_query.cr#L66" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -740,7 +750,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/dynamic_query.cr#L56" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/dynamic_query.cr#L54" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -756,7 +766,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/dynamic_query.cr#L56" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/dynamic_query.cr#L54" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -772,7 +782,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/dynamic_query.cr#L56" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/dynamic_query.cr#L54" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -788,7 +798,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/dynamic_query.cr#L56" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/dynamic_query.cr#L54" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -804,7 +814,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/dynamic_query.cr#L39" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/dynamic_query.cr#L38" target="_blank">View source</a>]
         
       </div>
     </div>

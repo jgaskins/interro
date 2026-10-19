@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.18.2">
-<meta name="crystal_docs.project_version" content="0.6.3">
+<meta name="crystal_docs.project_version" content="0.6.4">
 <meta name="crystal_docs.project_name" content="interro">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="interro">
-  <title>Interro::QueryExpression - interro 0.6.3</title>
+  <title>Interro::QueryExpression - interro 0.6.4</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.6.3
+        0.6.4
       </span>
     </div>
   </div>
@@ -197,8 +197,18 @@
       
     </li>
   
-  <li class=" current" data-id="interro/Interro/QueryExpression" data-name="interro::queryexpression">
+  <li class="parent open current" data-id="interro/Interro/QueryExpression" data-name="interro::queryexpression">
       <a href="../Interro/QueryExpression.html">QueryExpression</a>
+      
+        <ul>
+  
+  <li class=" " data-id="interro/Interro/QueryExpression/Part" data-name="interro::queryexpression::part">
+      <a href="../Interro/QueryExpression/Part.html">Part</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -363,7 +373,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/query_expression.cr#L4" target="_blank">
+      <a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/query_expression.cr#L4" target="_blank">
         query_expression.cr
       </a>
     
@@ -386,12 +396,19 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28lhs%2Ccomparator%2Crhs%2Cvalues%3AArray%28Any%29%29-class-method" class="signature"><strong>.new</strong>(lhs, comparator, rhs, values : Array(Any))</a>
+        <a href="#new%28parts%3AArray%28Interro%3A%3AAny%7CString%29%29-class-method" class="signature"><strong>.new</strong>(parts : Array(Interro::Any | String))</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#new%28expression%3AString%2Cvalues%3AArray%28Interro%3A%3AAny%29%29-class-method" class="signature"><strong>.new</strong>(expression : String, values : Array(Interro::Any))</a>
+        <a href="#new%28%2Aparts%3APart%29%3Aself-class-method" class="signature"><strong>.new</strong>(*parts : Part) : <span class="k">self</span></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#parse%28fragment%3AString%2Cvalues%3AArray%28Value%29%3D%5B%5DofValue%29%3Aself-class-method" class="signature"><strong>.parse</strong>(fragment : String, values : Array(Value) = <span class="o">[]</span> <span class="k">of</span> <span class="t">Value</span>) : <span class="k">self</span></a>
+        
+          <div class="summary"><p>Parses a raw SQL fragment, resolving each <code>$n</code> placeholder to the value it references: <code>$1</code> is <code>values[0]</code>, and so on.</p></div>
         
       </li>
     
@@ -424,12 +441,21 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#expression%3AString-instance-method" class="signature"><strong>#expression</strong> : String</a>
+        <a href="#parts%3AArray%28Part%29-instance-method" class="signature"><strong>#parts</strong> : Array(Part)</a>
+        
+          <div class="summary"><p>The expression is just its parts: SQL text interleaved with the values to bind.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#to_sql%28io%29-instance-method" class="signature"><strong>#to_sql</strong>(io)</a>
+        <a href="#to_sql%28io%3AIO%2Cargs%3AArray%28Any%29%29%3ANil-instance-method" class="signature"><strong>#to_sql</strong>(io : IO, args : Array(Any)) : Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_sql%28io%3AIO%29%3ANil-instance-method" class="signature"><strong>#to_sql</strong>(io : IO) : Nil</a>
+        
+          <div class="summary"><p>Render this expression, numbering placeholders from <code>$1</code>.</p></div>
         
       </li>
     
@@ -440,6 +466,8 @@
     
       <li class="entry-summary">
         <a href="#values%3AArray%28Any%29-instance-method" class="signature"><strong>#values</strong> : Array(Any)</a>
+        
+          <div class="summary"><p>The values this fragment binds, in the order <code><a href="../Interro/QueryExpression.html#to_sql-instance-method">#to_sql</a></code> renders them.</p></div>
         
       </li>
     
@@ -500,34 +528,56 @@
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(lhs,comparator,rhs,values:Array(Any))-class-method">
+    <div class="entry-detail" id="new(parts:Array(Interro::Any|String))-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(lhs, comparator, rhs, values : Array(<a href="../Interro/Any.html">Any</a>))
+        def self.<strong>new</strong>(parts : Array(<a href="../Interro/Any.html">Interro::Any</a> | String))
 
-        <a class="method-permalink" href="#new%28lhs%2Ccomparator%2Crhs%2Cvalues%3AArray%28Any%29%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28parts%3AArray%28Interro%3A%3AAny%7CString%29%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/query_expression.cr#L8" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/query_expression.cr#L18" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="new(expression:String,values:Array(Interro::Any))-class-method">
+    <div class="entry-detail" id="new(*parts:Part):self-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(expression : String, values : Array(<a href="../Interro/Any.html">Interro::Any</a>))
+        def self.<strong>new</strong>(*parts : <a href="../Interro/QueryExpression/Part.html">Part</a>) : <span class="k">self</span>
 
-        <a class="method-permalink" href="#new%28expression%3AString%2Cvalues%3AArray%28Interro%3A%3AAny%29%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28%2Aparts%3APart%29%3Aself-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/query_expression.cr#L12" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/query_expression.cr#L12" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="parse(fragment:String,values:Array(Value)=[]ofValue):self-class-method">
+      <div class="signature">
+        
+        def self.<strong>parse</strong>(fragment : String, values : Array(<a href="../Interro/Value.html">Value</a>) = <span class="o">[]</span> <span class="k">of</span> <span class="t">Value</span>) : <span class="k">self</span>
+
+        <a class="method-permalink" href="#parse%28fragment%3AString%2Cvalues%3AArray%28Value%29%3D%5B%5DofValue%29%3Aself-class-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Parses a raw SQL fragment, resolving each <code>$n</code> placeholder to the value it references: <code>$1</code> is <code>values[0]</code>, and so on.
+Raises <code>ArgumentError</code> if a placeholder references no value.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/query_expression.cr#L71" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -559,7 +609,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/query_expression.cr#L15" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/query_expression.cr#L26" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -575,39 +625,67 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/query_expression.cr#L20" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/query_expression.cr#L30" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="expression:String-instance-method">
+    <div class="entry-detail" id="parts:Array(Part)-instance-method">
       <div class="signature">
         
-        def <strong>expression</strong> : String
+        def <strong>parts</strong> : Array(<a href="../Interro/QueryExpression/Part.html">Part</a>)
 
-        <a class="method-permalink" href="#expression%3AString-instance-method">#</a>
+        <a class="method-permalink" href="#parts%3AArray%28Part%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>The expression is just its parts: SQL text interleaved with the values to bind.
+Placeholder numbers are assigned when the query is rendered in <code><a href="../Interro/QueryExpression.html#to_sql-instance-method">#to_sql</a></code>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/query_expression.cr#L10" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_sql(io:IO,args:Array(Any)):Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>to_sql</strong>(io : IO, args : Array(<a href="../Interro/Any.html">Any</a>)) : Nil
+
+        <a class="method-permalink" href="#to_sql%28io%3AIO%2Cargs%3AArray%28Any%29%29%3ANil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/query_expression.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/query_expression.cr#L34" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="to_sql(io)-instance-method">
+    <div class="entry-detail" id="to_sql(io:IO):Nil-instance-method">
       <div class="signature">
         
-        def <strong>to_sql</strong>(io)
+        def <strong>to_sql</strong>(io : IO) : Nil
 
-        <a class="method-permalink" href="#to_sql%28io%29-instance-method">#</a>
+        <a class="method-permalink" href="#to_sql%28io%3AIO%29%3ANil-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Render this expression, numbering placeholders from <code>$1</code>.
+Intended for inspecting an expression; one that is about to executed should use <code><a href="../Interro/QueryExpression.html#to_sql%28io%3AIO%2Cargs%3AArray%28Any%29%29%3ANil-instance-method">#to_sql(io, args)</a></code> so that placeholders are numbered relative to the built args array.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/query_expression.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/query_expression.cr#L48" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -623,7 +701,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/query_expression.cr#L29" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/query_expression.cr#L52" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -636,10 +714,15 @@
         <a class="method-permalink" href="#values%3AArray%28Any%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>The values this fragment binds, in the order <code><a href="../Interro/QueryExpression.html#to_sql-instance-method">#to_sql</a></code> renders them.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/interro/blob/v0.6.3/src/query_expression.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/interro/blob/v0.6.4/src/query_expression.cr#L22" target="_blank">View source</a>]
         
       </div>
     </div>
